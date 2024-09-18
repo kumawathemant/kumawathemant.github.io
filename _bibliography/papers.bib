@@ -3,113 +3,153 @@
 
 @string{aps = {American Physical Society,}}
 
-@book{einstein1920relativity,
-  title={Relativity: the Special and General Theory},
-  author={Einstein, Albert},
-  year={1920},
-  publisher={Methuen & Co Ltd},
-  html={relativity.html}
-}
-
-@book{einstein1956investigations,
-  bibtex_show={true},
-  title={Investigations on the Theory of the Brownian Movement},
-  author={Einstein, Albert},
-  year={1956},
-  publisher={Courier Corporation},
-  preview={brownian-motion.gif}
-}
-
-@article{einstein1950meaning,
-  abbr={AJP},
-  bibtex_show={true},
-  title={The meaning of relativity},
-  author={Einstein, Albert and Taub, AH},
-  journal={American Journal of Physics},
-  volume={18},
-  number={6},
-  pages={403--404},
-  year={1950},
-  publisher={American Association of Physics Teachers}
-}
-
-@article{PhysRev.47.777,
-  abbr={PhysRev},
-  title={Can Quantum-Mechanical Description of Physical Reality Be Considered Complete?},
-  author={Einstein*†, A. and Podolsky*, B. and Rosen*, N.},
-  abstract={In a complete theory there is an element corresponding to each element of reality. A sufficient condition for the reality of a physical quantity is the possibility of predicting it with certainty, without disturbing the system. In quantum mechanics in the case of two physical quantities described by non-commuting operators, the knowledge of one precludes the knowledge of the other. Then either (1) the description of reality given by the wave function in quantum mechanics is not complete or (2) these two quantities cannot have simultaneous reality. Consideration of the problem of making predictions concerning a system on the basis of measurements made on another system that had previously interacted with it leads to the result that if (1) is false then (2) is also false. One is thus led to conclude that the description of reality as given by a wave function is not complete.},
-  journal={Phys. Rev.},
-  location={New Jersey},
-  volume={47},
-  issue={10},
-  pages={777--780},
-  numpages={0},
-  year={1935},
-  month={May},
-  publisher=aps,
-  doi={10.1103/PhysRev.47.777},
-  url={http://link.aps.org/doi/10.1103/PhysRev.47.777},
-  html={https://journals.aps.org/pr/abstract/10.1103/PhysRev.47.777},
-  pdf={example_pdf.pdf},
-  altmetric={248277},
-  dimensions={true},
-  google_scholar_id={qyhmnyLat1gC},
-  video={https://www.youtube-nocookie.com/embed/aqz-KE-bpKQ},
-  additional_info={. *More Information* can be [found here](https://github.com/alshedivat/al-folio/)},
-  annotation={* Example use of superscripts<br>† Albert Einstein},
+@inproceedings{anonym,
+  author       = {Hemant Kumawat and
+                  Biswadeep Chakraborty and
+                  Saibal Mukhopadhyay},
+  title        = {RoboKoop: Efficient Control Conditioned
+                  Representations from Visual Input in Robotics using
+                  Koopman Operator},
+  booktitle    = {62024 Conference on Robot Learning},
+  series       = {Proceedings of Machine Learning Research},
+  year         = {2024},
+  preview={robokoop.png},
   selected={true},
-  inspirehep_id = {3255}
+  abstract={Developing agents that can perform complex control tasks from high-
+dimensional observations is a core ability of autonomous agents that requires un-
+derlying robust task control policies and adapting the underlying visual represen-
+tations to the task. Most existing policies need a lot of training samples and treat
+this problem from the lens of two-stage learning with a controller learned on top of
+pre-trained vision models. We approach this problem from the lens of Koopman
+theory and learn visual representations from robotic agents conditioned on spe-
+cific downstream tasks in the context of learning stabilizing control for the agent.
+We introduce a Contrastive Spectral Koopman Embedding network that allows
+us to learn efficient linearized visual representations from the agent’s visual data
+in a high dimensional latent space and utilizes reinforcement learning to perform
+off-policy control on top of the extracted representations with a linear controller.
+Our method enhances stability and control in gradient dynamics over time, signif-
+icantly outperforming existing approaches by improving efficiency and accuracy
+in learning task policies over extended horizons.},
+html={},
 }
 
-@article{einstein1905molekularkinetischen,
-  title={{\"U}ber die von der molekularkinetischen Theorie der W{\"a}rme geforderte Bewegung von in ruhenden Fl{\"u}ssigkeiten suspendierten Teilchen},
-  author={Einstein, A.},
-  journal={Annalen der physik},
-  volume={322},
-  number={8},
-  pages={549--560},
-  year={1905},
-  publisher={Wiley Online Library}
+
+
+@INPROCEEDINGS{10600387,
+  author={Sharma, Sudarshan* and Kumawat, Hemant* and Mukhopadhyay, Saibal},
+  booktitle={2024 IEEE/MTT-S International Microwave Symposium - IMS 2024}, 
+  title={ChirpNet: Noise-Resilient Sequential Chirp Based Radar Processing for Object Detection}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={102-105},
+  keywords={Chirp;Computational modeling;Noise;Radar detection;Object detection;Radar;Radar antennas;Radar;Object detection;Efficient processing;Noise robustness},
+  doi={10.1109/IMS40175.2024.10600387},
+  selected={true},
+  preview={ims.png},
+  html={https://ieeexplore.ieee.org/document/10600387},
+  abstract={Radar-based object detection (OD) requires extensive pre-processing and complex Machine Learning (ML) pipelines. Previous approaches have attempted to address these challenges by processing raw radar data frames directly from the ADC or through FFT-based post-processing. However, the input data requirements and model complexity continue to impose significant computational overhead on the edge system. In this work, we introduce ChirpNet, a noise-resilient and efficient radar processing ML architecture for object detection. Diverging from previous approaches, we directly handle raw ADC data from multiple antennas per chirp using a sequential model, resulting in a substantial 15 × reduction in complexity and a 3 × reduction in latency, while maintaining competitive OD performance. Furthermore, our proposed scheme is robust to input noise variations compared to prior works.}}
+
+@inproceedings{DBLP:conf/l4dc/KumawatCM24,
+  author       = {Hemant Kumawat and
+                  Biswadeep Chakraborty and
+                  Saibal Mukhopadhyay},
+  editor       = {Alessandro Abate and
+                  Mark Cannon and
+                  Kostas Margellos and
+                  Antonis Papachristodoulou},
+  title        = {STEMFold: Stochastic temporal manifold for multi-agent interactions
+                  in the presence of hidden agents},
+  booktitle    = {6th Annual Learning for Dynamics {\&} Control Conference, 15-17
+                  July 2024, University of Oxford, Oxford, {UK}},
+  series       = {Proceedings of Machine Learning Research},
+  volume       = {242},
+  pages        = {1427--1439},
+  publisher    = {{PMLR}},
+  year         = {2024},
+  url          = {https://proceedings.mlr.press/v242/kumawat24a.html},
+  timestamp    = {Fri, 05 Jul 2024 15:44:56 +0200},
+  biburl       = {https://dblp.org/rec/conf/l4dc/KumawatCM24.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org},
+  preview={l4dc_model1.png},
+  selected={true},
+  abstract={Learning accurate, data-driven predictive models for multiple interacting agents following un-
+known dynamics is crucial in many real-world physical and social systems. In many scenarios,
+dynamics prediction must be performed under incomplete observations, i.e., only a subset of agents
+are known and observable from a larger topological system while the behaviors of the unobserved
+agents and their interactions with the observed agents are not known. When only incomplete obser-
+vations of a dynamical system are available, so that some states remain hidden, it is generally not
+possible to learn a closed-form model in these variables using either analytic or data-driven tech-
+niques. In this work, we propose STEMFold, a spatiotemporal attention-based generative model,
+to learn a stochastic manifold to predict the underlying unmeasured dynamics of the multi-agent
+system from observations of only visible agents. Our analytical results motivate STEMFold design
+using a spatiotemporal graph with time anchors to effectively map the observations of visible agents
+to a stochastic manifold with no prior information about interaction graph topology. We empirically
+evaluated our method on two simulations and two real-world datasets, where it outperformed exist-
+ing networks in predicting complex multiagent interactions, even with many unobserved agents.},
+html={https://proceedings.mlr.press/v242/kumawat24a/kumawat24a.pdf},
 }
 
-@article{einstein1905movement,
-  abbr={Ann. Phys.},
-  title={Un the movement of small particles suspended in statiunary liquids required by the molecular-kinetic theory 0f heat},
-  author={Einstein, A.},
-  journal={Ann. Phys.},
-  volume={17},
-  pages={549--560},
-  year={1905}
-}
+@INPROCEEDINGS{10546823,
+  author={Lee, Minah and Sharma, Sudarshan and Wang, Wei Chun and Kumawat, Hemant and Rahman, Nael Mizanur and Mukhopadhyay, Saibal},
+  booktitle={2024 Design, Automation & Test in Europe Conference & Exhibition (DATE)}, 
+  title={Cognitive Sensing for Energy-Efficient Edge Intelligence}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Radar;Sensor phenomena and characterization;Feature extraction;Sensor systems;Energy efficiency;Sensors;Reliability;Autonomous System;Edge intelligence;Smart Sensor;Compute-in-Memory},
+  doi={10.23919/DATE58400.2024.10546823},
+  selected={true},
+  preview={date.png},
+  html= {https://ieeexplore.ieee.org/abstract/document/10546823},
+  abstract={Edge platforms in autonomous systems integrate multiple sensors to interpret their environment. The high-resolution and high-bandwidth pixel arrays of these sensors improve sensing quality but also generate a vast, and arguably unnecessary, volume of real-time data. This challenge, often referred to as the analog data deluge, hinders the deployment of high-quality sensors in resource-constrained environments. This paper discusses the concept of cognitive sensing, which learns to extract low-dimensional features directly from high-dimensional analog signals, thereby reducing both digitization power and generated data volume. First, we discuss design methods for analog-to-feature extraction (AFE) using mixed-signal compute-in-memory. We then present examples of cognitive sensing, incorporating signal processing or machine learning, for various sensing modalities including vision, Radar, and Infrared. Subsequently, we discuss the reliability challenges in cognitive sensing, taking into account hardware and algorithmic properties of AFE. The paper concludes with discussions on future research directions in this emerging field of cognitive sensors.}
+  }
 
-@article{einstein1905electrodynamics,
-  title={On the electrodynamics of moving bodies},
-  author={Einstein, A.},
-  year={1905}
-}
+@INPROCEEDINGS{9892390,
+  author={Samal, Kruttidipta and Kumawat, Hemant and Wolf, Marilyn and Mukhopadhyay, Saibal},
+  booktitle={2022 International Joint Conference on Neural Networks (IJCNN)}, 
+  title={A Methodology for Understanding the Origins of False Negatives in DNN Based Object Detectors}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Training;Neurons;Neural networks;Detectors;Network architecture;Behavioral sciences;Optimization;DNN;Object Detection;Computer Vision},
+  doi={10.1109/IJCNN55064.2022.9892390},
+  selected={true},
+  preview={ijcnn1.png},
+  html={https://ieeexplore.ieee.org/abstract/document/9892390},
+  abstract={In this paper we present two novel complimentary methods namely the gradient analysis and the activation discrepancy analysis to analyze the perception failures occurring inside the DNN based object detectors. The gradient analysis localizes the nodes within the network that fail consistently in a scenario, thus creating a ‘signature’ of False Negatives (FNs). This method traces a set of False Negatives through the network and finds sections of the network that contribute to this set. The signatures show the location of the faulty nodes is sensitive to input conditions (such as darkness, glare etc.), network architecture, training hyperparameters, object class etc. Certain nodes of the network fail consistently throughout the training process thus implying that some False Negatives occur due to the global optimization nature of Stochastic Gradient Descent (SGD) based training. This analysis requires the knowledge of False Negatives and therefore can be used for post-hoc diagnostic analysis. On the other hand, the activation discrepancy analysis analyzes the discrepancy in forward activations of a DNN. This method can be conducted online and shows that the pattern of the activation discrepancy is sensitive to input conditions and detection recall.},
+  }
 
-@Article{einstein1905photoelectriceffect,
-  bibtex_show={true},
-  abbr={Ann. Phys.},
-  title="{{\"U}ber einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt}",
-  author={Albert Einstein},
-  abstract={This is the abstract text.},
-  journal={Ann. Phys.},
-  volume={322},
-  number={6},
-  pages={132--148},
-  year={1905},
-  doi={10.1002/andp.19053220607},
-  award={Albert Einstein receveid the **Nobel Prize in Physics** 1921 *for his services to Theoretical Physics, and especially for his discovery of the law of the photoelectric effect*},
-  award_name={Nobel Prize}
-}
+@INPROCEEDINGS{9892184,
+  author={Kumawat, Hemant and Mukhopadhyay, Saibal},
+  booktitle={2022 International Joint Conference on Neural Networks (IJCNN)}, 
+  title={Radar Guided Dynamic Visual Attention for Resource-Efficient RGB Object Detection}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Visualization;Radar detection;Detectors;Radar;Object detection;Radar imaging;Feature extraction;Object Detection;Radar;RGB Camera;Sensor Fusion;Autonomous Systems;Deep Learning},
+  doi={10.1109/IJCNN55064.2022.9892184},
+  selected={true},
+  preview={ijcnn2.png},
+  html={https://ieeexplore.ieee.org/abstract/document/9892184},
+  abstract={An autonomous system's perception engine must provide an accurate understanding of the environment for it to make decisions. Deep learning based object detection networks experience degradation in the performance and robustness for small and far away objects due to a reduction in object's feature map as we move to higher layers of the network. In this work, we propose a novel radar-guided spatial attention for RGB images to improve the perception quality of autonomous vehicles operating in a dynamic environment. In particular, our method improves the perception of small and long range objects, which are often not detected by the object detectors in RGB mode. The proposed method consists of two RGB object detectors, namely the Primary detector and a lightweight Secondary detector. The primary detector takes a full RGB image and generates primary detections. Next, the radar proposal framework creates regions of interest (ROIs) for object proposals by projecting the radar point cloud onto the 2D RGB image. These ROIs are cropped and fed to the secondary detector to generate secondary detections which are then fused with the primary detections via non-maximum suppression. This method helps in recovering the small objects by preserving the object's spatial features through an increase in their receptive field. We evaluate our fusion method on the challenging nuScenes dataset and show that our fusion method with SSD-lite as primary and secondary detector improves the baseline primary yolov3 detector's recall by 14 % while requiring three times fewer computational resources.}
+  }
 
-@book{przibram1967letters,
-  bibtex_show={true},
-  title={Letters on wave mechanics},
-  author={Einstein, Albert and Schrödinger, Erwin and Planck, Max and Lorentz, Hendrik Antoon and Przibram, Karl},
-  year={1967},
-  publisher={Vision},
-  preview={wave-mechanics.gif},
-  abbr={Vision}
-}
+@ARTICLE{9448387,
+  author={Samal, Kruttidipta and Kumawat, Hemant and Saha, Priyabrata and Wolf, Marilyn and Mukhopadhyay, Saibal},
+  journal={IEEE Transactions on Intelligent Vehicles}, 
+  title={Task-Driven RGB-Lidar Fusion for Object Tracking in Resource-Efficient Autonomous System}, 
+  year={2022},
+  volume={7},
+  number={1},
+  pages={102-112},
+  keywords={Laser radar;Robot sensing systems;Detectors;Task analysis;Radar tracking;Cameras;Visualization;Lidar;muti-modal fusion;object detection;object tracking},
+  doi={10.1109/TIV.2021.3087664},
+  selected={true},
+  preview={tiv.png},
+  html={https://ieeexplore.ieee.org/document/9448387},
+  abstract={Autonomous mobile systems such as vehicles or robots are equipped with multiple sensor modalities including Lidar, RGB, and Radar. The fusion of multi-modal information can enhance task accuracy but indiscriminate sensing and fusion in all modalities increase demand on available system resources. This paper presents a task-driven approach to input fusion that minimizes the utilization of resource-heavy sensors and demonstrates its application to Visual-Lidar fusion for object tracking and path planning. The proposed spatiotemporal sampling algorithm activates Lidar only at regions-of-interest identified by analyzing visual input and reduces the Lidar ‘base frame rate’ according to the kinematic state of the system. This significantly reduces Lidar usage, in terms of data sensed/transferred and potentially power consumed, without a severe reduction in performance compared to both a baseline decision-level fusion and state-of-the-art deep multi-modal fusion.}
+  }
