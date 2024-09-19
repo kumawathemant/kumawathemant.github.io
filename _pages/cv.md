@@ -4,8 +4,8 @@ permalink: /cv/
 title: cv
 nav: true
 nav_order: 5
-cv_pdf: example_pdf.pdf
-description: This is a description of the page. You can modify it in '_pages/cv.md'. You can also change or remove the top pdf download button.
+cv_pdf: HemantCV.pdf
+description: Download my CV here. Last updated on 2024-05-01.
 toc:
   sidebar: left
 ---
