@@ -153,3 +153,21 @@ html={https://proceedings.mlr.press/v242/kumawat24a/kumawat24a.pdf},
   html={https://ieeexplore.ieee.org/document/9448387},
   abstract={Autonomous mobile systems such as vehicles or robots are equipped with multiple sensor modalities including Lidar, RGB, and Radar. The fusion of multi-modal information can enhance task accuracy but indiscriminate sensing and fusion in all modalities increase demand on available system resources. This paper presents a task-driven approach to input fusion that minimizes the utilization of resource-heavy sensors and demonstrates its application to Visual-Lidar fusion for object tracking and path planning. The proposed spatiotemporal sampling algorithm activates Lidar only at regions-of-interest identified by analyzing visual input and reduces the Lidar ‘base frame rate’ according to the kinematic state of the system. This significantly reduces Lidar usage, in terms of data sensed/transferred and potentially power consumed, without a severe reduction in performance compared to both a baseline decision-level fusion and state-of-the-art deep multi-modal fusion.}
   }
+
+
+
+@ARTICLE{9448387,
+  author={ Kumawat, Hemant and and Mukhopadhyay, Saibal},
+  journal={Under review at AAMAS 2025}, 
+  title={AdaDT: Learning robust control policies with adaptive feature crediting and pruinig}, 
+  year={2024},
+  
+  selected={false},
+  preview={aamas.png},
+  abstract={Reinforcement learning (RL) can be viewed as a sequence modeling challenge, where the goal is to predict future actions based on past state-action-reward sequences. Traditional methods often rely on long trajectory sequences to capture environmental dynamics in offline RL scenarios. However, this can lead to a tendency to overemphasize the memorization of long-term representations, which hinders the models' ability to prioritize trajectories and learned representations that are specifically relevant to the task at hand.
+
+In this study, we present AdaDT, a novel approach that conceptualizes trajectories as causal graphs derived from short-term action-reward-state sequences. Our model dynamically adapts its control policy by identifying and eliminating low-importance representations, focusing instead on those that are most pertinent to the downstream task. Experimental results show that policies based on AdaDT require shorter trajectory sequences and consistently outperform traditional methods in both offline reinforcement learning and imitation learning settings.}
+  }
+
+
+
