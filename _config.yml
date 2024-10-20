@@ -15,7 +15,7 @@ footer_text: >
 keywords: #jekyll, jekyll-theme, academic-website, portfolio-website  # add your own keywords or leave empty
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: Hemant_dp.jpg  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: profile.png  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 url: https://kumawathemant.github.io # the base hostname & protocol for your site
 baseurl:  # the subpath of your site, e.g. /blog/. Leave blank for root
 last_updated: false # set to true if you want to display last updated in the footer
@@ -85,7 +85,6 @@ flickr_id: # your flickr id
 # github_username: # your GitHub user name
 # gitlab_username: # your GitLab user name
 ieee_id: # your ieeexplore.ieee.org/author/id
-inspirehep_id: 1010907 # Inspire HEP author ID
 instagram_id: # your instagram id
 kaggle_id: # your kaggle id
 keybase_username: # your keybase user name
