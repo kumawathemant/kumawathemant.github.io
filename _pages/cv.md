@@ -1,12 +1,13 @@
 ---
 layout: cv
-permalink: /
+permalink: /cv/
 title: CV
 nav: true
 nav_order: 5
 description: Download my CV here. Last updated on 2024-05-01.
 toc:
   sidebar: left
+redirect: true
 ---
 
 <script>
