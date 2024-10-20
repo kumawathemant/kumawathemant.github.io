@@ -10,14 +10,14 @@ toc:
 redirect: true
 ---
 
+<meta http-equiv="refresh" content="3; url={{ site.baseurl }}" />
+
 <script>
   window.onload = function() {
     window.open("{{ site.baseurl }}/assets/pdf/HemantCV.pdf", "_blank");
-    setTimeout(function() {
-      window.location.href = "{{ site.baseurl }}"; // Redirect to the main page after 3 seconds
-    }, 3000);
   };
 </script>
 
 <p>You will be redirected to the main page within 3 seconds. If not redirected, please go back to the [home page]({{ site.baseurl | prepend: site.url }}).</p>
+
 
