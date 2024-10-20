@@ -9,7 +9,8 @@ toc:
   sidebar: left
 ---
 
-## Download My CV
-
-[Download My CV]({{ site.baseurl }}assets/pdf/HemantCV.pdf){:target="_blank"}
-
+<script>
+  window.onload = function() {
+    window.open("{{ site.baseurl }}/assets/pdf/HemantCV.pdf", "_blank");
+  };
+</script>
