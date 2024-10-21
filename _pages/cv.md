@@ -1,11 +1,10 @@
 ---
 layout: page
-permalink: /cv.html
+permalink: /cv/
 title: CV
 description: Download my CV here. Last updated on 2024-05-01.
 toc:
   sidebar: left
-redirect: true
 ---
 
 

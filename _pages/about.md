@@ -1,6 +1,6 @@
 ---
 layout: about
-title: About
+title: about
 permalink: /
 subtitle: #<a href='#'>Georgia Tech</a>. ECE PhD Student.
 
