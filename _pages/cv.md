@@ -3,6 +3,8 @@ layout: page
 permalink: /cv/
 title: CV
 description: Download my CV here. Last updated on 2024-05-01.
+nav: true
+nav_order: 5
 toc:
   sidebar: left
 ---
