@@ -1,16 +1,13 @@
 ---
 layout: page
-permalink: /cv/
+permalink: /cv.html
 title: CV
-nav: true
-nav_order: 5
 description: Download my CV here. Last updated on 2024-05-01.
 toc:
   sidebar: left
 redirect: true
 ---
-<!-- 
-<meta http-equiv="refresh" content="3; url={{ site.url }}" /> -->
+
 
 <script>
   window.onload = function() {
@@ -21,3 +18,5 @@ redirect: true
 <p>You will be redirected to the main page within 3 seconds. If not redirected, please go back to the [home page]({{ site.url | prepend: site.url }}).</p>
 
 
+
+<meta http-equiv="refresh" content="3; url={{ site.url }}" />
