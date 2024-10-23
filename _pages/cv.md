@@ -2,7 +2,7 @@
 layout: page
 permalink: /cv/
 title: CV
-description: Download my CV here. Last updated on 2024-05-01.
+description: Email me at hkumawat6@gatech.edu.
 nav: true
 nav_order: 5
 toc:
@@ -10,14 +10,14 @@ toc:
 ---
 
 
-<script>
+<!-- <script>
   window.onload = function() {
     window.open("{{ site.baseurl }}/assets/pdf/HemantCV.pdf", "_blank");
   };
-</script>
+</script> -->
 
-<p>You will be redirected to the main page within 3 seconds. If not redirected, please go back to the [home page]({{ site.url | prepend: site.url }}).</p>
+<p>Please email me at hkumawat6@gatech.edu for my CV. </p>
 
 
 
-<meta http-equiv="refresh" content="3; url={{ site.url }}" />
+<!-- <meta http-equiv="refresh" content="3; url={{ site.url }}" /> -->
