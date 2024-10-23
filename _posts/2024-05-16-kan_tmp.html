@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>2024-05-16-kan.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Kolmogorov-Arnold Networks (KAN) are inspired by the Kolmogorov-Arnold representation theorem, which provides a way to express any multivariate continuous function as a composition of univariate functions. This leads to a neural network design that aims to achieve efficient and theoretically robust approximations of complex functions. This blog will provide a mathematical overview of Kolmogorov-Arnold Networks, how they differ from standard Neural Networks, and how they relate to Kolmogorov-Arnold Machines (KAM). The focus will be on the core mathematical concepts underlying each model.</p>
+<hr>
+<h2 id="1-standard-neural-networks-nn">1. <strong>Standard Neural Networks (NN)</strong></h2>
+<h3 id="mathematical-basis">Mathematical Basis</h3>
+<p>Standard Neural Networks are designed to approximate complex functions ( f: \mathbb{R}^d \rightarrow \mathbb{R}^m ) by learning from data:</p>
+<h3 id="input-layer"><strong>Input Layer:</strong></h3>
+<p>[
+X = {x_1, x_2, \dots, x_n} \in \mathbb{R}^d
+]
+where ( X ) represents the input data.</p>
+<h3 id="hidden-layers"><strong>Hidden Layers:</strong></h3>
+<p>Each hidden layer computes:
+[
+h^{(l)} = \sigma(W^{(l)} h^{(l-1)} + b^{(l)})
+]
+where:</p>
+<ul>
+<li>( h^{(l)} ) is the activation of layer ( l ),</li>
+<li>( W^{(l)} \in \mathbb{R}^{d_{l-1} \times d_l} ) is the weight matrix,</li>
+<li>( b^{(l)} \in \mathbb{R}^{d_l} ) is the bias,</li>
+<li>( \sigma ) is a non-linear activation function (like ReLU or sigmoid).</li>
+</ul>
+<h3 id="output-layer"><strong>Output Layer:</strong></h3>
+<p>[
+\hat{y} = \sigma(W^{(L)} h^{(L-1)} + b^{(L)})
+]
+where ( \hat{y} ) is the output.</p>
+<h3 id="universal-approximation"><strong>Universal Approximation</strong>:</h3>
+<p>Standard NNs rely on the Universal Approximation Theorem, which states that a single hidden layer NN with sufficient neurons can approximate any continuous function ( f ) over a compact set.</p>
+<h3 id="key-characteristics"><strong>Key Characteristics</strong>:</h3>
+<ul>
+<li>Data-driven.</li>
+<li>Relies on depth and non-linearities for function approximation.</li>
+<li>Weights and biases are learned during training to minimize a loss function.</li>
+</ul>
+<h2 id="2-kolmogorov-arnold-machines-kam">2. <strong>Kolmogorov-Arnold Machines (KAM)</strong></h2>
+<h3 id="kolmogorov-arnold-theorem">Kolmogorov-Arnold Theorem</h3>
+<p>The Kolmogorov-Arnold theorem states that any continuous multivariate function ( f: \mathbb{R}^d \rightarrow \mathbb{R} ) can be decomposed as:
+[
+f(x_1, x_2, \dots, x_d) = \sum_{q=0}^{2d} \phi_q\left(\sum_{p=1}^{d} \psi_{pq}(x_p)\right)
+]
+where:</p>
+<ul>
+<li>( \phi_q ) and ( \psi_{pq} ) are continuous univariate functions.</li>
+<li>( d ) is the dimension of the input space.</li>
+</ul>
+<p>This representation implies that any complex function can be approximated by a sum of univariate functions, allowing KAM to utilize simpler computations compared to standard NNs.</p>
+<h3 id="mathematical-integration-in-kam">Mathematical Integration in KAM</h3>
+<p>In KAM, the network architecture is designed to match the Kolmogorov-Arnold representation by separating the multivariate function approximation into:</p>
+<ol>
+<li>
+<p><strong>Inner Layer:</strong>
+[
+s_q = \sum_{p=1}^{d} \psi_{pq}(x_p)
+]
+where ( s_q ) is a linear combination of inputs after being transformed by univariate functions ( \psi_{pq} ).</p>
+</li>
+<li>
+<p><strong>Outer Layer:</strong>
+[
+f(x) = \sum_{q=0}^{2d} \phi_q(s_q)
+]
+where each ( s_q ) is passed through another univariate function ( \phi_q ), which are summed to give the final output.</p>
+</li>
+</ol>
+<h3 id="key-characteristics"><strong>Key Characteristics</strong>:</h3>
+<ul>
+<li>Relies on univariate transformations.</li>
+<li>Simplifies complex multivariate problems by decomposing them.</li>
+<li>Highly interpretable due to its explicit function decomposition.</li>
+</ul>
+<h2 id="3-kolmogorov-arnold-networks-kan">3. <strong>Kolmogorov-Arnold Networks (KAN)</strong></h2>
+<h3 id="core-mathematical-idea">Core Mathematical Idea</h3>
+<p>KAN builds upon the Kolmogorov-Arnold framework but introduces a neural network implementation that leverages deep architectures. Instead of using predefined univariate functions ( \psi_{pq} ) and ( \phi_q ), KAN trains these functions using neural networks.</p>
+<h3 id="mathematical-formulation-in-kan"><strong>Mathematical Formulation in KAN</strong></h3>
+<p>KAN is structured as follows:</p>
+<h3 id="inner-univariate-transformations"><strong>Inner Univariate Transformations:</strong></h3>
+<p>[
+s_q = \sum_{p=1}^{d} \psi_{pq}(x_p)
+]
+where:</p>
+<ul>
+<li>Each ( \psi_{pq} ) is modeled as a small neural network, taking ( x_p ) as input:
+[
+\psi_{pq}(x_p) = \sigma(W_{pq} x_p + b_{pq})
+]</li>
+<li>The parameters ( W_{pq} ) and ( b_{pq} ) are learned during training.</li>
+</ul>
+<h3 id="outer-univariate-aggregation"><strong>Outer Univariate Aggregation:</strong></h3>
+<p>[
+\hat{f}(x) = \sum_{q=0}^{2d} \phi_q(s_q)
+]
+where:</p>
+<ul>
+<li>Each ( \phi_q ) is also a small neural network:
+[
+\phi_q(s_q) = \sigma(W_q s_q + b_q)
+]</li>
+</ul>
+<h3 id="loss-function"><strong>Loss Function</strong>:</h3>
+<p>The loss function for training is similar to traditional neural networks:
+[
+\mathcal{L}(\hat{y}, y) = \sum_i \mathcal{L}_i(\hat{y}_i, y_i)
+]
+where the predicted output ( \hat{y}_i = \hat{f}(x_i) ) is based on the KAN architecture.</p>
+<h3 id="optimization"><strong>Optimization</strong>:</h3>
+<p>Gradient-based methods are used to update the weights ( W_{pq} ), ( b_{pq} ), ( W_q ), and ( b_q ) simultaneously:
+[
+W \leftarrow W - \eta \frac{\partial \mathcal{L}}{\partial W}
+]
+where ( W ) collectively represents all weights in the network.</p>
+<h3 id="key-characteristics"><strong>Key Characteristics</strong>:</h3>
+<ul>
+<li>Utilizes neural networks to approximate univariate functions.</li>
+<li>Keeps the decomposition structure of KAM while using deep learning for flexibility.</li>
+<li>Can handle higher-dimensional data with deep architectures.</li>
+</ul>
+<h2 id="comparison-of-kan-standard-nn-and-kam"><strong>Comparison of KAN, Standard NN, and KAM</strong></h2>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Standard NN</th>
+<th>KAM</th>
+<th>KAN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Function Approximation</strong></td>
+<td>Universal Approximation Theorem</td>
+<td>Kolmogorov-Arnold Decomposition</td>
+<td>Kolmogorov-Arnold Decomposition with NN</td>
+</tr>
+<tr>
+<td><strong>Complexity Handling</strong></td>
+<td>Depth + Non-linearity</td>
+<td>Univariate Function Decomposition</td>
+<td>NN-based Univariate Function Decomposition</td>
+</tr>
+<tr>
+<td><strong>Interpretability</strong></td>
+<td>Low (black-box)</td>
+<td>High (explicit decomposition)</td>
+<td>Moderate (NN-driven decomposition)</td>
+</tr>
+<tr>
+<td><strong>Mathematical Structure</strong></td>
+<td>Matrix operations with non-linearity</td>
+<td>Univariate function sums</td>
+<td>Hybrid (NN for univariate functions)</td>
+</tr>
+<tr>
+<td><strong>Training</strong></td>
+<td>Data-driven</td>
+<td>Fixed structure with univariate adjustments</td>
+<td>Data + NN-driven univariate learning</td>
+</tr>
+<tr>
+<td><strong>Parameters</strong></td>
+<td>Weight matrices</td>
+<td>Parameters for univariate functions</td>
+<td>Neural networks for ( \phi_q ) and ( \psi_{pq} )</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>
