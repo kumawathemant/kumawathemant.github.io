@@ -8,7 +8,7 @@
 
 - image: "assets/img/amazon.jpeg"
   name: "CRCV Logo"
-  description: Applied Scientist II Intern at <a href = 'https://www.crcv.ucf.edu/'> Amazon Robotics, Boston office. nCenter for Research in Computer Vision (CRCV), University of Central Florida, USA</a>. Mentored by <a href = 'https://www.linkedin.com/in/andreas-kolling-phd-2767591'> Dr. Andreas Kolling </a>, Jaimie Carlson, and Yulin Zhang. Worked on goal-conditioned multiagent forecasting model to predict slowdowns and deadlocks in Proteus ground robots within a multi-robot warehouse environment. (Summer 2024)
+  description: Applied Scientist II Intern at <a href = 'https://amazon.jobs/content/en/teams/ftr/amazon-robotics'> Amazon Robotics, Boston office. nCenter for Research in Computer Vision (CRCV), University of Central Florida, USA</a>. Mentored by <a href = 'https://www.linkedin.com/in/andreas-kolling-phd-2767591'> Dr. Andreas Kolling </a>, Jaimie Carlson, and Yulin Zhang. Worked on goal-conditioned multiagent forecasting model to predict slowdowns and deadlocks in Proteus ground robots within a multi-robot warehouse environment. (Summer 2024)
 
 - image: "assets/img/cmu.jpg"
   name: "mix Logo"
