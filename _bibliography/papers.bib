@@ -15,7 +15,7 @@ spike-based processing, energy-efficient architectures, hardwaresoftware co-desi
       journal={To appear in Design Automation and Test in Europe (DATE) 2025},
       selected={true},
       preview={dac.png},
-      abstract={Autonomous edge computing in robotics, smart cities, and autonomous vehicles relies on the seamless integration of sensing, processing, and actuation for real-time decision-making in dynamic environments. At its core is the sensing-to-action loop, which iteratively aligns sensor inputs with computational models to drive adaptive control strategies. These loops can adapt to hyper-local conditions, enhancing resource efficiency and responsiveness, but also face challenges such as resource constraints, synchronization delays in multi-modal data fusion, and the risk of cascading errors in feedback loops. This article explores how proactive, context-aware sensing-to-action and action-to-sensing adaptations can enhance efficiency by dynamically adjusting sensing and computation based on task demands, such as sensing a very limited part of the environment and predicting the rest. By guiding sensing through control actions, action-to-sensing pathways can improve task relevance and resource use, but they also require robust monitoring to prevent cascading errors and maintain reliability. Multi-agent sensing-action loops further extend these capabilities through coordinated sensing and actions across distributed agents, optimizing resource use via collaboration. Additionally, neuromorphic computing, inspired by biological systems, provides an efficient framework for spike-based, event-driven processing that conserves energy, reduces latency, and supports hierarchical control--making it ideal for multi-agent optimization. This article highlights the importance of end-to-end co-design strategies that align algorithmic models with hardware and environmental dynamics and improve cross-layer interdependencies to improve throughput, precision, and adaptability for energy-efficient edge autonomy in complex environments.}   
+      abstract={Autonomous edge computing in robotics, smart cities, and autonomous vehicles relies on the seamless integration of sensing, processing, and actuation for real-time decision-making in dynamic environments. At its core is the sensing-to-action loop, which iteratively aligns sensor inputs with computational models to drive adaptive control strategies. These loops can adapt to hyper-local conditions, enhancing resource efficiency and responsiveness, but also face challenges such as resource constraints, synchronization delays in multi-modal data fusion, and the risk of cascading errors in feedback loops. This article explores how proactive, context-aware sensing-to-action and action-to-sensing adaptations can enhance efficiency by dynamically adjusting sensing and computation based on task demands, such as sensing a very limited part of the environment and predicting the rest. By guiding sensing through control actions, action-to-sensing pathways can improve task relevance and resource use, but they also require robust monitoring to prevent cascading errors and maintain reliability. Multi-agent sensing-action loops further extend these capabilities through coordinated sensing and actions across distributed agents, optimizing resource use via collaboration. Additionally, neuromorphic computing, inspired by biological systems, provides an efficient framework for spike-based, event-driven processing that conserves energy, reduces latency, and supports hierarchical control--making it ideal for multi-agent optimization. This article highlights the importance of end-to-end co-design strategies that align algorithmic models with hardware and environmental dynamics and improve cross-layer interdependencies to improve throughput, precision, and adaptability for energy-efficient edge autonomy in complex environments.},   
       html={https://arxiv.org/abs/2502.02692},
 }
 
@@ -131,6 +131,26 @@ evaluated our method on two simulations and two real-world datasets, where it ou
 ing networks in predicting complex multiagent interactions, even with many unobserved agents.},
 html={https://proceedings.mlr.press/v242/kumawat24a/kumawat24a.pdf},
 }
+
+
+
+@inproceedings{stage,
+  author       = {Hemant Kumawat and
+                  Biswadeep Chakraborty and
+                  Saibal Mukhopadhyay},
+  title        = {{STAGE} Net: Spatio-Temporal Attention-based Graph Encoding for Learning Multi-Agent Interactions in the presence of Hidden Agents},
+  booktitle    = {Under Review at ICLR 2023},
+  year         = {2024},
+  preview={l4dc_model1.png},
+  selected={true},
+  abstract={Accurate prediction of trajectories for multiple interacting agents following unknown dynamics is crucial in many real-world critical physical and social systems where a group of agents interact with each other, leading to intricate behavior patterns at both the individual and system levels. In many scenarios, trajectory predictions must be performed under partial observations i.e., only a subset of agents are known and observable. Consequently, we can only observe the trajectories of a subset of agents with a sampled interaction graph from a larger topological system while the behaviors of the unobserved agents and their interactions with the observed agents are not known. In this work, we propose STAGE Net, a sequential spatiotemporal attention-based generative model to learn system dynamics with multiple interacting agents where some agents are completely unobserved (hidden) all the time. Our network utilizes the spatiotemporal attention mechanism with neural inter-node messaging to capture high-level behavioral semantics of the multi-agent system. Our analytical results motivate STAGE Net design using spatiotemporal graph with time anchors to effectively model complex multi-agent interactions with unobserved agents and no prior information about interaction graph topology. We evaluate our method on multiagent simulations with spring and charged dynamics and a motion trajectory dataset. Empirical results illustrate that our method outperforms existing multiagent interaction modeling networks in predicting trajectories of complex multiagent interactions even when we have a large number of unobserved agents.},
+html={https://openreview.net/pdf?id=tsj6rDzI0V},
+}
+
+
+
+
+
 
 @INPROCEEDINGS{10546823,
   author={Lee, Minah and Sharma, Sudarshan and Wang, Wei Chun and Kumawat, Hemant and Rahman, Nael Mizanur and Mukhopadhyay, Saibal},
