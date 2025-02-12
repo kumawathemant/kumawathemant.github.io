@@ -4,29 +4,16 @@
 
 - image: "assets/img/gatech.jpg"
   name: "LTU Logo"
-  description: >
-    PhD candidate at <a href='https://www.ltu.se/en/research/research-subjects/machine-learning'> at ECE, Georgia Institute of Technology under Dr. Saibal Mukhopadhyay</a>. 
-    Working on  learning robust causal representations for efficient robot learning  with emphasis on adaptive and generalizable task conditioned spatiotemporal representations for robot learning from partial observations.
-    Published <a href='https://prakashchhipa.github.io/publications/'>research works</a> in top robotic conferences including CORL, L4DC, AAMAS, IMS and IJCNN. 
-    Have been a reviewer at NeurIPS, ICLR, AISTATS and other conferences. (2021-2025)
+  description: PhD candidate at <a href='https://ece.gatech.edu/directory/saibal-mukhopadhyay'> at ECE, Georgia Institute of Technology under Dr. Saibal Mukhopadhyay</a>. Working on  learning robust causal representations for efficient robot learning  with emphasis on adaptive and generalizable task conditioned spatiotemporal representations for robot learning from partial observations. Published <a href='https://prakashchhipa.github.io/publications/'>research works</a> in top robotic conferences including CORL, L4DC, AAMAS, IMS and IJCNN. Have been a reviewer at NeurIPS, ICLR, AISTATS and other conferences. (2021-2025)
 
 - image: "assets/img/amazon.jpeg"
   name: "CRCV Logo"
-  description: >
-    Applied Scientist II Intern at <a href = 'https://www.crcv.ucf.edu/'> Amazon Robotics, Boston office. nCenter for Research in Computer Vision (CRCV), University of Central Florida, USA</a>. 
-    Mentored by <a href = 'https://www.linkedin.com/in/andreas-kolling-phd-2767591'> Dr. Andreas Kolling </a>, Jaimie Carlson, and Yulin Zhang
-    Worked on goal-conditioned multiagent forecasting model to predict slowdowns and deadlocks in Proteus ground robots within a multi-robot warehouse environment. (Summer 2024)
+  description: Applied Scientist II Intern at <a href = 'https://www.crcv.ucf.edu/'> Amazon Robotics, Boston office. nCenter for Research in Computer Vision (CRCV), University of Central Florida, USA</a>. Mentored by <a href = 'https://www.linkedin.com/in/andreas-kolling-phd-2767591'> Dr. Andreas Kolling </a>, Jaimie Carlson, and Yulin Zhang. Worked on goal-conditioned multiagent forecasting model to predict slowdowns and deadlocks in Proteus ground robots within a multi-robot warehouse environment. (Summer 2024)
 
 - image: "assets/img/cmu.jpg"
   name: "mix Logo"
-  description: >
-  Visiting Researcher at Robotics Institute, Carnegie Mellon University, Pittsburgh. Guided by host Prof. John M Dolan. Developed motion planning and control algorithms that can utilize complex maneuvers such as drifting in
-order to equip autonomous vehicles to effectively plan and execute evasive maneuvers (May-Aug 2019)
+  description: Visiting Researcher at Robotics Institute, Carnegie Mellon University, Pittsburgh. Guided by host Prof. John M Dolan. Developed motion planning and control algorithms that can utilize complex maneuvers such as drifting in order to equip autonomous vehicles to effectively plan and execute evasive maneuvers (May-Aug 2019)
 
 - image: "assets/img/sedrica.png"
   name: "misx Logo"
-  description: >
-  Technical Student Lead at < a href = 'https://umiciitb.com/'> SeDriCa, Self Driving Car Team | UMIC IIT Bombay </a>. 
-  Led a team (top 11 teams out of 259) of over 25+ students to build India’s 1st Level 5 autonomy car in a 5-tier
-challenge (prize money- $1 million) (awarded Mahindra e2o electric vehicle). Developed dynamic object detection and tracking architecture for an autonomous vehicle with sensor
-information from LiDARs, Radars, Cameras, GPS & IMU using grid-based Bayesian Occupation Filter (2018-2020)
+  description: Technical Student Lead at < a href = 'https://umiciitb.com/'> SeDriCa, Self Driving Car Team | UMIC IIT Bombay </a>.  Led a team (top 11 teams out of 259) of over 25+ students to build India’s 1st Level 5 autonomy car in a 5-tier challenge (prize money- $1 million) (awarded Mahindra e2o electric vehicle). Developed dynamic object detection and tracking architecture for an autonomous vehicle with sensor information from LiDARs, Radars, Cameras, GPS & IMU using grid-based Bayesian Occupation Filter (2018-2020)
