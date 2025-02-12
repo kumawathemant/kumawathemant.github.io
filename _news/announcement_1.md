@@ -5,5 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Our work on learning control conditioned representations for robotics got accepted in **CORL 2024**. 
- 
+🎉 Paper titled ['RoboKoop: Efficient Control Conditioned Representations from Visual Input in Robotics using Koopman Operator'](https://www.arxiv.org/abs/2409.03107) accepted in CORL 2024. 🎉

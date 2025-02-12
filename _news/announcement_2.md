@@ -5,7 +5,7 @@ inline: true
 related_posts: false
 ---
 
-I am reviewing for Neurips 2024, ICLR 2025, and IJCNN 2024. 
+I am reviewing for Neurips 2024, ICLR 2025, ICML 2025, AISTATS 2024 and IJCNN 2024. 
 
 <!-- ---
 

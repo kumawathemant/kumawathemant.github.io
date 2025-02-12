@@ -5,5 +5,6 @@ inline: true
 related_posts: false
 ---
 
-Our work _AdaCred: Adaptive Causal Decision Transformers with Feature Crediting_ got accepted to **AAMAS 2025**
+🎉 Paper titled ['AdaCred: Adaptive Causal Decision Transformers with Feature Crediting_'](https://arxiv.org/abs/2412.15427) accepted in AAMAS 2025. 🎉
+
  

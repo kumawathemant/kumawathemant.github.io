@@ -5,5 +5,5 @@ inline: true
 related_posts: false
 ---
 
-I will be attending CORL 2024 in Munich. If you are around, let's catch up.
+✈️ I will be attending CORL 2024 in Munich. If you are around, let's catch up. ✈️
  
