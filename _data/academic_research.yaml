@@ -2,6 +2,11 @@
 - name: ""
   description: "" 
 
+
+- image: "assets/img/qadas.png"
+  name: "misx Logo"
+  description: Joing  <a href = 'https://www.qualcomm.com/products/automotive/automated-driving'> Qualcomm ADAS/AI team </a>  in Summer 2025 to work on multi-object tracking and planning using camera (2D, 3D, and BEV) and radar (RAD cube and point-cloud) signals   
+
 - image: "assets/img/gatech.jpg"
   name: "LTU Logo"
   description: PhD candidate at <a href='https://ece.gatech.edu/directory/saibal-mukhopadhyay'> at ECE, Georgia Institute of Technology under Dr. Saibal Mukhopadhyay</a>. Working on  learning robust causal representations for efficient robot learning  with emphasis on adaptive and generalizable task conditioned spatiotemporal representations for robot learning from partial observations. Published <a href='https://www.hemantkumawat.com/publications/'>research works</a> in top robotic conferences including CORL, L4DC, AAMAS, IMS and IJCNN. (2021-2025)
