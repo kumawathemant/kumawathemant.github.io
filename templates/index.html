@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import socials with context %}
+{% block head %}
+<link rel="preload" as="image" href="/assets/img/portrait-800.webp" imagesrcset="/assets/img/portrait-480.webp 480w, /assets/img/portrait-800.webp 800w" imagesizes="(max-width: 900px) 70vw, 400px">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"{{ site.name }}","url":"{{ site.url }}","image":"{{ site.url }}/assets/img/portrait.jpg","jobTitle":"{{ site.now.role }}","worksFor":{"@type":"Organization","name":"{{ site.now.org }}"},"alumniOf":[{% for e in site.education %}{"@type":"CollegeOrUniversity","name":"{{ e.school }}"}{{ "," if not loop.last }}{% endfor %}],"sameAs":["{{ site.links.scholar }}","{{ site.links.github }}","{{ site.links.linkedin }}","{{ site.links.x }}"]}
+</script>
+{% endblock %}
+{% block content %}
+
+{# ============================== HERO ============================== #}
+<section class="hero" id="top">
+  <canvas class="hero-canvas" data-viz="flow" aria-hidden="true"></canvas>
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <p class="status" data-reveal><span class="status-dot" aria-hidden="true"></span>Now · {{ site.now.role }} @ <strong>{{ site.now.org }}</strong></p>
+      <h1 class="hero-name" aria-label="{{ site.name }}">
+        <span class="line"><span>Hemant</span></span>
+        <span class="line"><em>Kumawat</em></span>
+      </h1>
+      <p class="hero-lead" data-reveal style="--d:3">I build agents that <span class="verb v1">perceive</span>, <span class="verb v2">predict</span> and <span class="verb v3">act</span> — in the physical world and in virtual ones.</p>
+      <p class="hero-sub" data-reveal style="--d:4">{{ site.hero.sub | md }}</p>
+      <p class="hero-typed" data-reveal style="--d:5"><span class="mono">currently exploring →</span> <span class="typed" data-phrases='{{ site.hero.phrases | tojson }}'>{{ site.hero.phrases[0] }}</span></p>
+      <div class="hero-actions" data-reveal style="--d:6">
+        <a class="btn btn-primary" href="{{ site.cv }}">{{ icon('download') }}Download CV</a>
+        <a class="btn btn-ghost" href="#publications">Publications {{ icon('arrow-down') }}</a>
+        {{ socials() }}
+      </div>
+    </div>
+    <figure class="hero-portrait" data-reveal style="--d:2">
+      <div class="portrait-frame" data-tilt>
+        <img src="/assets/img/portrait-800.webp" srcset="/assets/img/portrait-480.webp 480w, /assets/img/portrait-800.webp 800w" sizes="(max-width: 900px) 70vw, 400px" width="800" height="1000" alt="Portrait of {{ site.name }}" fetchpriority="high">
+        <span class="portrait-sheen" aria-hidden="true"></span>
+      </div>
+      <span class="float-chip c1" aria-hidden="true"><i style="background:var(--mint)"></i>robot learning</span>
+      <span class="float-chip c2" aria-hidden="true"><i style="background:var(--indigo)"></i>multi-agent forecasting</span>
+      <span class="float-chip c3" aria-hidden="true"><i style="background:var(--rose)"></i>vision-language models</span>
+      <figcaption class="portrait-meta">
+        <span>{{ icon('pin') }}{{ site.location }}</span>
+        <span class="mono">{{ stats.citations }} citations · h-index {{ stats.h_index }}</span>
+      </figcaption>
+    </figure>
+  </div>
+  <p class="hero-fig mono" aria-hidden="true">fig. 0 — particles advected by a time-varying curl-noise field · your cursor is the control input</p>
+  <a class="scroll-cue" href="#about" aria-label="Scroll to about"><span></span></a>
+</section>
+
+{# ============================== ABOUT ============================== #}
+<section class="section" id="about">
+  <div class="container about-grid">
+    <header class="section-head about-head" data-reveal>
+      <p class="eyebrow"><span>01</span>About</p>
+      <h2 class="section-title">{{ site.about.title | md }}</h2>
+    </header>
+    <div class="about-body" data-reveal style="--d:1">
+      {% for para in site.about.paragraphs %}
+      <p>{{ para | md }}</p>
+      {% endfor %}
+    </div>
+    <aside class="glance" data-reveal style="--d:2" aria-label="At a glance">
+      <p class="glance-title mono">at a glance</p>
+      <dl>
+        {% for row in site.about.glance %}
+        <div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>
+        {% endfor %}
+      </dl>
+      <p class="glance-title mono">interests</p>
+      <ul class="chips">
+        {% for it in site.about.interests %}<li>{{ it }}</li>{% endfor %}
+      </ul>
+    </aside>
+  </div>
+</section>
+
+{# ============================== RESEARCH ============================== #}
+<section class="section" id="research">
+  <div class="container">
+    <header class="section-head" data-reveal>
+      <p class="eyebrow"><span>02</span>Research</p>
+      <h2 class="section-title">Four threads, one question: <em>what does an agent need to know to act well?</em></h2>
+    </header>
+    <div class="threads">
+      {% for t in site.threads %}
+      <article class="thread spot" style="--tc:var(--{{ t.color }});--d:{{ loop.index0 % 2 }}" data-reveal>
+        <div class="thread-viz">
+          <canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas>
+          <span class="viz-legend mono">{{ t.legend }}</span>
+        </div>
+        <div class="thread-body">
+          <p class="thread-kicker mono">{{ '%02d' % loop.index }} / {{ t.kicker }}</p>
+          <h3>{{ t.title }}</h3>
+          <p>{{ t.text }}</p>
+          <p class="fig-caption mono"><span>fig. {{ loop.index }}</span> {{ t.caption }}</p>
+          <div class="thread-papers">
+            {% for pid in t.get('papers') or [] %}
+            <a class="paper-chip" href="#pub-{{ pid }}" style="--tc:var(--{{ pubs_by_id[pid].color }})">{{ pubs_by_id[pid].short }} <span class="mono">{{ pubs_by_id[pid].venue_short }} {{ pubs_by_id[pid].year }}</span></a>
+            {% endfor %}
+            {% for c in t.get('chips') or [] %}
+            <a class="paper-chip" href="{{ c.href }}">{{ c.label }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============================== PUBLICATIONS ============================== #}
+<section class="section" id="publications">
+  <div class="container">
+    <header class="section-head pubs-head">
+      <div data-reveal>
+        <p class="eyebrow"><span>03</span>Publications</p>
+        <h2 class="section-title">Papers, <em>with figures</em>.</h2>
+      </div>
+      <dl class="stats" data-reveal style="--d:1">
+        <div><dt>papers</dt><dd data-count="{{ stats.papers }}">{{ stats.papers }}</dd></div>
+        <div><dt>first-author</dt><dd data-count="{{ stats.first }}">{{ stats.first }}</dd></div>
+        <div><dt>citations</dt><dd data-count="{{ stats.citations }}">{{ stats.citations }}</dd></div>
+        <div><dt>h-index</dt><dd data-count="{{ stats.h_index }}">{{ stats.h_index }}</dd></div>
+      </dl>
+    </header>
+
+    <div class="pub-toolbar" data-reveal>
+      <div class="filters" role="group" aria-label="Filter publications">
+        {% for f in filters %}
+        <button class="filter" type="button" data-filter="{{ f.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ f.label }} <span class="count">{{ f.count }}</span></button>
+        {% endfor %}
+      </div>
+      <label class="pub-search">
+        {{ icon('search') }}
+        <input type="search" placeholder="Search title, author, venue…" aria-label="Search publications" autocomplete="off">
+        <kbd class="kbd">/</kbd>
+      </label>
+    </div>
+
+    <div class="pub-list">
+      {% for year, items in pubs_by_year %}
+      <div class="pub-year" data-year="{{ year }}">
+        <h3 class="year-label">{{ year }}</h3>
+        <div class="pub-items">
+          {% for p in items %}{% include "partials/pub.html" %}{% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+      <p class="pub-empty" hidden>No papers match — try another filter or search term.</p>
+    </div>
+    <p class="pub-note mono">* equal contribution · citation stats from <a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Google Scholar</a>, {{ site.stats.as_of }} · animated covers are schematic illustrations, not paper figures</p>
+  </div>
+</section>
+
+{# ============================== EXPERIENCE ============================== #}
+<section class="section" id="experience">
+  <div class="container exp-grid">
+    <header class="section-head exp-aside">
+      <div data-reveal>
+        <p class="eyebrow"><span>04</span>Experience</p>
+        <h2 class="section-title">From self-driving cars and robot fleets to <em>virtual worlds</em>.</h2>
+      </div>
+      <div class="edu-list" data-reveal style="--d:1">
+        <p class="glance-title mono">education</p>
+        {% for e in site.education %}
+        <div class="edu">
+          <p class="mono">{{ e.when }}</p>
+          <h4>{{ e.school }}</h4>
+          <p>{{ e.degree }}</p>
+          {% if e.get('note') %}<p class="muted">{{ e.note }}</p>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </header>
+    <ol class="timeline" data-timeline>
+      {% for e in site.experience %}
+      <li class="tl-item" id="exp-{{ e.get('id') or loop.index }}" style="--org:{{ e.brand }}" data-reveal>
+        <div class="tl-mark"><span class="org-mark">{{ e.mark }}</span></div>
+        <div class="tl-card">
+          <p class="tl-when mono">{{ e.when }}{% if e.get('current') %}<span class="badge badge-now"><i></i>current</span>{% endif %}</p>
+          <h3>{{ e.role }}</h3>
+          <p class="tl-org">{{ e.org }}{% if e.get('where') %} · {{ e.where }}{% endif %}{% if e.get('mentor') %} <span class="muted">· {{ e.mentor }}</span>{% endif %}</p>
+          {% if e.get('topic') %}<p class="tl-topic">{{ e.topic }}</p>{% endif %}
+          <ul class="bullets">
+            {% for b in e.bullets %}<li>{{ b | md }}</li>{% endfor %}
+          </ul>
+          {% if e.get('tags') %}<ul class="tags">{% for t in e.tags %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{# ============================== NEWS ============================== #}
+<section class="section" id="news">
+  <div class="container news-grid">
+    <header class="section-head" data-reveal>
+      <p class="eyebrow"><span>05</span>News</p>
+      <h2 class="section-title">Recently.</h2>
+    </header>
+    <div>
+      <ol class="news-list">
+        {% for n in news %}
+        <li class="news-item{% if loop.index > 6 %} is-extra{% endif %}" data-reveal style="--d:{{ loop.index0 % 6 }}">
+          <time class="mono">{{ n.date }}</time>
+          <p>{{ n.text | md }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% if news | length > 6 %}
+      <button class="btn btn-ghost btn-sm news-more" type="button" data-news-more>Show all {{ news | length }} updates</button>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{# ============================== WRITING ============================== #}
+<section class="section" id="writing">
+  <div class="container">
+    <header class="section-head head-row">
+      <div data-reveal>
+        <p class="eyebrow"><span>06</span>Writing</p>
+        <h2 class="section-title">Notes &amp; <em>essays</em>.</h2>
+      </div>
+      <a class="link-arrow" href="/blog/" data-reveal>All {{ posts | length }} posts {{ icon('arrow-right') }}</a>
+    </header>
+    <div class="posts-grid">
+      {% for post in posts[:3] %}
+      <a class="post-card spot" href="{{ post.url }}" data-reveal style="--d:{{ loop.index0 }}">
+        <p class="mono post-date">{{ post.date_str }} · {{ post.read_min }} min read</p>
+        <h3>{{ post.title }}</h3>
+        {% if post.description %}<p>{{ post.description }}</p>{% endif %}
+        <ul class="tags">{% for t in post.tags[:3] %}<li>{{ t }}</li>{% endfor %}</ul>
+        <span class="post-arrow">{{ icon('arrow-up-right') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============================== SERVICE ============================== #}
+<section class="section" id="service">
+  <div class="container">
+    <header class="section-head" data-reveal>
+      <p class="eyebrow"><span>07</span>Service &amp; community</p>
+      <h2 class="section-title">Reviewing, talks <em>&amp; mentoring</em>.</h2>
+    </header>
+    <div class="service-grid">
+      <div class="svc" data-reveal>
+        <h3 class="glance-title mono">reviewer</h3>
+        <ul class="chips">{% for r in site.service.reviewing %}<li>{{ r }}</li>{% endfor %}</ul>
+      </div>
+      <div class="svc" data-reveal style="--d:1">
+        <h3 class="glance-title mono">talks</h3>
+        <ul class="svc-list">{% for t in site.service.talks %}<li><strong>{{ t.title }}</strong><span>{{ t.where }}</span></li>{% endfor %}</ul>
+      </div>
+      <div class="svc" data-reveal style="--d:2">
+        <h3 class="glance-title mono">mentoring</h3>
+        <ul class="svc-list">{% for m in site.service.mentoring %}<li><strong>{{ m.title }}</strong><span>{{ m.where }}</span></li>{% endfor %}</ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============================== CONTACT ============================== #}
+<section class="section contact" id="contact">
+  <div class="contact-glow" aria-hidden="true"></div>
+  <div class="container contact-inner">
+    <p class="eyebrow" data-reveal><span>08</span>Contact</p>
+    <h2 class="contact-title" data-reveal>Let's build agents that <em>work in the real world</em>.</h2>
+    <p data-reveal style="--d:1">Happy to talk research, collaborations or ideas — the fastest way to reach me is email.</p>
+    <div class="contact-actions" data-reveal style="--d:2">
+      <button class="btn btn-primary btn-lg" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}<span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span>{{ icon('copy', 'i-copy') }}</button>
+      {{ socials() }}
+    </div>
+  </div>
+</section>
+
+<dialog class="lightbox" aria-label="Figure viewer">
+  <figure>
+    <img alt="">
+    <figcaption></figcaption>
+  </figure>
+  <button class="lb-btn lb-close" type="button" aria-label="Close">{{ icon('close') }}</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous figure">{{ icon('chevron-left') }}</button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next figure">{{ icon('chevron-right') }}</button>
+</dialog>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ asset('js/viz.js') }}" defer></script>
+{% endblock %}

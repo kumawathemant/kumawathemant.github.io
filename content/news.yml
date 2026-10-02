@@ -1,0 +1,23 @@
+# News — newest first. `date` is display text; `text` supports **bold**, *italics*, [links](...)
+# and paper references like [AdaCred](#pub-adacred) that jump to the paper card.
+
+- date: "2026"
+  text: Joined the **Gaming AI** team at **Microsoft** in Seattle as an Applied Scientist.
+- date: "2026"
+  text: "[MAPLE](#pub-maple), a multimodal state-space Mamba agent for event-based policies, accepted to **IEEE Robotics and Automation Letters**."
+- date: "2025"
+  text: Completed my **Ph.D.** in ECE at Georgia Tech. 🎓
+- date: "2025"
+  text: "[LUGA](#pub-luga) at **IEEE SENSORS 2025** and [sequential-chirp radar processing](#pub-trs) in **IEEE Transactions on Radar Systems**."
+- date: May 2025
+  text: Research internship at **Qualcomm ADAS** on object-centric 3D occupancy world models with Gaussian queries.
+- date: Dec 2024
+  text: "[AdaCred](#pub-adacred) — adaptive causal decision transformers with feature crediting — accepted at **AAMAS 2025**. 🎉"
+- date: Nov 2024
+  text: Presenting [RoboKoop](#pub-robokoop) at **CoRL 2024** in Munich.
+- date: Sep 2024
+  text: "[RoboKoop](#pub-robokoop) accepted at **CoRL 2024**. 🎉"
+- date: Jul 2024
+  text: Presenting [STEMFold](#pub-stemfold) at **L4DC 2024** in Oxford, UK.
+- date: May 2024
+  text: Applied Scientist II internship at **Amazon Robotics** on multi-agent behavior forecasting.

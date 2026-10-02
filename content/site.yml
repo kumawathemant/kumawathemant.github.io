@@ -1,0 +1,235 @@
+# ---------------------------------------------------------------------------
+# Site-wide content. Edit freely; run `python build.py` (or `python build.py serve`).
+# Inline text supports **bold**, *italics* and [links](https://...).
+# ---------------------------------------------------------------------------
+
+name: Hemant Kumawat
+url: https://www.hemantkumawat.com
+description: >-
+  Hemant Kumawat — Applied Scientist, Gaming AI at Microsoft; Ph.D. in ECE from Georgia Tech.
+  Research on multimodal foundation models, robot learning, multi-agent forecasting and efficient perception.
+location: Seattle, WA
+cv: /assets/pdf/HemantCV.pdf
+
+# Rendered as user [at] domain on the page; assembled into a mailto link by JS.
+email:
+  user: kumawat.hemant553
+  domain: gmail.com
+
+links:
+  scholar: https://scholar.google.com/citations?user=2iUnwBwAAAAJ
+  github: https://github.com/kumawathemant
+  linkedin: https://www.linkedin.com/in/kumawathemant/
+  x: https://x.com/HeMan553
+
+now:
+  role: Applied Scientist, Gaming AI
+  org: Microsoft
+
+hero:
+  sub: >-
+    Applied Scientist at **Microsoft Gaming AI**. Ph.D. from **Georgia Tech**, where I worked on
+    robot learning, multi-agent forecasting and resource-efficient perception.
+  # Rotating phrases after "currently exploring →"
+  phrases:
+    - vision-language models that understand games
+    - world models for embodied agents
+    - efficient adaptation of vision-action models
+    - evaluating LLM assistants in the wild
+    - 3D occupancy with Gaussian queries
+
+# Google Scholar snapshot (update occasionally)
+stats:
+  citations: 161
+  h_index: 6
+  as_of: Oct 2026
+
+about:
+  title: "Closing the loop between *perception*, *prediction* and *control*."
+  paragraphs:
+    - >-
+      I'm an Applied Scientist on the **Gaming AI** team at **Microsoft** in Seattle. I build efficient,
+      real-time vision-language models that understand gameplay — powering adaptive, context-aware game
+      assistance and persistent player profiles behind recaps and recommendations — along with evaluation
+      pipelines that catch hallucinations and failure points in **Microsoft Copilot** conversations.
+    - >-
+      I did my M.S. and Ph.D. in ECE at **Georgia Tech**, advised by
+      [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay). My research
+      develops compositional and causal models that bridge perception, prediction and control: compact,
+      task-conditioned representations for decision-making, forecasting of multi-agent systems in which
+      some agents are never observed, and closed-loop perception that adapts what it senses to what the
+      task needs.
+    - >-
+      Along the way I interned at **Qualcomm** (3D occupancy world models), **Amazon Robotics**
+      (multi-agent forecasting for warehouse fleets) and the **CMU Robotics Institute** (evasive maneuver
+      planning), and before that led IIT Bombay's self-driving car team, **SeDriCa**.
+  glance:
+    - label: Now
+      value: Applied Scientist, Gaming AI · Microsoft
+    - label: Ph.D.
+      value: ECE, Georgia Tech · 2021–2025
+    - label: B.Tech
+      value: Mechanical Eng. & Computer Science · IIT Bombay · 2016–2020
+    - label: Based in
+      value: Seattle, WA
+  interests:
+    - Multimodal foundation models
+    - Vision-language-action models
+    - World models
+    - Robot learning & RL
+    - Multi-agent forecasting
+    - Efficient perception
+    - Sensor fusion
+
+# Research threads: each gets an animated figure (viz: flow | koopman | agents | lidar | tokens | events | chirp)
+threads:
+  - key: control
+    color: mint
+    viz: koopman
+    kicker: representations for control
+    title: Compact representations for decision-making
+    text: >-
+      Agents act better when their latent space is built for the task. I learn control-conditioned
+      representations — Koopman embeddings where nonlinear dynamics become linear, causal decision
+      transformers that credit only the features that matter, and state-space agents for event streams.
+    caption: "Koopman lifting — tangled orbits in observation space become clean rotations in the latent space, where a linear controller suffices."
+    legend: "hover to scrub"
+    papers: [robokoop, adacred, maple]
+  - key: agents
+    color: indigo
+    viz: agents
+    kicker: multi-agent dynamics
+    title: Forecasting interacting agents under partial observability
+    text: >-
+      Real systems are never fully observed. I build stochastic generative graph models — temporal
+      manifolds, spatiotemporal graph attention and neural ODEs — that infer hidden agents and their
+      interactions from the agents we can see.
+    caption: "Spring-coupled agents. Hollow nodes are never observed; their positions and interactions are inferred. Dotted paths are forecasts."
+    legend: "drag an agent"
+    papers: [stemfold, stagenet, sdgn]
+  - key: perception
+    color: amber
+    viz: lidar
+    kicker: closed-loop perception
+    title: Perception that decides what to sense
+    text: >-
+      Sensing everything everywhere wastes compute and power. My work lets cheap sensors guide expensive
+      ones — radar-proposed regions of interest, task-driven LiDAR sampling, per-chirp radar processing and
+      fully-sparse LiDAR detectors for low-compute autonomy.
+    caption: "Radar returns propose regions of interest; the LiDAR sweep samples densely inside them and sparsely everywhere else."
+    legend: "live sweep"
+    papers: [radar-attention, rgb-lidar-fusion, chirpnet, dfdnet]
+  - key: foundation
+    color: rose
+    viz: tokens
+    kicker: foundation & world models
+    title: Multimodal models that understand worlds — real and virtual
+    text: >-
+      Today I build real-time vision-language models for game understanding at Microsoft, and previously
+      designed object-centric 3D occupancy world models with sparse, trackable Gaussian queries at Qualcomm.
+      The common thread: efficient multimodal models that turn pixels into state an agent can use.
+    caption: "Patch attention follows the entities that matter while a compact state description is decoded token by token."
+    legend: "illustrative"
+    papers: []
+    chips:
+      - label: Gaming AI @ Microsoft
+        href: "#exp-microsoft"
+      - label: 3D occupancy @ Qualcomm
+        href: "#exp-qualcomm"
+
+experience:
+  - id: microsoft
+    org: Microsoft
+    mark: MS
+    brand: "#0078D4"
+    role: Applied Scientist, Gaming AI
+    when: 2026 — now
+    current: true
+    where: Seattle, WA
+    bullets:
+      - Built efficient, real-time game-understanding VLMs for adaptive, context-aware game assistance, and persistent player profiles that power experiences such as game recaps and recommendations.
+      - Designed evaluation pipelines for Microsoft Copilot that detect hallucinations and assess session and query quality, pinpointing failure points to accelerate targeted model and prompt improvements.
+    tags: [Vision-language-action models, Multimodal learning, Efficient adaptation, Personalization, Model evaluation]
+  - id: qualcomm
+    org: Qualcomm · ADAS Vision
+    mark: QC
+    brand: "#3253DC"
+    role: Research Intern
+    when: May — Aug 2025
+    mentor: mentored by Amin Ansari
+    topic: Multi-modal, object-centric 3D occupancy world models
+    bullets:
+      - Designed a query-centric semantic occupancy framework using sparse, trackable 3D Gaussian queries anchored to object-level primitives for efficient scene understanding.
+      - Proposed a Gaussian-to-voxel splatting strategy — **2× faster** runtime and **30% lower memory** than projection-based baselines (in submission).
+    tags: [3D world models, Gaussian splatting, NeRF, Deformable attention]
+  - org: Georgia Tech · GREEN Lab
+    mark: GT
+    brand: "#B3A369"
+    role: Graduate Research Assistant
+    when: Jan 2021 — Dec 2025
+    where: Atlanta, GA
+    mentor: advised by Saibal Mukhopadhyay
+    bullets:
+      - "**Efficient RL** — sample-efficient multimodal RL with contrastive spectral Koopman encoding: **10×** lower compute and **+20%** accuracy (CoRL 2024)."
+      - "**Long-horizon sequence learning** — adaptive causal decision transformers with separate local and long-horizon representations for offline RL (AAMAS 2025)."
+      - "**Multi-agent dynamics** — stochastic generative graph models with neural ODEs and spatiotemporal graph attention for partially observable systems (L4DC 2024)."
+      - "**Closed-loop perception** — noise-resilient RGB / LiDAR / radar processing that adapts memory and compute to real-time needs (IEEE T-IV, IJCNN, IMS)."
+      - "**Vision-action adaptation** — guiding a vision-action model's generation toward a target domain for cross-embodiment and cross-task transfer with limited data."
+    tags: [Causal decision transformers, Offline RL, Contrastive learning, Mamba, Neural ODEs, Sensor fusion]
+  - org: Amazon Robotics
+    mark: AR
+    brand: "#FF9900"
+    role: Applied Scientist II Intern
+    when: May — Aug 2024
+    mentor: mentored by Andreas Kolling
+    topic: Multi-agent probabilistic behavior models for robots
+    bullets:
+      - Designed a goal-conditioned forecasting model to predict slowdowns and deadlocks of Proteus robots in dense warehouses.
+      - Built a scalable multi-agent interaction engine estimating inter-robot influence across **20 TB** of real-world sensing and occupancy-grid data.
+      - Integrated goal-aware trajectory prediction with planning to reduce navigation conflicts — an order-of-magnitude improvement in coordination.
+    tags: [Multi-agent forecasting, Goal-conditioned planning, Motion prediction]
+  - org: Robotics Institute · Carnegie Mellon
+    mark: RI
+    brand: "#C41230"
+    role: Research Scholar
+    when: May — Aug 2019
+    where: Pittsburgh, PA
+    mentor: mentored by John M. Dolan
+    topic: Planning & control for evasive maneuvers in autonomous vehicles
+    bullets:
+      - Combined iLQR with RRT* to plan evasive maneuvers with large tire slip — including drifting — and deployed the planner in ROS simulation and on an RC car avoiding suddenly-appearing obstacles at speed. ([code](https://github.com/kumawathemant/Evasive-Planner))
+    tags: [Motion planning, iLQR, ROS]
+  - org: SeDriCa · UMIC, IIT Bombay
+    mark: IITB
+    brand: "#E5484D"
+    role: Student Project Lead, Self-Driving Car Team
+    when: 2019 — 2020
+    where: Mumbai, India
+    bullets:
+      - Led an interdisciplinary team of 50 students across three international robotics competitions.
+      - Managed an INR 4.5M budget and built a vendor & sponsorship network worth INR 3M with Velodyne, Ouster, Continental, Aptiv and NVIDIA.
+    tags: [Leadership, Full-stack autonomy]
+
+education:
+  - school: Georgia Institute of Technology
+    degree: M.S. & Ph.D., Electrical & Computer Engineering
+    when: 2021 — 2025
+    note: Advisor — Prof. Saibal Mukhopadhyay
+  - school: Indian Institute of Technology Bombay
+    degree: B.Tech, Mechanical Engineering & Computer Science
+    when: 2016 — 2020
+
+service:
+  reviewing: [NeurIPS 2024 & 2025, ICLR 2023 & 2025, CoRL 2025, AAAI 2025, AISTATS 2025, IJCNN 2022 & 2024]
+  talks:
+    - title: Vision-Language Models 101
+      where: Cohere For AI · community talks with Vaishaal Shankar
+    - title: Task-Driven Model Learning
+      where: Cohere For AI
+  mentoring:
+    - title: Georgia Tech SURE – Intel REU
+      where: "2023 · ROS sensing & perception stack for the Unitree A1 quadruped"
+    - title: Ph.D. student mentor, Georgia Tech
+      where: "2022 – 2025 · analog-to-feature object detection, event-camera activity recognition, CARLA closed-loop control"
+    - title: Autonomous Robotics Summer Program, IIT Bombay
+      where: "2018 – 2019 · weekly lectures on localization, vision, planning & control for ~40 students"

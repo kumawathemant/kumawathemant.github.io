@@ -1,0 +1,434 @@
+# ---------------------------------------------------------------------------
+# Publications — newest first. To add a paper:
+#   1. python scripts/optimize_images.py figure path/to/teaser.png <id>
+#   2. add an entry below with `figure: <id>` (or `viz: events|chirp|agents` for an animated cover)
+# Fields
+#   authors      list; append * for equal contribution. "Hemant Kumawat" is highlighted automatically.
+#   topics       any of: robot-learning, multi-agent, perception, edge   (drive the filter chips)
+#   selected     shown under the "Selected" filter
+#   status       optional badge, e.g. "under review"
+#   highlights   key numbers shown as chips
+#   links        label + url; the first link is used for the title
+#   bib          extra BibTeX fields (type defaults: journal -> article, booktitle -> inproceedings)
+# ---------------------------------------------------------------------------
+
+- id: maple
+  short: MAPLE
+  title: "MAPLE: Multimodal State-Space Mamba Agent for Event-based Policy with Adaptive Value Estimation"
+  authors: [Hemant Kumawat, Saibal Mukhopadhyay]
+  venue: IEEE Robotics and Automation Letters (RA-L)
+  venue_short: RA-L
+  year: 2026
+  topics: [robot-learning]
+  selected: true
+  viz: events
+  tldr: >-
+    A multimodal state-space (Mamba) agent that learns control policies from event-based observations,
+    paired with adaptive value estimation.
+  links:
+    - {label: Scholar, url: "https://scholar.google.com/scholar?q=MAPLE+Multimodal+Mamba+Agent+for+Event+based+Policy+with+Adaptive+Value+Estimation"}
+  bib: {journal: IEEE Robotics and Automation Letters}
+
+- id: dfdnet
+  short: DFDNet
+  title: "DFDNet: Directional Feature Diffusion for Efficient Fully-Sparse LiDAR Object Detection"
+  authors: [Meilong Zhang, Hemant Kumawat, Saibal Mukhopadhyay]
+  venue: Under review
+  venue_short: Preprint
+  status: under review
+  year: 2025
+  topics: [perception]
+  figure: dfdnet
+  tldr: >-
+    Directional feature diffusion for fully-sparse LiDAR detection: voxel classification, offset regression
+    and directional alignment spread features only where objects are, keeping feature maps compact.
+  bib: {type: misc, note: Under review}
+
+- id: trs
+  short: Sequential-chirp radar
+  title: Towards Efficient and Robust Sequential Chirp based Data Driven Radar Processing for Object Detection
+  authors: [Sudarshan Sharma, Hemant Kumawat, Anuvab Sen, J. Park, Saibal Mukhopadhyay]
+  venue: IEEE Transactions on Radar Systems
+  venue_short: T-RS
+  year: 2025
+  topics: [perception]
+  viz: chirp
+  tldr: >-
+    Data-driven radar object detection that processes the signal chirp by chirp with a sequential model,
+    targeting efficiency and robustness.
+  links:
+    - {label: Scholar, url: "https://scholar.google.com/scholar?q=Towards+Efficient+and+Robust+Sequential+Chirp+based+Data+Driven+Radar+Processing+for+Object+Detection"}
+  bib: {journal: IEEE Transactions on Radar Systems}
+
+- id: luga
+  short: LUGA
+  title: "LUGA: Lightweight Uncertainty-Guided Sensing Resolution Adaptation for Energy Efficient Radar Processing"
+  authors: [Sudarshan Sharma, J. Park, Hemant Kumawat, Saibal Mukhopadhyay]
+  venue: IEEE SENSORS
+  venue_short: SENSORS
+  year: 2025
+  topics: [perception, edge]
+  viz: chirp-adaptive
+  tldr: >-
+    A lightweight, uncertainty-guided policy that adapts radar sensing resolution on the fly to save energy.
+  links:
+    - {label: Scholar, url: "https://scholar.google.com/scholar?q=LUGA+Lightweight+Uncertainty-Guided+Sensing+Resolution+Adaptation+for+Energy+Efficient+Radar+Processing"}
+  bib: {booktitle: 2025 IEEE SENSORS, pages: 1--4}
+
+- id: sdgn
+  short: SDGN
+  title: Adaptive Graph Structure Inference for Learning Multivariate Point Processes using Spiking Neural Networks
+  authors: [Biswadeep Chakraborty, Hemant Kumawat, Beomseok Kang, Saibal Mukhopadhyay]
+  venue: International Joint Conference on Neural Networks (IJCNN)
+  venue_short: IJCNN
+  year: 2025
+  topics: [multi-agent]
+  figure: sdgn
+  tldr: >-
+    Spiking neural networks with spike-timing-dependent plasticity infer dynamic spatio-temporal graphs
+    directly from event data to model multivariate temporal point processes.
+  links:
+    - {label: arXiv, url: "https://arxiv.org/abs/2504.01246"}
+  abstract: >-
+    Modeling and predicting temporal point processes (TPPs) is critical in domains such as neuroscience,
+    epidemiology, finance, and social sciences. We introduce the Spiking Dynamic Graph Network (SDGN), a novel
+    framework that leverages the temporal processing capabilities of spiking neural networks (SNNs) and
+    spike-timing-dependent plasticity (STDP) to dynamically estimate underlying spatio-temporal functional
+    graphs. Unlike existing methods that rely on predefined or static graph structures, SDGN adapts to any
+    dataset by learning dynamic spatio-temporal dependencies directly from the event data, enhancing
+    generalizability and robustness. While SDGN offers significant improvements over prior methods, we
+    acknowledge its limitations in handling dense graphs and certain non-Gaussian dependencies, providing
+    opportunities for future refinement. Our evaluations, conducted on both synthetic and real-world datasets
+    including NYC Taxi, 911, Reddit, and Stack Overflow, demonstrate that SDGN achieves superior predictive
+    accuracy while maintaining computational efficiency. Furthermore, we include ablation studies to highlight
+    the contributions of its core components.
+  bib: {booktitle: 2025 International Joint Conference on Neural Networks (IJCNN), pages: 1--8}
+
+- id: sensing-to-action
+  short: Sensing-to-Action
+  title: "Intelligent Sensing-to-Action for Robust Autonomy at the Edge: Opportunities and Challenges"
+  authors: [Amit Ranjan Trivedi, Sina Tayebati, Hemant Kumawat, Nastaran Darabi, Divake Kumar, Adarsh Kumar Kosta, Yeshwanth Venkatesha, Dinithi Jayasuriya, Nethmi Jayasinghe, Priyadarshini Panda, Saibal Mukhopadhyay, Kaushik Roy]
+  venue: Design, Automation & Test in Europe (DATE)
+  venue_short: DATE
+  year: 2025
+  topics: [edge]
+  figure: sensing-to-action
+  tldr: >-
+    A perspective on sensing-to-action loops for edge autonomy: action-aware sensing, multi-agent
+    sensing-action loops, neuromorphic processing and cross-layer co-design.
+  links:
+    - {label: arXiv, url: "https://arxiv.org/abs/2502.02692"}
+  abstract: >-
+    Autonomous edge computing in robotics, smart cities, and autonomous vehicles relies on the seamless
+    integration of sensing, processing, and actuation for real-time decision-making in dynamic environments.
+    At its core is the sensing-to-action loop, which iteratively aligns sensor inputs with computational models
+    to drive adaptive control strategies. These loops can adapt to hyper-local conditions, enhancing resource
+    efficiency and responsiveness, but also face challenges such as resource constraints, synchronization
+    delays in multi-modal data fusion, and the risk of cascading errors in feedback loops. This article explores
+    how proactive, context-aware sensing-to-action and action-to-sensing adaptations can enhance efficiency by
+    dynamically adjusting sensing and computation based on task demands, such as sensing a very limited part of
+    the environment and predicting the rest. By guiding sensing through control actions, action-to-sensing
+    pathways can improve task relevance and resource use, but they also require robust monitoring to prevent
+    cascading errors and maintain reliability. Multi-agent sensing-action loops further extend these
+    capabilities through coordinated sensing and actions across distributed agents, optimizing resource use via
+    collaboration. Additionally, neuromorphic computing, inspired by biological systems, provides an efficient
+    framework for spike-based, event-driven processing that conserves energy, reduces latency, and supports
+    hierarchical control — making it ideal for multi-agent optimization. This article highlights the importance
+    of end-to-end co-design strategies that align algorithmic models with hardware and environmental dynamics
+    and improve cross-layer interdependencies to improve throughput, precision, and adaptability for
+    energy-efficient edge autonomy in complex environments.
+  bib: {booktitle: "2025 Design, Automation & Test in Europe Conference & Exhibition (DATE)"}
+
+- id: adacred
+  short: AdaCred
+  title: "AdaCred: Adaptive Causal Decision Transformers with Feature Crediting"
+  authors: [Hemant Kumawat, Saibal Mukhopadhyay]
+  venue: International Conference on Autonomous Agents and Multiagent Systems (AAMAS)
+  venue_short: AAMAS
+  year: 2025
+  topics: [robot-learning]
+  selected: true
+  figure: adacred
+  tldr: >-
+    Treats trajectories as causal graphs over short action–reward–state sequences and prunes low-importance
+    representations, so decision transformers need shorter contexts — and still outperform.
+  links:
+    - {label: arXiv, url: "https://arxiv.org/abs/2412.15427"}
+    - {label: Code, url: "https://github.com/kumawathemant/AdaptiveFeatureCrediting"}
+  abstract: >-
+    Reinforcement learning (RL) can be viewed as a sequence modeling challenge, where the goal is to predict
+    future actions based on past state-action-reward sequences. Traditional methods often rely on long
+    trajectory sequences to capture environmental dynamics in offline RL scenarios. However, this can lead to a
+    tendency to overemphasize the memorization of long-term representations, which hinders the models' ability
+    to prioritize trajectories and learned representations that are specifically relevant to the task at hand.
+    In this study, we present AdaCred, a novel approach that conceptualizes trajectories as causal graphs
+    derived from short-term action-reward-state sequences. Our model dynamically adapts its control policy by
+    identifying and eliminating low-importance representations, focusing instead on those that are most
+    pertinent to the downstream task. Experimental results show that policies based on AdaCred require shorter
+    trajectory sequences and consistently outperform traditional methods in both offline reinforcement learning
+    and imitation learning settings.
+  bib: {booktitle: Proceedings of the 24th International Conference on Autonomous Agents and Multiagent Systems (AAMAS)}
+
+- id: robokoop
+  short: RoboKoop
+  title: "RoboKoop: Efficient Control Conditioned Representations from Visual Input in Robotics using Koopman Operator"
+  authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
+  venue: Conference on Robot Learning (CoRL) · Munich
+  venue_short: CoRL
+  year: 2024
+  topics: [robot-learning]
+  selected: true
+  figure: robokoop
+  tldr: >-
+    A contrastive spectral Koopman embedding learns control-conditioned, linearized visual representations;
+    a linear (LQR) controller trained off-policy acts on top of them.
+  highlights:
+    - {value: "10×", label: lower compute}
+    - {value: "+20%", label: accuracy}
+  links:
+    - {label: PMLR, url: "https://proceedings.mlr.press/v270/kumawat25a.html"}
+    - {label: PDF, url: "https://raw.githubusercontent.com/mlresearch/v270/main/assets/kumawat25a/kumawat25a.pdf"}
+    - {label: arXiv, url: "https://arxiv.org/abs/2409.03107"}
+    - {label: OpenReview, url: "https://openreview.net/forum?id=NiA8hVdDS7"}
+  abstract: >-
+    Developing agents that can perform complex control tasks from high-dimensional observations is a core
+    ability of autonomous agents that requires underlying robust task control policies and adapting the
+    underlying visual representations to the task. Most existing policies need a lot of training samples and
+    treat this problem from the lens of two-stage learning with a controller learned on top of pre-trained
+    vision models. We approach this problem from the lens of Koopman theory and learn visual representations
+    from robotic agents conditioned on specific downstream tasks in the context of learning stabilizing control
+    for the agent. We introduce a Contrastive Spectral Koopman Embedding network that allows us to learn
+    efficient linearized visual representations from the agent's visual data in a high dimensional latent space
+    and utilizes reinforcement learning to perform off-policy control on top of the extracted representations
+    with a linear controller. Our method enhances stability and control in gradient dynamics over time,
+    significantly outperforming existing approaches by improving efficiency and accuracy in learning task
+    policies over extended horizons.
+  bib:
+    booktitle: Proceedings of The 8th Conference on Robot Learning
+    series: Proceedings of Machine Learning Research
+    volume: 270
+    publisher: PMLR
+    year: 2025
+
+- id: stemfold
+  short: STEMFold
+  title: "STEMFold: Stochastic Temporal Manifold for Multi-Agent Interactions in the Presence of Hidden Agents"
+  authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
+  venue: Learning for Dynamics and Control (L4DC) · Oxford
+  venue_short: L4DC
+  year: 2024
+  topics: [multi-agent]
+  selected: true
+  figure: stemfold
+  tldr: >-
+    A spatiotemporal attention-based generative model that learns a stochastic manifold to predict multi-agent
+    dynamics from the visible agents alone — even when many agents are hidden.
+  links:
+    - {label: PMLR, url: "https://proceedings.mlr.press/v242/kumawat24a.html"}
+    - {label: PDF, url: "https://proceedings.mlr.press/v242/kumawat24a/kumawat24a.pdf"}
+    - {label: arXiv, url: "https://arxiv.org/abs/2401.14522"}
+  abstract: >-
+    Learning accurate, data-driven predictive models for multiple interacting agents following unknown dynamics
+    is crucial in many real-world physical and social systems. In many scenarios, dynamics prediction must be
+    performed under incomplete observations, i.e., only a subset of agents are known and observable from a
+    larger topological system while the behaviors of the unobserved agents and their interactions with the
+    observed agents are not known. When only incomplete observations of a dynamical system are available, so
+    that some states remain hidden, it is generally not possible to learn a closed-form model in these variables
+    using either analytic or data-driven techniques. In this work, we propose STEMFold, a spatiotemporal
+    attention-based generative model, to learn a stochastic manifold to predict the underlying unmeasured
+    dynamics of the multi-agent system from observations of only visible agents. Our analytical results motivate
+    STEMFold design using a spatiotemporal graph with time anchors to effectively map the observations of
+    visible agents to a stochastic manifold with no prior information about interaction graph topology. We
+    empirically evaluated our method on two simulations and two real-world datasets, where it outperformed
+    existing networks in predicting complex multiagent interactions, even with many unobserved agents.
+  bib:
+    booktitle: Proceedings of the 6th Annual Learning for Dynamics & Control Conference
+    series: Proceedings of Machine Learning Research
+    volume: 242
+    pages: 1427--1439
+    publisher: PMLR
+
+- id: chirpnet
+  short: ChirpNet
+  title: "ChirpNet: Noise-Resilient Sequential Chirp Based Radar Processing for Object Detection"
+  authors: [Sudarshan Sharma*, Hemant Kumawat*, Saibal Mukhopadhyay]
+  venue: IEEE/MTT-S International Microwave Symposium (IMS)
+  venue_short: IMS
+  year: 2024
+  topics: [perception, edge]
+  selected: true
+  figure: chirpnet
+  tldr: >-
+    Processes raw ADC data from multiple antennas one chirp at a time with a sequential model, instead of
+    building full radar cubes — and stays robust to input noise.
+  highlights:
+    - {value: "15×", label: lower complexity}
+    - {value: "3×", label: lower latency}
+  links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/10600387"}
+  abstract: >-
+    Radar-based object detection (OD) requires extensive pre-processing and complex Machine Learning (ML)
+    pipelines. Previous approaches have attempted to address these challenges by processing raw radar data
+    frames directly from the ADC or through FFT-based post-processing. However, the input data requirements and
+    model complexity continue to impose significant computational overhead on the edge system. In this work, we
+    introduce ChirpNet, a noise-resilient and efficient radar processing ML architecture for object detection.
+    Diverging from previous approaches, we directly handle raw ADC data from multiple antennas per chirp using a
+    sequential model, resulting in a substantial 15× reduction in complexity and a 3× reduction in latency,
+    while maintaining competitive OD performance. Furthermore, our proposed scheme is robust to input noise
+    variations compared to prior works.
+  bib: {booktitle: 2024 IEEE/MTT-S International Microwave Symposium (IMS), pages: 102--105, doi: 10.1109/IMS40175.2024.10600387}
+
+- id: cognitive-sensing
+  short: Cognitive sensing
+  title: Cognitive Sensing for Energy-Efficient Edge Intelligence
+  authors: [Minah Lee, Sudarshan Sharma, Wei Chun Wang, Hemant Kumawat, Nael Mizanur Rahman, Saibal Mukhopadhyay]
+  venue: Design, Automation & Test in Europe (DATE)
+  venue_short: DATE
+  year: 2024
+  topics: [edge]
+  figure: cognitive-sensing
+  tldr: >-
+    Learning low-dimensional features directly from high-dimensional analog signals — cutting digitization power
+    and data volume across vision, radar and infrared sensing.
+  links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/abstract/document/10546823"}
+  abstract: >-
+    Edge platforms in autonomous systems integrate multiple sensors to interpret their environment. The
+    high-resolution and high-bandwidth pixel arrays of these sensors improve sensing quality but also generate a
+    vast, and arguably unnecessary, volume of real-time data. This challenge, often referred to as the analog
+    data deluge, hinders the deployment of high-quality sensors in resource-constrained environments. This paper
+    discusses the concept of cognitive sensing, which learns to extract low-dimensional features directly from
+    high-dimensional analog signals, thereby reducing both digitization power and generated data volume. First,
+    we discuss design methods for analog-to-feature extraction (AFE) using mixed-signal compute-in-memory. We
+    then present examples of cognitive sensing, incorporating signal processing or machine learning, for various
+    sensing modalities including vision, Radar, and Infrared. Subsequently, we discuss the reliability
+    challenges in cognitive sensing, taking into account hardware and algorithmic properties of AFE. The paper
+    concludes with discussions on future research directions in this emerging field of cognitive sensors.
+  bib: {booktitle: "2024 Design, Automation & Test in Europe Conference & Exhibition (DATE)", pages: 1--6, doi: 10.23919/DATE58400.2024.10546823}
+
+- id: stagenet
+  short: STAGE Net
+  title: "STAGE Net: Spatio-Temporal Attention-based Graph Encoding for Learning Multi-Agent Interactions in the Presence of Hidden Agents"
+  authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
+  venue: OpenReview preprint
+  venue_short: Preprint
+  year: 2023
+  topics: [multi-agent]
+  viz: agents
+  tldr: >-
+    Spatiotemporal attention with neural inter-node messaging models systems of interacting agents in which
+    some agents are never observed, with no prior on the interaction graph.
+  links:
+    - {label: OpenReview, url: "https://openreview.net/forum?id=tsj6rDzI0V"}
+  abstract: >-
+    Accurate prediction of trajectories for multiple interacting agents following unknown dynamics is crucial in
+    many real-world critical physical and social systems where a group of agents interact with each other,
+    leading to intricate behavior patterns at both the individual and system levels. In many scenarios,
+    trajectory predictions must be performed under partial observations i.e., only a subset of agents are known
+    and observable. Consequently, we can only observe the trajectories of a subset of agents with a sampled
+    interaction graph from a larger topological system while the behaviors of the unobserved agents and their
+    interactions with the observed agents are not known. In this work, we propose STAGE Net, a sequential
+    spatiotemporal attention-based generative model to learn system dynamics with multiple interacting agents
+    where some agents are completely unobserved (hidden) all the time. Our network utilizes the spatiotemporal
+    attention mechanism with neural inter-node messaging to capture high-level behavioral semantics of the
+    multi-agent system. Our analytical results motivate STAGE Net design using spatiotemporal graph with time
+    anchors to effectively model complex multi-agent interactions with unobserved agents and no prior
+    information about interaction graph topology. We evaluate our method on multiagent simulations with spring
+    and charged dynamics and a motion trajectory dataset. Empirical results illustrate that our method
+    outperforms existing multiagent interaction modeling networks in predicting trajectories of complex
+    multiagent interactions even when we have a large number of unobserved agents.
+  bib: {type: misc, howpublished: OpenReview, url: "https://openreview.net/forum?id=tsj6rDzI0V"}
+
+- id: radar-attention
+  short: Radar-guided attention
+  title: Radar Guided Dynamic Visual Attention for Resource-Efficient RGB Object Detection
+  authors: [Hemant Kumawat, Saibal Mukhopadhyay]
+  venue: International Joint Conference on Neural Networks (IJCNN)
+  venue_short: IJCNN
+  year: 2022
+  topics: [perception]
+  selected: true
+  figure: radar-attention
+  tldr: >-
+    Radar points projected into the image propose regions of interest for a lightweight secondary detector,
+    recovering the small and distant objects RGB detectors miss.
+  highlights:
+    - {value: "+14%", label: recall vs. YOLOv3}
+    - {value: "3×", label: less compute}
+  links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/abstract/document/9892184"}
+    - {label: Code, url: "https://github.com/kumawathemant/ClosedLoopPerceptionFusion"}
+  abstract: >-
+    An autonomous system's perception engine must provide an accurate understanding of the environment for it to
+    make decisions. Deep learning based object detection networks experience degradation in the performance and
+    robustness for small and far away objects due to a reduction in object's feature map as we move to higher
+    layers of the network. In this work, we propose a novel radar-guided spatial attention for RGB images to
+    improve the perception quality of autonomous vehicles operating in a dynamic environment. In particular, our
+    method improves the perception of small and long range objects, which are often not detected by the object
+    detectors in RGB mode. The proposed method consists of two RGB object detectors, namely the Primary detector
+    and a lightweight Secondary detector. The primary detector takes a full RGB image and generates primary
+    detections. Next, the radar proposal framework creates regions of interest (ROIs) for object proposals by
+    projecting the radar point cloud onto the 2D RGB image. These ROIs are cropped and fed to the secondary
+    detector to generate secondary detections which are then fused with the primary detections via non-maximum
+    suppression. This method helps in recovering the small objects by preserving the object's spatial features
+    through an increase in their receptive field. We evaluate our fusion method on the challenging nuScenes
+    dataset and show that our fusion method with SSD-lite as primary and secondary detector improves the
+    baseline primary YOLOv3 detector's recall by 14% while requiring three times fewer computational resources.
+  bib: {booktitle: 2022 International Joint Conference on Neural Networks (IJCNN), pages: 1--8, doi: 10.1109/IJCNN55064.2022.9892184}
+
+- id: false-negatives
+  short: Origins of false negatives
+  title: A Methodology for Understanding the Origins of False Negatives in DNN Based Object Detectors
+  authors: [Kruttidipta Samal, Hemant Kumawat, Marilyn Wolf, Saibal Mukhopadhyay]
+  venue: International Joint Conference on Neural Networks (IJCNN)
+  venue_short: IJCNN
+  year: 2022
+  topics: [perception]
+  figure: false-negatives
+  tldr: >-
+    Gradient analysis and activation-discrepancy analysis localize where inside a DNN detector objects get
+    missed — and how that depends on darkness, glare, architecture and training.
+  links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/abstract/document/9892390"}
+  abstract: >-
+    In this paper we present two novel complementary methods namely the gradient analysis and the activation
+    discrepancy analysis to analyze the perception failures occurring inside the DNN based object detectors.
+    The gradient analysis localizes the nodes within the network that fail consistently in a scenario, thus
+    creating a 'signature' of False Negatives (FNs). This method traces a set of False Negatives through the
+    network and finds sections of the network that contribute to this set. The signatures show the location of
+    the faulty nodes is sensitive to input conditions (such as darkness, glare etc.), network architecture,
+    training hyperparameters, object class etc. Certain nodes of the network fail consistently throughout the
+    training process thus implying that some False Negatives occur due to the global optimization nature of
+    Stochastic Gradient Descent (SGD) based training. This analysis requires the knowledge of False Negatives
+    and therefore can be used for post-hoc diagnostic analysis. On the other hand, the activation discrepancy
+    analysis analyzes the discrepancy in forward activations of a DNN. This method can be conducted online and
+    shows that the pattern of the activation discrepancy is sensitive to input conditions and detection recall.
+  bib: {booktitle: 2022 International Joint Conference on Neural Networks (IJCNN), pages: 1--8, doi: 10.1109/IJCNN55064.2022.9892390}
+
+- id: rgb-lidar-fusion
+  short: Task-driven RGB–LiDAR fusion
+  title: Task-Driven RGB-Lidar Fusion for Object Tracking in Resource-Efficient Autonomous System
+  authors: [Kruttidipta Samal, Hemant Kumawat, Priyabrata Saha, Marilyn Wolf, Saibal Mukhopadhyay]
+  venue: IEEE Transactions on Intelligent Vehicles, vol. 7, no. 1
+  venue_short: T-IV
+  year: 2022
+  topics: [perception]
+  selected: true
+  figure: rgb-lidar-fusion
+  tldr: >-
+    Activates LiDAR only in camera-identified regions of interest and adapts its base frame rate to the
+    vehicle's kinematic state — far less LiDAR data with little loss in tracking performance.
+  links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/9448387"}
+  abstract: >-
+    Autonomous mobile systems such as vehicles or robots are equipped with multiple sensor modalities including
+    Lidar, RGB, and Radar. The fusion of multi-modal information can enhance task accuracy but indiscriminate
+    sensing and fusion in all modalities increase demand on available system resources. This paper presents a
+    task-driven approach to input fusion that minimizes the utilization of resource-heavy sensors and
+    demonstrates its application to Visual-Lidar fusion for object tracking and path planning. The proposed
+    spatiotemporal sampling algorithm activates Lidar only at regions-of-interest identified by analyzing visual
+    input and reduces the Lidar 'base frame rate' according to the kinematic state of the system. This
+    significantly reduces Lidar usage, in terms of data sensed/transferred and potentially power consumed,
+    without a severe reduction in performance compared to both a baseline decision-level fusion and
+    state-of-the-art deep multi-modal fusion.
+  bib: {journal: IEEE Transactions on Intelligent Vehicles, volume: 7, number: 1, pages: 102--112, doi: 10.1109/TIV.2021.3087664}

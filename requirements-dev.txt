@@ -1,0 +1,3 @@
+# Image tooling for scripts/optimize_images.py and scripts/make_social_card.py
+-r requirements.txt
+pillow>=10

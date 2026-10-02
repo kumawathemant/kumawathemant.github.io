@@ -1,1 +1,5 @@
-nbconvert
+# Build dependencies (python build.py)
+jinja2>=3.1,<4
+markdown>=3.5,<4
+pyyaml>=6,<7
+pymdown-extensions>=10,<11

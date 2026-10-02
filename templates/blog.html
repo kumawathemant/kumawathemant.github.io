@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Writing — {{ site.name }}{% endblock %}
+{% block description %}Notes and essays by {{ site.name }} on robot learning, reinforcement learning and the math underneath.{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <a class="back-link mono" href="/">{{ icon('arrow-left') }}home</a>
+    <p class="eyebrow" data-reveal><span>✎</span>Writing</p>
+    <h1 class="page-title" data-reveal>Notes on robot learning, RL &amp; <em>the math underneath</em>.</h1>
+    <p class="page-sub" data-reveal style="--d:1">{{ posts | length }} posts · <a href="/blog/feed.xml">{{ icon('rss') }}RSS feed</a></p>
+  </div>
+</section>
+<section class="section blog-index">
+  <div class="container">
+    {% for year, items in posts_by_year %}
+    <div class="blog-year" id="y{{ year }}">
+      <h2 class="year-label">{{ year }}</h2>
+      <ol class="blog-items">
+        {% for post in items %}
+        <li data-reveal style="--d:{{ loop.index0 }}">
+          <a class="blog-item" href="{{ post.url }}">
+            <p class="mono">{{ post.date_str }} · {{ post.read_min }} min read</p>
+            <h3>{{ post.title }}</h3>
+            {% if post.description %}<p class="blog-desc">{{ post.description }}</p>{% endif %}
+            <ul class="tags">{% for t in post.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+            <span class="post-arrow">{{ icon('arrow-up-right') }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

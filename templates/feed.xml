@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.name }} — Writing</title>
+  <link href="{{ site.url }}/blog/feed.xml" rel="self"/>
+  <link href="{{ site.url }}/blog/"/>
+  <id>{{ site.url }}/blog/</id>
+  <updated>{{ now.strftime('%Y-%m-%dT%H:%M:%SZ') }}</updated>
+  <author><name>{{ site.name }}</name><uri>{{ site.url }}</uri></author>
+{% for post in posts %}
+  <entry>
+    <title>{{ post.title }}</title>
+    <link href="{{ site.url }}{{ post.url }}"/>
+    <id>{{ site.url }}{{ post.url }}</id>
+    <updated>{{ post.date.isoformat() }}T00:00:00Z</updated>
+    <summary>{{ post.description or post.title }}</summary>
+    <content type="html">{{ post.html_str }}</content>
+  </entry>
+{% endfor %}
+</feed>

@@ -1,0 +1,11 @@
+{% from "partials/macros.html" import socials with context %}
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-id">
+      <p class="footer-name">{{ site.name }}</p>
+      <p class="muted">{{ site.now.role }} · {{ site.now.org }} · {{ site.location }}</p>
+    </div>
+    {{ socials("socials socials-sm") }}
+    <p class="footer-meta mono">© {{ year }} {{ site.name }} · updated {{ updated }} · hand-built with HTML, CSS &amp; a little canvas · <a href="/blog/feed.xml">RSS</a></p>
+  </div>
+</footer>

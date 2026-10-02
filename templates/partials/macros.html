@@ -1,0 +1,9 @@
+{% macro socials(cls="socials") %}
+<ul class="{{ cls }}">
+  <li><a href="{{ site.links.scholar }}" target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar">{{ icon('scholar') }}</a></li>
+  <li><a href="{{ site.links.github }}" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">{{ icon('github') }}</a></li>
+  <li><a href="{{ site.links.linkedin }}" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">{{ icon('linkedin') }}</a></li>
+  <li><a href="{{ site.links.x }}" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X">{{ icon('x') }}</a></li>
+  <li><a href="#" data-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}" aria-label="Email" title="Email">{{ icon('mail') }}</a></li>
+</ul>
+{% endmacro %}

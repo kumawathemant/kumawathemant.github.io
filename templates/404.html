@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Not found — {{ site.name }}{% endblock %}
+{% block content %}
+<section class="page-hero notfound">
+  <canvas class="hero-canvas" data-viz="agents" aria-hidden="true"></canvas>
+  <div class="container">
+    <p class="eyebrow"><span>404</span>Hidden agent</p>
+    <h1 class="page-title">This page is <em>unobserved</em>.</h1>
+    <p class="page-sub">We couldn't infer its position. Try the <a href="/">homepage</a>, the <a href="/#publications">publications</a> or the <a href="/blog/">writing</a>.</p>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ asset('js/viz.js') }}" defer></script>
+{% endblock %}
