@@ -22,7 +22,7 @@
 <meta name="twitter:site" content="@HeMan553">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="alternate" type="application/atom+xml" title="{{ site.name }} — Writing" href="/blog/feed.xml">
+{% if posts %}<link rel="alternate" type="application/atom+xml" title="{{ site.name }} — Writing" href="/blog/feed.xml">{% endif %}
 <script>
   (function () {
     var d = document.documentElement, t;

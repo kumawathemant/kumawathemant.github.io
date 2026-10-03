@@ -3,7 +3,7 @@
 
     python build.py              build the live theme (site.yml `theme:`) into _site/
     python build.py --drafts     ...plus every theme under /drafts/<theme>/ for comparison
-    python build.py serve        build with drafts, serve on http://localhost:8000, live-reload on change
+    python build.py serve        build with drafts into _dev.nosync/, serve on http://localhost:8000, live-reload on change
     python build.py serve -p 4000
 
 Content lives in content/ (YAML + Markdown), designs in themes/<name>/ (Jinja2 + CSS/JS), shared assets in static/.
@@ -37,6 +37,8 @@ TEMPLATES = ROOT / "templates"
 STATIC = ROOT / "static"
 THEMES = ROOT / "themes"
 OUT = ROOT / "_site"
+# `serve` output. iCloud Drive skips *.nosync names, so rebuild churn can't spawn "_site 2"-style conflict copies.
+DEV_OUT = ROOT / "_dev.nosync"
 SELF = "Hemant Kumawat"
 
 # filter key -> (label, colour token)
@@ -109,6 +111,7 @@ _STROKE = {
     "message": '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
     "repeat": '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
     "play": '<path d="M6 3l14 9-14 9z"/>',
+    "image": '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
 }
 _FILL = {  # brand marks from Simple Icons (CC0)
     "scholar": '<path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>',
@@ -271,7 +274,7 @@ def bibtex(p: dict) -> str:
     return f"@{kind}{{{key},\n{body}\n}}"
 
 
-def format_authors(authors: list[str], limit: int = 7) -> Markup:
+def format_authors(authors: list[str], limit: int = 7, toggle: bool = True) -> Markup:
     parts = []
     for a in authors:
         name, star = a.rstrip("*"), a.endswith("*")
@@ -280,6 +283,8 @@ def format_authors(authors: list[str], limit: int = 7) -> Markup:
     if len(parts) <= limit:
         return Markup(", ".join(parts))
     head, tail = parts[: limit - 2], parts[limit - 2 :]
+    if not toggle:  # compact form for cards: keep my name visible, elide the rest
+        return Markup(", ".join(head + [s for s in tail if 'class="me"' in s]) + " et al.")
     return Markup(
         ", ".join(head)
         + f'<span class="authors-more" hidden>, {", ".join(tail)}</span>'
@@ -307,6 +312,7 @@ def process_publications(pubs: list[dict]) -> list[dict]:
         )
         p["color"] = TOPICS[topics[0]][1] if topics else "mint"
         p["authors_html"] = format_authors(authors)
+        p["authors_short"] = format_authors(authors, limit=5, toggle=False)
         p["links"] = [
             {**l, "icon": LINK_ICONS.get(l["label"].lower(), "book" if l["label"] in ("PMLR", "IEEE", "OpenReview") else "external")}
             for l in p.get("links") or []
@@ -322,7 +328,7 @@ def process_publications(pubs: list[dict]) -> list[dict]:
                     raise FileNotFoundError(f"{p['id']}: missing static/assets/fig/{p['figure']}-{size}.webp")
             p["fig_sm"] = f"/assets/fig/{p['figure']}-640.webp"
             p["fig_lg"] = f"/assets/fig/{p['figure']}-1600.webp"
-        elif not p.get("viz"):
+        if not p.get("viz"):  # every paper gets an animation (the real figure, if any, sits beside it)
             p["viz"] = {"robot-learning": "koopman", "multi-agent": "agents", "perception": "lidar"}.get(topics[0] if topics else "", "flow")
     return pubs
 
@@ -354,7 +360,9 @@ def load_data() -> dict:
         for pid in t.get("papers") or []:
             if pid not in by_id:
                 raise KeyError(f"thread {t['key']}: unknown paper id {pid}")
-    posts = load_posts()
+    blog_on = bool(site.get("blog", True))
+    all_posts = load_posts()
+    posts = all_posts if blog_on else []
     filters = [
         {"key": "all", "label": "All", "count": len(pubs)},
         {"key": "selected", "label": "Selected", "count": sum(1 for p in pubs if p.get("selected"))},
@@ -368,7 +376,9 @@ def load_data() -> dict:
         "filters": filters,
         "topics": {k: {"label": v[0], "color": v[1]} for k, v in TOPICS.items()},
         "news": load_yaml("news.yml"),
+        "blog_on": blog_on,
         "posts": posts,
+        "retired_posts": [] if blog_on else all_posts,
         "posts_by_year": [(y, list(g)) for y, g in itertools.groupby(posts, key=lambda p: p["year"])],
         "stats": {
             "papers": len(pubs),
@@ -387,7 +397,7 @@ LIVE_RELOAD = Markup(
 )
 
 
-def make_env(theme: str, base: str, themes: list[dict], dev: bool) -> Environment:
+def make_env(theme: str, base: str, themes: list[dict], dev: bool, blog_on: bool = True) -> Environment:
     env = Environment(
         loader=FileSystemLoader([THEMES / theme / "templates", TEMPLATES]),
         autoescape=select_autoescape(["html", "xml"]),
@@ -417,8 +427,7 @@ def make_env(theme: str, base: str, themes: list[dict], dev: bool) -> Environmen
             {"id": "publications", "label": "Publications", "href": url("/#publications")},
             {"id": "experience", "label": "Experience", "href": url("/#experience")},
             {"id": "news", "label": "News", "href": url("/#news")},
-            {"id": "writing", "label": "Writing", "href": url("/blog/")},
-        ],
+        ] + ([{"id": "writing", "label": "Writing", "href": url("/blog/")}] if blog_on else []),
     )
     hooks = THEMES / theme / "theme.py"
     if hooks.exists():  # optional per-theme Python helpers, e.g. SVG chart builders
@@ -430,7 +439,7 @@ def make_env(theme: str, base: str, themes: list[dict], dev: bool) -> Environmen
 
 
 def render_theme(theme: str, out: Path, base: str, data: dict, themes: list[dict], dev: bool, switcher: bool) -> None:
-    env = make_env(theme, base, themes, dev)
+    env = make_env(theme, base, themes, dev, data["blog_on"])
     shared = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True)
 
     def render(template: str, rel_path: str, **ctx) -> None:
@@ -444,9 +453,10 @@ def render_theme(theme: str, out: Path, base: str, data: dict, themes: list[dict
         dest.write_text(html_out, encoding="utf-8")
 
     render("index.html", "index.html", page="home")
-    render("blog.html", "blog/index.html", page="blog")
-    for post in data["posts"]:
-        render("post.html", post["url"].strip("/") + "/index.html", post=post, page="blog")
+    if data["blog_on"]:
+        render("blog.html", "blog/index.html", page="blog")
+        for post in data["posts"]:
+            render("post.html", post["url"].strip("/") + "/index.html", post=post, page="blog")
     if env.globals["paper_pages"]:
         for p in data["pubs"]:
             render("paper.html", f"papers/{p['id']}/index.html", paper=p, page="paper")
@@ -464,8 +474,30 @@ def build(dev: bool = False, drafts: bool = False) -> int:
         raise ValueError(f"site.yml theme '{live}' not found in themes/ ({', '.join(keys)})")
     drafts = drafts or dev
 
-    tmp = ROOT / f"_site.tmp-{os.getpid()}"
+    out = DEV_OUT if dev else OUT
+    tmp = ROOT / f"_build-{os.getpid()}.nosync"
     shutil.rmtree(tmp, ignore_errors=True)
+    try:
+        _render_all(tmp, data, themes, keys, live, dev, drafts)
+    except BaseException:
+        shutil.rmtree(tmp, ignore_errors=True)
+        raise
+
+    old = ROOT / f"_old-{os.getpid()}.nosync"
+    shutil.rmtree(old, ignore_errors=True)
+    if out.exists():
+        out.rename(old)
+    tmp.rename(out)
+    shutil.rmtree(old, ignore_errors=True)
+    n = sum(1 for _ in out.rglob("*.html"))
+    extra = f", drafts: {', '.join(keys)}" if drafts else ""
+    blog = f"{len(posts)} posts" if data["blog_on"] else "blog off"
+    print(f"built {n} pages ({live} live{extra}) · {len(data['pubs'])} papers · {blog} · {time.time() - t0:.2f}s")
+    return n
+
+
+def _render_all(tmp: Path, data: dict, themes: list, keys: list, live: str, dev: bool, drafts: bool) -> None:
+    site = data["site"]
     shutil.copytree(STATIC, tmp, ignore=shutil.ignore_patterns(".DS_Store"))
     for key in keys if drafts else [live]:
         if (THEMES / key / "static").exists():
@@ -479,9 +511,18 @@ def build(dev: bool = False, drafts: bool = False) -> int:
         gallery = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True).get_template("drafts.html")
         (tmp / "drafts").mkdir(parents=True, exist_ok=True)
         (tmp / "drafts" / "index.html").write_text(
-            gallery.render(themes=themes, live=live, site=site, live_reload=LIVE_RELOAD if dev else ""), encoding="utf-8")
+            gallery.render(themes=themes, live=live, site=site, posts=data["posts"], live_reload=LIVE_RELOAD if dev else ""),
+            encoding="utf-8")
+        # every paper animation on one page (QA); ?theme=light for the light palette
+        lab = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True).get_template("vizlab.html")
+        (tmp / "drafts" / "vizlab").mkdir(parents=True, exist_ok=True)
+        js = lambda rel: f"/assets/js/{rel}?v={file_hash(STATIC / 'assets' / 'js' / rel)}"  # noqa: E731
+        (tmp / "drafts" / "vizlab" / "index.html").write_text(lab.render(
+            site=site, pubs=data["pubs"], cell=300, viz_js=js("viz.js"), viz_papers_js=js("viz-papers.js"),
+            aurora_css=f"/assets/themes/aurora/site.css?v={file_hash(THEMES / 'aurora' / 'static' / 'site.css')}",
+            live_reload=LIVE_RELOAD if dev else ""), encoding="utf-8")
 
-    env = make_env(live, "", themes, dev)
+    env = make_env(live, "", themes, dev, data["blog_on"])
 
     def render_root(template: str, rel_path: str, **ctx) -> None:
         dest = tmp / rel_path
@@ -490,27 +531,23 @@ def build(dev: bool = False, drafts: bool = False) -> int:
                         encoding="utf-8")
 
     redirects = dict(REDIRECTS)
-    redirects.update({f"blog/{y}/": "/blog/" for y, _ in data["posts_by_year"]})
+    if data["blog_on"]:
+        redirects.update({f"blog/{y}/": "/blog/" for y, _ in data["posts_by_year"]})
+    else:  # blog switched off: old blog URLs land on the homepage instead of a 404
+        retired = data["retired_posts"]
+        redirects.update({"blog/": "/", "blog/page/2/": "/"})
+        redirects.update({f"blog/{p['year']}/": "/" for p in retired})
+        redirects.update({p["url"].strip("/") + "/": "/" for p in retired})
     for src, target in redirects.items():
         render_root("redirect.html", src + "index.html", target=target, page="redirect")
     render_root("sitemap.xml", "sitemap.xml", page="sitemap",
                 paper_ids=[p["id"] for p in data["pubs"]] if env.globals["paper_pages"] else [])
-    now = dt.datetime.now(dt.timezone.utc)
-    render_root("feed.xml", "blog/feed.xml", page="feed", now=now)
-    render_root("feed.xml", "feed.xml", page="feed", now=now)  # al-folio's old feed URL
+    if data["blog_on"]:
+        now = dt.datetime.now(dt.timezone.utc)
+        render_root("feed.xml", "blog/feed.xml", page="feed", now=now)
+        render_root("feed.xml", "feed.xml", page="feed", now=now)  # al-folio's old feed URL
     if dev:
         (tmp / "__build").write_text(str(time.time()))
-
-    old = ROOT / f"_site.old-{os.getpid()}"
-    shutil.rmtree(old, ignore_errors=True)
-    if OUT.exists():
-        OUT.rename(old)
-    tmp.rename(OUT)
-    shutil.rmtree(old, ignore_errors=True)
-    n = sum(1 for _ in OUT.rglob("*.html"))
-    extra = f", drafts: {', '.join(keys)}" if drafts else ""
-    print(f"built {n} pages ({live} live{extra}) · {len(data['pubs'])} papers · {len(posts)} posts · {time.time() - t0:.2f}s")
-    return n
 
 
 # --------------------------------------------------------------------------- dev server
@@ -530,12 +567,13 @@ def snapshot() -> dict:
 
 
 def serve(port: int) -> None:
+    sys.stdout.reconfigure(line_buffering=True)  # build messages show up promptly when piped
     try:
         build(dev=True)
     except Exception as e:  # keep watching so a fix can be picked up
         print(f"  build error: {e!r}")
-        OUT.mkdir(exist_ok=True)
-    handler = partial(QuietHandler, directory=str(OUT))
+        DEV_OUT.mkdir(exist_ok=True)
+    handler = partial(QuietHandler, directory=str(DEV_OUT))
     httpd = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     print(f"\n  ➜  http://localhost:{port}          live theme\n  ➜  http://localhost:{port}/drafts/   compare all drafts   (Ctrl+C to stop)\n")

@@ -1,6 +1,7 @@
 _site/
 _site.tmp*/
 _site.old*/
+*.nosync/
 .venv/
 .cache/
 __pycache__/

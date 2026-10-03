@@ -166,7 +166,8 @@
   </div>
 </section>
 
-{# ============ 9 · writing ============ #}
+{# ============ 9 · writing (only when the blog is on) ============ #}
+{% if posts %}
 <section class="slide writing" id="writing">
   <div class="wrap">
     <h2 class="headline" data-reveal>From the notebook.</h2>
@@ -183,6 +184,7 @@
     <p class="center" data-reveal><a class="link-arrow" href="{{ url('/blog/') }}">All {{ posts | length }} posts {{ icon('chevron-right') }}</a></p>
   </div>
 </section>
+{% endif %}
 
 {# ============ 10 · thank you ============ #}
 <section class="slide closing" id="contact">

@@ -6,6 +6,6 @@
       <p class="muted">{{ site.now.role }} · {{ site.now.org }} · {{ site.location }}</p>
     </div>
     {{ socials("socials socials-sm") }}
-    <p class="footer-meta mono">© {{ year }} {{ site.name }} · updated {{ updated }} · hand-built with HTML, CSS &amp; a little canvas · <a href="/blog/feed.xml">RSS</a></p>
+    <p class="footer-meta mono">© {{ year }} {{ site.name }} · updated {{ updated }} · hand-built with HTML, CSS &amp; a little canvas{% if posts %} · <a href="/blog/feed.xml">RSS</a>{% endif %}</p>
   </div>
 </footer>

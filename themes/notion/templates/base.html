@@ -1,7 +1,8 @@
 {% from "partials/n.html" import pe %}
-{% set sections = [('👋', 'About', 'about'), ('🔬', 'Research', 'research'), ('📄', 'Publications', 'publications'), ('💼', 'Experience', 'experience'), ('📰', 'News', 'news'), ('✍️', 'Writing', 'writing'), ('🎤', 'Service & talks', 'service')] %}
+{% set sections = [('🔬', 'Research', 'research'), ('📄', 'Publications', 'publications'), ('💼', 'Experience', 'experience'), ('📰', 'News', 'news')]
+     + ([('✍️', 'Writing', 'writing')] if posts else []) + [('🎤', 'Service', 'service')] %}
 <!doctype html>
-<html lang="en" data-theme="light" data-store="theme-notion">
+<html lang="en" data-theme="light" data-store="notion-theme" data-theme-fixed>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,9 +19,8 @@
 <script>
   (function () {
     var d = document.documentElement, t;
-    try { t = localStorage.getItem('theme-notion'); } catch (e) {}
-    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    d.dataset.theme = t;
+    try { t = localStorage.getItem('notion-theme'); } catch (e) {}
+    d.dataset.theme = t === 'dark' ? 'dark' : 'light'; // light unless the visitor picked dark
     d.classList.add('js');
   })();
 </script>
@@ -28,72 +28,31 @@
 {% block head %}{% endblock %}
 </head>
 <body class="page-{{ page }}">
-<div class="app">
-  <aside class="sidebar" id="sidebar" aria-label="Workspace">
-    <div class="sb-top">
-      <a class="workspace" href="{{ url('/') }}">
-        <img src="/assets/img/portrait-480.webp" alt="" width="22" height="22">
-        <span class="ws-name">{{ site.name }}</span>
-        {{ icon('chevron-down', 'ws-caret') }}
-      </a>
-      <button class="sb-item" type="button" data-search-open>{{ icon('search') }}<span>Search</span><kbd>⌘K</kbd></button>
-      <a class="sb-item" href="{{ url('/') }}"><span class="sb-emoji">🏠</span><span>Home</span></a>
-      <a class="sb-item" href="{{ site.cv }}"><span class="sb-emoji">📎</span><span>CV (PDF)</span></a>
-    </div>
-    <p class="sb-label">Pages</p>
-    <nav class="sb-pages" aria-label="Pages">
-      {% for emoji, label, sid in sections %}
-      {% if sid == 'writing' %}
-      <details class="sb-tree"{% if page == 'blog' %} open{% endif %}>
-        <summary class="sb-item" data-sb="{{ sid }}"><span class="sb-twist" aria-hidden="true"></span><span class="sb-emoji">{{ emoji }}</span><a href="{{ url('/blog/') }}">{{ label }}</a></summary>
-        {% for p in posts %}
-        <a class="sb-item sb-child{% if post is defined and post.slug == p.slug %} is-current{% endif %}" href="{{ url(p.url) }}"><span class="sb-emoji">{{ pe(p.slug) }}</span><span>{{ p.title }}</span></a>
-        {% endfor %}
-      </details>
-      {% else %}
-      <a class="sb-item" href="{{ url('/#' ~ sid) }}" data-sb="{{ sid }}"><span class="sb-twist" aria-hidden="true"></span><span class="sb-emoji">{{ emoji }}</span><span>{{ label }}</span></a>
-      {% endif %}
-      {% endfor %}
-    </nav>
-    <p class="sb-label">Elsewhere</p>
-    <nav class="sb-pages" aria-label="Links">
-      <a class="sb-item" href="{{ site.links.scholar }}" target="_blank" rel="noopener">{{ icon('scholar') }}<span>Google Scholar</span></a>
-      <a class="sb-item" href="{{ site.links.github }}" target="_blank" rel="noopener">{{ icon('github') }}<span>GitHub</span></a>
-      <a class="sb-item" href="{{ site.links.linkedin }}" target="_blank" rel="noopener">{{ icon('linkedin') }}<span>LinkedIn</span></a>
-      <a class="sb-item" href="{{ site.links.x }}" target="_blank" rel="noopener">{{ icon('x') }}<span>X</span></a>
-    </nav>
-    <div class="sb-foot">
-      <button class="sb-item theme-toggle" type="button">{{ icon('moon', 'i-moon') }}{{ icon('sun', 'i-sun') }}<span class="i-moon-l">Dark mode</span><span class="i-sun-l">Light mode</span></button>
-    </div>
-  </aside>
-  <div class="sb-scrim" data-sidebar-close></div>
-
-  <div class="main">
-    <header class="topbar">
-      <button class="tb-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar">{{ icon('sidebar') }}</button>
-      <nav class="crumbs" aria-label="Breadcrumb">
-        <a href="{{ url('/') }}"><img src="/assets/img/portrait-480.webp" alt="" width="18" height="18"><span>{{ site.name }}</span></a>
-        {% block crumbs %}{% endblock %}
-      </nav>
-      <div class="tb-right">
-        <span class="tb-edited">Edited {{ updated }}</span>
-        <button class="tb-btn tb-text" type="button" data-share>Share</button>
-        <button class="tb-btn" type="button" data-search-open aria-label="Search">{{ icon('search') }}</button>
-        <a class="tb-btn" href="{{ site.cv }}" aria-label="Download CV" title="Download CV">{{ icon('download') }}</a>
-      </div>
-    </header>
-    <main id="main">
-      {% block content %}{% endblock %}
-    </main>
+<header class="topbar">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="{{ url('/') }}"><img src="/assets/img/portrait-480.webp" alt="" width="18" height="18"><span>{{ site.name }}</span></a>
+    {% block crumbs %}{% endblock %}
+  </nav>
+  <nav class="tb-nav" aria-label="Sections">
+    {% for emoji, label, sid in sections %}<a class="tb-link" href="{{ url('/#' ~ sid) }}" data-sec="{{ sid }}" data-emoji="{{ emoji }}">{{ label }}</a>{% endfor %}
+  </nav>
+  <div class="tb-right">
+    <button class="tb-btn" type="button" data-search-open aria-label="Search" title="Search (⌘K)">{{ icon('search') }}</button>
+    <button class="tb-btn theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">{{ icon('moon', 'i-moon') }}{{ icon('sun', 'i-sun') }}</button>
+    <button class="tb-btn tb-text" type="button" data-share>Share</button>
+    <a class="tb-btn tb-cv" href="{{ site.cv }}">{{ icon('download') }}<span>CV</span></a>
   </div>
-</div>
+</header>
+<main id="main">
+  {% block content %}{% endblock %}
+</main>
 
 <dialog class="qf" aria-label="Search">
   <div class="qf-box">
     <label class="qf-input">{{ icon('search') }}<input type="text" placeholder="Search {{ site.name.split()[0] }}'s workspace…" autocomplete="off" aria-label="Search pages, papers and posts"></label>
     <ul class="qf-list" role="listbox">
       {% for emoji, label, sid in sections %}
-      <li><a href="{{ url('/blog/') if sid == 'writing' else url('/#' ~ sid) }}" data-kw="{{ label | lower }} section page"><span class="qf-ico">{{ emoji }}</span><span class="qf-t">{{ label }}</span><span class="qf-type">Page</span></a></li>
+      <li><a href="{{ url('/#' ~ sid) }}" data-kw="{{ label | lower }} section page"><span class="qf-ico">{{ emoji }}</span><span class="qf-t">{{ label }}</span><span class="qf-type">Page</span></a></li>
       {% endfor %}
       {% for p in pubs %}
       <li><a href="{{ url('/#pub-' ~ p.id) }}" data-kw="{{ p.search }}" data-peek-link="{{ p.id }}"><span class="qf-ico">📄</span><span class="qf-t">{{ p.title }}</span><span class="qf-type">{{ p.venue_short }} {{ p.year }}</span></a></li>
@@ -109,6 +68,7 @@
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{{ asset('js/site.js') }}" defer></script>
 <script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ asset('js/viz-papers.js') }}" defer></script>
 <script src="{{ theme_asset('notion.js') }}" defer></script>
 {% block scripts %}{% endblock %}
 {{ live_reload }}

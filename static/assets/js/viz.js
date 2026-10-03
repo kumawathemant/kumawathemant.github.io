@@ -285,8 +285,10 @@
   /* ======================================================================
      agents — spring-coupled multi-agent system. Hollow nodes are hidden (never
      observed) and inferred; dotted paths are forecasts. Agents can be dragged.
+     opts.fans (STEMFold): a fan of sampled stochastic futures instead of one forecast.
      ====================================================================== */
-  function agentsSketch(v) {
+  function agentsSketch(v, opts = {}) {
+    const fans = !!opts.fans;
     const R = mulberry(23);
     const N = 10;
     const hidden = new Set([2, 6, 8]);
@@ -301,7 +303,7 @@
     const L = 0.6, kS = 2.6, damp = 0.32, kC = 0.22;
     let grab = -1, hover = -1, forecast = [], fTimer = 0, S = 1, cx = 0, cy = 0;
 
-    const step = (S2, dt, noise) => {
+    const step = (S2, dt, amp, rng) => {
       for (const a of S2) {
         a.ax = -kC * a.x - damp * a.vx;
         a.ay = -kC * a.y - damp * a.vy;
@@ -315,10 +317,10 @@
         a.ax += f * dx; a.ay += f * dy; b.ax -= f * dx; b.ay -= f * dy;
       }
       for (const a of S2) {
-        if (noise) {
+        if (amp) {
           const sq = Math.sqrt(dt);
-          a.nx += -0.8 * a.nx * dt + 2.2 * sq * (R() * 2 - 1);
-          a.ny += -0.8 * a.ny * dt + 2.2 * sq * (R() * 2 - 1);
+          a.nx += -0.8 * a.nx * dt + amp * sq * (rng() * 2 - 1);
+          a.ny += -0.8 * a.ny * dt + amp * sq * (rng() * 2 - 1);
           a.ax += a.nx; a.ay += a.ny;
         }
         a.vx += a.ax * dt; a.vy += a.ay * dt;
@@ -329,8 +331,25 @@
       const S2 = A.map((a) => ({ x: a.x, y: a.y, vx: a.vx, vy: a.vy, ax: 0, ay: 0 }));
       const out = A.map(() => []);
       for (let s = 0; s < 64; s++) {
-        step(S2, 0.035, false);
+        step(S2, 0.035, 0);
         if (s % 2 === 1) S2.forEach((a, i) => out[i].push(a.x, a.y));
+      }
+      return out;
+    };
+    // stochastic rollouts for a few observed agents; fixed seeds keep the fan coherent between refreshes
+    const FAN = [0, 4, 7], M = 6;
+    let samples = [];
+    const rollouts = () => {
+      const out = [];
+      for (let m = 0; m < M; m++) {
+        const rng = mulberry(77 + m);
+        const S2 = A.map((a) => ({ x: a.x, y: a.y, vx: a.vx, vy: a.vy, ax: 0, ay: 0, nx: a.nx, ny: a.ny }));
+        const paths = FAN.map(() => []);
+        for (let s = 0; s < 36; s++) {
+          step(S2, 0.04, 1.7, rng);
+          if (s % 2 === 1) FAN.forEach((i, k) => paths[k].push(S2[i].x, S2[i].y));
+        }
+        out.push(paths);
       }
       return out;
     };
@@ -354,15 +373,15 @@
         const { w, h, ctx } = v;
         S = Math.min(w / 3.0, h / 2.15); cx = w / 2; cy = h / 2;
         if (dt > 0) {
-          for (let s = 0; s < 3; s++) step(A, dt / 3, true);
+          for (let s = 0; s < 3; s++) step(A, dt / 3, 2.2, R);
           if (grab >= 0) {
             const a = A[grab], tx = (v.pointer.x - cx) / S, ty = (v.pointer.y - cy) / S;
             a.vx = (tx - a.x) * 8; a.vy = (ty - a.y) * 8; a.x = tx; a.y = ty;
           }
           A.forEach((a) => { a.hist.push(a.x, a.y); if (a.hist.length > 56) a.hist.splice(0, 2); });
           fTimer -= dt;
-          if (fTimer <= 0 || !forecast.length) { fTimer = 0.18; forecast = simulate(); }
-        } else if (!forecast.length) forecast = simulate();
+          if (fTimer <= 0 || !forecast.length) { fTimer = 0.18; forecast = simulate(); if (fans) samples = rollouts(); }
+        } else if (!forecast.length) { forecast = simulate(); if (fans) samples = rollouts(); }
         if (noDraw) return;
         ctx.clearRect(0, 0, w, h);
         const tiny = w < 380 || v.c.classList.contains('hero-canvas');
@@ -379,9 +398,22 @@
           ctx.beginPath(); ctx.moveTo(X1, Y1); ctx.lineTo(X2, Y2); ctx.stroke();
         }
         ctx.setLineDash([]);
-        // forecasts (observed agents)
+        // forecasts (observed agents): one deterministic path, or a fan of sampled futures
+        if (fans) {
+          samples.forEach((paths) => paths.forEach((path, k) => {
+            const a = A[FAN[k]], n = path.length;
+            ctx.beginPath();
+            ctx.moveTo(cx + a.x * S, cy + a.y * S);
+            for (let q = 0; q < n; q += 2) ctx.lineTo(cx + path[q] * S, cy + path[q + 1] * S);
+            ctx.strokeStyle = rgba(PAL.mint, 0.34);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.fillStyle = rgba(PAL.mint, 0.75);
+            ctx.beginPath(); ctx.arc(cx + path[n - 2] * S, cy + path[n - 1] * S, 1.7, 0, TAU); ctx.fill();
+          }));
+        }
         forecast.forEach((path, i) => {
-          if (hidden.has(i)) return;
+          if (fans || hidden.has(i)) return;
           const n = path.length / 2;
           for (let k = 0; k < n; k++) {
             const X = cx + path[2 * k] * S, Y = cy + path[2 * k + 1] * S;
@@ -435,7 +467,7 @@
           ctx.beginPath(); ctx.arc(108, y, 5, 0, TAU); ctx.stroke(); ctx.setLineDash([]);
           label(ctx, 'hidden · inferred', 119, y, PAL.muted, 11, 'left', 'middle');
           for (let k = 0; k < 4; k++) { ctx.fillStyle = rgba(PAL.mint, 0.9 - k * 0.2); ctx.beginPath(); ctx.arc(248 + k * 6, y, 1.4, 0, TAU); ctx.fill(); }
-          label(ctx, 'forecast', 276, y, PAL.muted, 11, 'left', 'middle');
+          label(ctx, fans ? 'sampled futures' : 'forecast', 276, y, PAL.muted, 11, 'left', 'middle');
         }
       },
     };
@@ -444,10 +476,14 @@
   /* ======================================================================
      lidar — bird's-eye view. Radar pings open regions of interest (ROIs); the
      rotating LiDAR samples densely inside ROIs and sparsely everywhere else.
+     opts.mode = 'camera' (task-driven RGB–LiDAR fusion): the camera proposes the ROIs, the LiDAR fires
+     only inside them, and its scan rate follows the ego vehicle's speed.
      ====================================================================== */
-  function lidarSketch(v) {
+  function lidarSketch(v, opts = {}) {
+    const cam = opts.mode === 'camera';
     const R = mulberry(5);
-    const lanes = [-3.6, 0, 3.6], laneV = [-2.4, 0.9, 2.2], egoV = 6, RANGE = 34;
+    const lanes = [-3.6, 0, 3.6], laneV = [-2.4, 0.9, 2.2], RANGE = 34, FOV = 0.6;
+    let egoV = 6, odo = 0;
     const rings = [4.5, 7.5, 11, 15.5, 21, 27.5];
     const objs = [];
     const freeLane = (y) => {
@@ -496,9 +532,12 @@
       frame(dt, noDraw) {
         const { w, h, ctx } = v;
         const t = v.t;
+        if (cam) egoV = 2.5 + 4.5 * (0.5 + 0.5 * Math.sin(t * 0.35));
+        const rate = cam ? 0.35 + 0.65 * ((egoV - 2.5) / 4.5) : 1 / 1.5; // LiDAR revolutions per second
         if (dt > 0) {
+          odo += egoV * dt;
           for (const o of objs) {
-            o.y += (o.kind === 'car' ? laneV[o.lane] : -egoV) * dt;
+            o.y += (o.kind === 'car' ? laneV[o.lane] + (6 - egoV) : -egoV) * dt;
             o.roi = Math.max(0, o.roi - dt);
           }
           for (let i = objs.length - 1; i >= 0; i--) {
@@ -508,19 +547,21 @@
           }
           radarT -= dt;
           if (radarT <= 0) {
-            radarT = 0.85;
+            radarT = cam ? 0.5 : 0.85;
             for (const o of objs) {
               if (o.kind !== 'car') continue;
               const d = Math.hypot(o.x, o.y);
-              if (d < 32 && o.y > -2) { o.roi = 1.9; pings.push({ x: o.x + (R() - 0.5) * 0.8, y: o.y + (R() - 0.5) * 0.8, b: t, o }); }
+              if (cam) { if (o.y > 0 && d < 30 && Math.abs(Math.atan2(o.x, o.y)) < FOV) o.roi = 1.2; }
+              else if (d < 32 && o.y > -2) { o.roi = 1.9; pings.push({ x: o.x + (R() - 0.5) * 0.8, y: o.y + (R() - 0.5) * 0.8, b: t, o }); }
             }
           }
           pings = pings.filter((p) => t - p.b < 0.9);
-          const a1 = ang + (TAU / 1.5) * dt;
+          const a1 = ang + TAU * rate * dt;
           let a = ang;
           while (a < a1) {
             const dx = Math.cos(a), dy = Math.sin(a);
             const dense = inRoi(a);
+            if (cam && !dense) { a += 0.042; continue; } // LiDAR stays off outside camera ROIs
             const hit = cast(dx, dy);
             if (hit.o) pts.push({ o: hit.o, ox: dx * hit.t - hit.o.x, oy: dy * hit.t - hit.o.y, b: t, roi: dense });
             for (const r of rings) if (r < hit.t) pts.push({ o: null, x: dx * r, y: dy * r, b: t });
@@ -545,11 +586,17 @@
         ctx.strokeStyle = rgba(PAL.muted, 0.35);
         ctx.beginPath(); ctx.moveTo(X(-5.4), 0); ctx.lineTo(X(-5.4), h); ctx.moveTo(X(5.4), 0); ctx.lineTo(X(5.4), h); ctx.stroke();
         ctx.setLineDash([2.2 * sc, 3.8 * sc]);
-        ctx.lineDashOffset = -((t * egoV * sc) % (6 * sc));
+        ctx.lineDashOffset = -((odo * sc) % (6 * sc));
         ctx.strokeStyle = rgba(PAL.muted, 0.3);
         ctx.beginPath(); ctx.moveTo(X(-1.8), 0); ctx.lineTo(X(-1.8), h); ctx.moveTo(X(1.8), 0); ctx.lineTo(X(1.8), h); ctx.stroke();
         ctx.setLineDash([]);
         ctx.lineDashOffset = 0;
+        if (cam) {
+          ctx.fillStyle = rgba(PAL.indigo, 0.08);
+          ctx.strokeStyle = rgba(PAL.indigo, 0.35);
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(ex, ey); ctx.arc(ex, ey, 30 * sc, -Math.PI / 2 - FOV, -Math.PI / 2 + FOV); ctx.closePath(); ctx.fill(); ctx.stroke();
+        }
         for (let k = 0; k < 10; k++) {
           const a0 = ang - (k + 1) * 0.06, a1 = ang - k * 0.06;
           ctx.fillStyle = rgba(PAL.amber, 0.16 * (1 - k / 10));
@@ -591,7 +638,19 @@
         ctx.fill();
         ctx.fillStyle = rgba(PAL.bg, 0.8);
         ctx.beginPath(); ctx.moveTo(X(0), Y(1.6)); ctx.lineTo(X(0.5), Y(0.6)); ctx.lineTo(X(-0.5), Y(0.6)); ctx.closePath(); ctx.fill();
-        if (w > 380) {
+        if (w > 380 && cam) {
+          label(ctx, 'BEV · camera-guided LiDAR', 16, 16, rgba(PAL.text, 0.85), 11);
+          const y = h - 16;
+          ctx.fillStyle = rgba(PAL.indigo, 0.6);
+          ctx.beginPath(); ctx.moveTo(22, y + 4); ctx.lineTo(16, y - 5); ctx.lineTo(28, y - 5); ctx.closePath(); ctx.fill();
+          label(ctx, 'camera ROI', 34, y, PAL.muted, 11, 'left', 'middle');
+          ctx.fillStyle = PAL.amber; ctx.fillRect(112, y - 1, 2, 2); ctx.fillRect(116, y - 1, 2, 2); ctx.fillRect(120, y - 1, 2, 2);
+          label(ctx, 'LiDAR in ROI only', 128, y, PAL.muted, 11, 'left', 'middle');
+          const gw = 64, gx = w - 16 - gw;
+          roundRect(ctx, gx, y - 3, gw, 6, 3); ctx.fillStyle = rgba(PAL.muted, 0.25); ctx.fill();
+          roundRect(ctx, gx, y - 3, Math.max(6, gw * rate), 6, 3); ctx.fillStyle = PAL.amber; ctx.fill();
+          label(ctx, w > 540 ? 'scan rate ∝ speed' : 'rate', gx - 8, y, PAL.muted, 11, 'right', 'middle');
+        } else if (w > 380) {
           label(ctx, 'BEV · radar-guided LiDAR sampling', 16, 16, rgba(PAL.text, 0.85), 11);
           const y = h - 16;
           ctx.fillStyle = PAL.rose;
@@ -706,12 +765,17 @@
   /* ======================================================================
      events — event-camera stream (ON/OFF events at moving edges) feeding a
      state-space memory h_t that drives the policy.
+     opts.value (MAPLE): adds the value estimate V̂(h_t) with an adaptive confidence band.
      ====================================================================== */
-  function eventsSketch(v) {
+  function eventsSketch(v, opts = {}) {
+    const value = !!opts.value;
     const R = mulberry(3);
     const H = 14;
     const hs = new Float32Array(H);
-    let evs = [];
+    const VN = 90, vh = new Float32Array(VN), vb = new Float32Array(VN);
+    let evs = [], vT = 0, band = 0.08, vPrev = 0.5;
+    vh.fill(0.5);
+    vb.fill(0.08);
     return {
       frame(dt) {
         const { w, h, ctx } = v;
@@ -740,6 +804,19 @@
             const u = 0.5 + 0.5 * Math.sin(th * (0.6 + i * 0.23) + i * 1.7);
             hs[i] = decay * hs[i] + (1 - decay) * u;
           }
+          if (value) {
+            vT += dt;
+            while (vT >= 0.05) {
+              vT -= 0.05;
+              let m = 0;
+              for (let i = 0; i < H; i++) m += hs[i];
+              const V = clamp(0.5 + 0.26 * Math.sin(t * 0.9) + 0.5 * (m / H - 0.5), 0.05, 0.95);
+              band += (0.04 + Math.min(0.2, Math.abs(V - vPrev) * 9) - band) * 0.15; // wider when the value moves fast
+              vPrev = V;
+              vh.copyWithin(0, 1); vb.copyWithin(0, 1);
+              vh[VN - 1] = V; vb[VN - 1] = band;
+            }
+          }
         }
         ctx.clearRect(0, 0, w, h);
         for (const e of evs) {
@@ -747,7 +824,7 @@
           ctx.fillStyle = rgba(e.p > 0 ? PAL.mint : PAL.rose, a * 0.95);
           ctx.fillRect(e.x - 1, e.y - 1, 2, 2);
         }
-        const x0 = split + 18, x1 = w - 18, by = h * 0.74, bh = h * 0.46;
+        const x0 = split + 18, x1 = w - 18, by = value ? h * 0.56 : h * 0.74, bh = value ? h * 0.36 : h * 0.46;
         const bw = (x1 - x0) / H;
         for (let i = 0; i < H; i++) {
           const val = clamp(hs[i], 0, 1);
@@ -766,7 +843,22 @@
         label(ctx, '+', 12, h - 12, PAL.mint, fs, 'left', 'bottom');
         label(ctx, '−', 26, h - 12, PAL.rose, fs, 'left', 'bottom');
         label(ctx, 'SSM state hₜ', x0, 12, rgba(PAL.text, 0.8), fs);
-        label(ctx, 'π(a | hₜ)', x1, h - 12, rgba(PAL.indigo, 0.95), fs, 'right', 'bottom');
+        if (value) {
+          const py0 = h * 0.66, py1 = h - 26, Y = (val) => lerp(py1, py0, val), X = (i) => lerp(x0, x1, i / (VN - 1));
+          ctx.beginPath();
+          for (let i = 0; i < VN; i++) ctx.lineTo(X(i), Y(clamp(vh[i] + vb[i], 0, 1)));
+          for (let i = VN - 1; i >= 0; i--) ctx.lineTo(X(i), Y(clamp(vh[i] - vb[i], 0, 1)));
+          ctx.closePath();
+          ctx.fillStyle = rgba(PAL.mint, 0.16);
+          ctx.fill();
+          ctx.beginPath();
+          for (let i = 0; i < VN; i++) ctx.lineTo(X(i), Y(vh[i]));
+          ctx.strokeStyle = PAL.mint;
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+          label(ctx, 'π', x1, by + 3, rgba(PAL.indigo, 0.95), fs, 'right', 'top');
+          label(ctx, 'V̂(hₜ) ± adaptive', x1, h - 12, rgba(PAL.mint, 0.95), fs, 'right', 'bottom');
+        } else label(ctx, 'π(a | hₜ)', x1, h - 12, rgba(PAL.indigo, 0.95), fs, 'right', 'bottom');
       },
     };
   }
@@ -963,6 +1055,7 @@
     register(name, factory) { SKETCHES[name] = factory; },
     boot,
     resume(canvas) { const vz = canvas && canvas._viz; if (vz && vz.visible && !document.hidden) vz.start(); },
+    pause(canvas) { canvas?._viz?.stop(); },
     lib: { TAU, clamp, lerp, easeIO, mulberry, makeNoise, rgba, label, roundRect, PAL, MONO, reduce },
   };
 })();

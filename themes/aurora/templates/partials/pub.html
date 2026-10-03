@@ -1,15 +1,21 @@
 <article class="pub" id="pub-{{ p.id }}" data-topics="{{ p.filters }}" data-search="{{ p.search }}" style="--tc:var(--{{ p.color }})">
-  <div class="pub-media">
-    {% if p.get('fig_sm') %}
-    <button class="pub-figure" type="button" data-lightbox data-full="{{ p.fig_lg }}" data-caption="{{ p.short }} — {{ p.title }}" aria-label="Enlarge figure: {{ p.short }}">
-      <img src="{{ p.fig_sm }}" alt="Figure from {{ p.short }}" loading="lazy" decoding="async">
-      <span class="zoom">{{ icon('expand') }}</span>
-    </button>
-    {% else %}
-    <div class="pub-figure pub-viz" title="Schematic illustration, not a figure from the paper">
-      <canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas>
+  <div class="pub-media" data-media="anim">
+    <div class="pub-stage">
+      <div class="pub-figure pub-viz stage-anim"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas></div>
+      {% if p.get('fig_sm') %}
+      <button class="pub-figure stage-fig" type="button" data-lightbox data-full="{{ p.fig_lg }}" data-caption="{{ p.short }} — {{ p.title }}" aria-label="Enlarge figure: {{ p.short }}">
+        <img src="{{ p.fig_sm }}" alt="Figure from {{ p.short }}" loading="lazy" decoding="async">
+        <span class="zoom">{{ icon('expand') }}</span>
+      </button>
+      {% endif %}
     </div>
-    <p class="viz-cap mono">schematic illustration · not a paper figure</p>
+    {% if p.get('fig_sm') %}
+    <div class="seg" role="group" aria-label="{{ p.short }}: animation or paper figure">
+      <button type="button" data-show="anim" aria-pressed="true">{{ icon('play') }}Animation</button>
+      <button type="button" data-show="fig" aria-pressed="false">{{ icon('image') }}Figure</button>
+    </div>
+    {% else %}
+    <p class="viz-cap mono">animated schematic</p>
     {% endif %}
   </div>
   <div class="pub-body">

@@ -41,11 +41,11 @@
     <a href="{{ url('/#publications') }}">Publications</a>
     <a href="{{ url('/#experience') }}">Experience</a>
     <a href="{{ url('/#news') }}">News</a>
-    <a href="{{ url('/blog/') }}">Writing</a>
+    {% if posts %}<a href="{{ url('/blog/') }}">Writing</a>{% endif %}
     <a href="{{ url('/#about') }}">About</a>
   </nav>
   <div class="searchbar" hidden>
-    <label>{{ icon('search') }}<input type="search" placeholder="Search papers and posts…" aria-label="Search papers and posts" autocomplete="off"></label>
+    <label>{{ icon('search') }}<input type="search" placeholder="Search {{ 'papers and posts' if posts else 'papers' }}…" aria-label="Search {{ 'papers and posts' if posts else 'papers' }}" autocomplete="off"></label>
   </div>
 </header>
 <main id="main">
@@ -59,8 +59,8 @@
       <a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Scholar</a> ∙
       <a href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub</a> ∙
       <a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn</a> ∙
-      <a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a> ∙
-      <a href="/blog/feed.xml">RSS</a>
+      <a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a>{% if posts %} ∙
+      <a href="/blog/feed.xml">RSS</a>{% endif %}
     </p>
     <p class="foot-meta">© {{ year }} {{ site.name }} · Updated {{ updated }} · No trackers, no paywall</p>
   </div>
@@ -69,6 +69,7 @@
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{{ asset('js/site.js') }}" defer></script>
 <script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ asset('js/viz-papers.js') }}" defer></script>
 <script src="{{ theme_asset('bulletin.js') }}" defer></script>
 {% block scripts %}{% endblock %}
 {{ live_reload }}

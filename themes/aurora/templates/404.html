@@ -6,7 +6,7 @@
   <div class="container">
     <p class="eyebrow"><span>404</span>Hidden agent</p>
     <h1 class="page-title">This page is <em>unobserved</em>.</h1>
-    <p class="page-sub">We couldn't infer its position. Try the <a href="{{ url('/') }}">homepage</a>, the <a href="{{ url('/#publications') }}">publications</a> or the <a href="{{ url('/blog/') }}">writing</a>.</p>
+    <p class="page-sub">We couldn't infer its position. Try the <a href="{{ url('/') }}">homepage</a>{% if posts %}, the <a href="{{ url('/#publications') }}">publications</a> or the <a href="{{ url('/blog/') }}">writing</a>{% else %} or the <a href="{{ url('/#publications') }}">publications</a>{% endif %}.</p>
   </div>
 </section>
 {% endblock %}

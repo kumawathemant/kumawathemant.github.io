@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-store="theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Animation lab — {{ site.name }}</title>
+<script>document.documentElement.dataset.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark';</script>
+<link rel="stylesheet" href="{{ aurora_css }}">
+<style>
+  body { padding: 28px clamp(16px, 3vw, 40px) 60px; }
+  .lab-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; margin: 0 0 22px; font: 500 13px/1.5 var(--font-mono); color: var(--muted); }
+  .lab-head strong { color: var(--text); font-weight: 600; }
+  .lab-head a { color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
+  .lab { display: grid; grid-template-columns: repeat(auto-fill, minmax({{ cell }}px, 1fr)); gap: 18px; }
+  .cell { margin: 0; }
+  .cell .pub-figure { aspect-ratio: 16 / 10; }
+  .cell figcaption { display: flex; justify-content: space-between; gap: 10px; margin-top: 8px; font: 12px/1.4 var(--font-mono); color: var(--text-2); }
+  .cell figcaption span { color: var(--muted); }
+</style>
+</head>
+<body>
+<p class="lab-head"><strong>Animation lab</strong> {{ pubs | length }} paper animations · schematic sketches, not paper figures ·
+  <a href="?theme=dark">dark</a> <a href="?theme=light">light</a> · <a href="/drafts/">← drafts</a></p>
+<div class="lab">
+  {% for p in pubs %}
+  <figure class="cell">
+    <div class="pub-figure pub-viz" style="--tc:var(--{{ p.color }})"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas></div>
+    <figcaption>{{ p.short }} <span>{{ p.viz }}</span></figcaption>
+  </figure>
+  {% endfor %}
+</div>
+<script src="{{ viz_js }}" defer></script>
+<script src="{{ viz_papers_js }}" defer></script>
+<script>
+  // ?t=<seconds> freezes every sketch at the same moment (for side-by-side QA)
+  addEventListener('load', () => {
+    const q = parseFloat(new URLSearchParams(location.search).get('t'));
+    if (Number.isNaN(q)) return;
+    document.querySelectorAll('canvas[data-viz]').forEach((c) => {
+      const vz = c._viz;
+      if (!vz) return;
+      vz.stop();
+      vz.start = () => {};
+      while (vz.t < q) { vz.t += 1 / 30; vz.sketch.frame(1 / 30, true); }
+      vz.sketch.frame(0, false);
+    });
+  });
+</script>
+{{ live_reload }}
+</body>
+</html>

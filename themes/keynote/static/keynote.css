@@ -197,7 +197,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* footer */
 .foot { background: #0b0b0c; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; letter-spacing: -.01em; }
 .foot-inner { width: min(100% - 44px, 980px); margin: 0 auto; padding: 36px 0 28px; }
-.foot-cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.foot-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
 .foot-cols h3 { margin: 0 0 10px; font-size: 12px; font-weight: 600; color: var(--text); }
 .foot-cols a { display: block; margin: 0 0 8px; color: var(--text-2); }
 .foot-cols a:hover { text-decoration: underline; }

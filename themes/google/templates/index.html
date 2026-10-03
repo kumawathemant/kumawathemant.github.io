@@ -136,9 +136,9 @@
   </div>
 </section>
 
-{# ============ 6 · news & writing ============ #}
+{# ============ 6 · news (& writing, when the blog is on) ============ #}
 <section class="slide updates" id="news">
-  <div class="wrap two">
+  <div class="wrap{% if posts %} two{% endif %}">
     <div>
       <p class="overline" data-reveal>Latest</p>
       <h2 class="headline left" data-reveal>News</h2>
@@ -146,6 +146,7 @@
         {% for n in news[:7] %}<li class="list-item" data-reveal style="--d:{{ loop.index0 % 3 }}"><span class="li-lead">{{ n.date }}</span><span class="li-text">{{ n.text | md }}</span></li>{% endfor %}
       </ul>
     </div>
+    {% if posts %}
     <div>
       <p class="overline" data-reveal>Writing</p>
       <h2 class="headline left" data-reveal>From the blog</h2>
@@ -159,6 +160,7 @@
         <a class="btn-text" href="{{ url('/blog/') }}">All posts {{ icon('arrow-right') }}</a>
       </div>
     </div>
+    {% endif %}
   </div>
 </section>
 

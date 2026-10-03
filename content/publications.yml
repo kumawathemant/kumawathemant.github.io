@@ -1,7 +1,8 @@
 # ---------------------------------------------------------------------------
 # Publications — newest first. To add a paper:
 #   1. python scripts/optimize_images.py figure path/to/teaser.png <id>
-#   2. add an entry below with `figure: <id>` (or `viz: events|chirp|agents` for an animated cover)
+#   2. add an entry below with `figure: <id>` (optional, the paper's own figure) and `viz: <sketch>`
+#      for its animation — sketch names are listed in README.md › Animations
 # Fields
 #   authors      list; append * for equal contribution. "Hemant Kumawat" is highlighted automatically.
 #   topics       any of: robot-learning, multi-agent, perception, edge   (drive the filter chips)
@@ -14,6 +15,7 @@
 # ---------------------------------------------------------------------------
 
 - id: maple
+  viz: maple
   short: MAPLE
   title: "MAPLE: Multimodal State-Space Mamba Agent for Event-based Policy with Adaptive Value Estimation"
   authors: [Hemant Kumawat, Saibal Mukhopadhyay]
@@ -22,7 +24,6 @@
   year: 2026
   topics: [robot-learning]
   selected: true
-  viz: events
   tldr: >-
     A multimodal state-space (Mamba) agent that learns control policies from event-based observations,
     paired with adaptive value estimation.
@@ -31,6 +32,7 @@
   bib: {journal: IEEE Robotics and Automation Letters}
 
 - id: dfdnet
+  viz: dfdnet
   short: DFDNet
   title: "DFDNet: Directional Feature Diffusion for Efficient Fully-Sparse LiDAR Object Detection"
   authors: [Meilong Zhang, Hemant Kumawat, Saibal Mukhopadhyay]
@@ -46,6 +48,7 @@
   bib: {type: misc, note: Under review}
 
 - id: trs
+  viz: chirp
   short: Sequential-chirp radar
   title: Towards Efficient and Robust Sequential Chirp based Data Driven Radar Processing for Object Detection
   authors: [Sudarshan Sharma, Hemant Kumawat, Anuvab Sen, J. Park, Saibal Mukhopadhyay]
@@ -54,7 +57,6 @@
   year: 2025
   citations: 1
   topics: [perception]
-  viz: chirp
   tldr: >-
     Data-driven radar object detection that processes the signal chirp by chirp with a sequential model,
     targeting efficiency and robustness.
@@ -63,6 +65,7 @@
   bib: {journal: IEEE Transactions on Radar Systems}
 
 - id: luga
+  viz: luga
   short: LUGA
   title: "LUGA: Lightweight Uncertainty-Guided Sensing Resolution Adaptation for Energy Efficient Radar Processing"
   authors: [Sudarshan Sharma, J. Park, Hemant Kumawat, Saibal Mukhopadhyay]
@@ -71,7 +74,6 @@
   year: 2025
   citations: 1
   topics: [perception, edge]
-  viz: chirp-adaptive
   tldr: >-
     A lightweight, uncertainty-guided policy that adapts radar sensing resolution on the fly to save energy.
   links:
@@ -79,6 +81,7 @@
   bib: {booktitle: 2025 IEEE SENSORS, pages: 1--4}
 
 - id: sdgn
+  viz: sdgn
   short: SDGN
   title: Adaptive Graph Structure Inference for Learning Multivariate Point Processes using Spiking Neural Networks
   authors: [Biswadeep Chakraborty, Hemant Kumawat, Beomseok Kang, Saibal Mukhopadhyay]
@@ -108,6 +111,7 @@
   bib: {booktitle: 2025 International Joint Conference on Neural Networks (IJCNN), pages: 1--8}
 
 - id: sensing-to-action
+  viz: s2a
   short: Sensing-to-Action
   title: "Intelligent Sensing-to-Action for Robust Autonomy at the Edge: Opportunities and Challenges"
   authors: [Amit Ranjan Trivedi, Sina Tayebati, Hemant Kumawat, Nastaran Darabi, Divake Kumar, Adarsh Kumar Kosta, Yeshwanth Venkatesha, Dinithi Jayasuriya, Nethmi Jayasinghe, Priyadarshini Panda, Saibal Mukhopadhyay, Kaushik Roy]
@@ -144,6 +148,7 @@
   bib: {booktitle: "2025 Design, Automation & Test in Europe Conference & Exhibition (DATE)"}
 
 - id: adacred
+  viz: adacred
   short: AdaCred
   title: "AdaCred: Adaptive Causal Decision Transformers with Feature Crediting"
   authors: [Hemant Kumawat, Saibal Mukhopadhyay]
@@ -175,6 +180,7 @@
   bib: {booktitle: Proceedings of the 24th International Conference on Autonomous Agents and Multiagent Systems (AAMAS)}
 
 - id: robokoop
+  viz: robokoop
   short: RoboKoop
   title: "RoboKoop: Efficient Control Conditioned Representations from Visual Input in Robotics using Koopman Operator"
   authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
@@ -217,6 +223,7 @@
     year: 2025
 
 - id: stemfold
+  viz: stemfold
   short: STEMFold
   title: "STEMFold: Stochastic Temporal Manifold for Multi-Agent Interactions in the Presence of Hidden Agents"
   authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
@@ -256,6 +263,7 @@
     publisher: PMLR
 
 - id: chirpnet
+  viz: chirpnet
   short: ChirpNet
   title: "ChirpNet: Noise-Resilient Sequential Chirp Based Radar Processing for Object Detection"
   authors: [Sudarshan Sharma*, Hemant Kumawat*, Saibal Mukhopadhyay]
@@ -287,6 +295,7 @@
   bib: {booktitle: 2024 IEEE/MTT-S International Microwave Symposium (IMS), pages: 102--105, doi: 10.1109/IMS40175.2024.10600387}
 
 - id: cognitive-sensing
+  viz: cogsense
   short: Cognitive sensing
   title: Cognitive Sensing for Energy-Efficient Edge Intelligence
   authors: [Minah Lee, Sudarshan Sharma, Wei Chun Wang, Hemant Kumawat, Nael Mizanur Rahman, Saibal Mukhopadhyay]
@@ -316,6 +325,7 @@
   bib: {booktitle: "2024 Design, Automation & Test in Europe Conference & Exhibition (DATE)", pages: 1--6, doi: 10.23919/DATE58400.2024.10546823}
 
 - id: stagenet
+  viz: stagenet
   short: STAGE Net
   title: "STAGE Net: Spatio-Temporal Attention-based Graph Encoding for Learning Multi-Agent Interactions in the Presence of Hidden Agents"
   authors: [Hemant Kumawat, Biswadeep Chakraborty, Saibal Mukhopadhyay]
@@ -324,7 +334,6 @@
   year: 2023
   citations: 4
   topics: [multi-agent]
-  viz: agents
   tldr: >-
     Spatiotemporal attention with neural inter-node messaging models systems of interacting agents in which
     some agents are never observed, with no prior on the interaction graph.
@@ -350,6 +359,7 @@
   bib: {type: misc, howpublished: OpenReview, url: "https://openreview.net/forum?id=tsj6rDzI0V"}
 
 - id: radar-attention
+  viz: radarcam
   short: Radar-guided attention
   title: Radar Guided Dynamic Visual Attention for Resource-Efficient RGB Object Detection
   authors: [Hemant Kumawat, Saibal Mukhopadhyay]
@@ -388,6 +398,7 @@
   bib: {booktitle: 2022 International Joint Conference on Neural Networks (IJCNN), pages: 1--8, doi: 10.1109/IJCNN55064.2022.9892184}
 
 - id: false-negatives
+  viz: fnbacktrace
   short: Origins of false negatives
   title: A Methodology for Understanding the Origins of False Negatives in DNN Based Object Detectors
   authors: [Kruttidipta Samal, Hemant Kumawat, Marilyn Wolf, Saibal Mukhopadhyay]
@@ -418,6 +429,7 @@
   bib: {booktitle: 2022 International Joint Conference on Neural Networks (IJCNN), pages: 1--8, doi: 10.1109/IJCNN55064.2022.9892390}
 
 - id: rgb-lidar-fusion
+  viz: lidar-camera
   short: Task-driven RGB–LiDAR fusion
   title: Task-Driven RGB-Lidar Fusion for Object Tracking in Resource-Efficient Autonomous System
   authors: [Kruttidipta Samal, Hemant Kumawat, Priyabrata Saha, Marilyn Wolf, Saibal Mukhopadhyay]

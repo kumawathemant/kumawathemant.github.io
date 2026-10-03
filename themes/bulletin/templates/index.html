@@ -98,7 +98,7 @@
       <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="latest">Latest</button>
       <button class="tab" type="button" role="tab" aria-selected="false" data-tab="top">Top</button>
       <button class="tab" type="button" role="tab" aria-selected="false" data-tab="first">First author</button>
-      <button class="tab" type="button" role="tab" aria-selected="false" data-tab="writing">Writing</button>
+      {% if posts %}<button class="tab" type="button" role="tab" aria-selected="false" data-tab="writing">Writing</button>{% endif %}
     </div>
     <button class="ico" type="button" data-search-toggle aria-label="Search">{{ icon('search') }}</button>
   </div>
@@ -111,9 +111,11 @@
   <div class="archive" data-panel="first" hidden>
     {% for p in pubs if p.first_author or p.co_first %}{{ paper_row(p) }}{% endfor %}
   </div>
+  {% if posts %}
   <div class="archive" data-panel="writing" hidden>
     {% for p in posts %}{{ post_row(p) }}{% endfor %}
   </div>
+  {% endif %}
   <p class="empty" hidden>Nothing matches that search.</p>
   <p class="note">★ first or co-first author · * equal contribution · citations from Google Scholar, {{ site.stats.as_of }}</p>
 

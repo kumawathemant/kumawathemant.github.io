@@ -16,12 +16,11 @@
 <article class="page">
   <div class="page-icon emoji">{{ pe(post.slug) }}</div>
   <h1 class="page-title">{{ post.title }}</h1>
-  <div class="props">
-    <div class="prop"><span class="prop-k">{{ icon('calendar') }}Created</span><span class="prop-v">{{ post.date_str }}</span></div>
-    <div class="prop"><span class="prop-k">{{ icon('list') }}Tags</span><span class="prop-v tags">{% for t in post.tags %}<span class="tag c-{{ loop.cycle('blue', 'green', 'purple', 'orange', 'pink') }}">{{ t }}</span>{% endfor %}</span></div>
-    <div class="prop"><span class="prop-k">{{ icon('clock') }}Reading time</span><span class="prop-v">{{ post.read_min }} min</span></div>
-    <div class="prop"><span class="prop-k">{{ icon('user') }}Author</span><span class="prop-v"><img class="avatar" src="/assets/img/portrait-480.webp" alt="" width="20" height="20">{{ site.name }}</span></div>
-  </div>
+  <p class="post-meta">
+    <span>{{ icon('calendar') }}{{ post.date_str }}</span>
+    <span>{{ icon('clock') }}{{ post.read_min }} min read</span>
+    {% if post.tags %}<span class="tags">{% for t in post.tags %}<span class="tag c-{{ loop.cycle('blue', 'green', 'purple', 'orange', 'pink') }}">{{ t }}</span>{% endfor %}</span>{% endif %}
+  </p>
   {% if post.description %}<div class="callout c-bg-gray"><span class="callout-icon">💡</span><div>{{ post.description }}</div></div>{% endif %}
   {% if post.toc %}
   <nav class="toc-block" aria-label="Table of contents">

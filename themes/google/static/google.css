@@ -214,6 +214,7 @@ a.chip:hover, button.chip:hover { background: color-mix(in srgb, var(--on) 8%, t
 .list { list-style: none; margin: 0; padding: 0; border-radius: var(--r-xl); background: var(--s-low); overflow: hidden; }
 .list-item { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding: 16px 22px; border-bottom: 1px solid var(--outline-var); }
 .list-item:last-child { border-bottom: 0; }
+.updates .wrap:not(.two) .list { max-width: 880px; }
 .li-lead { font-size: 13px; font-weight: 600; color: var(--primary); padding-top: 2px; }
 .li-text { font-size: 15px; line-height: 1.5; color: var(--on-var); }
 .li-text strong { color: var(--on); font-weight: 600; }

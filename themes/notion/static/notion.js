@@ -1,4 +1,4 @@
-/* Draft 2 · Notion — side peek, database views, quick find, sidebar */
+/* Draft 2 · Notion — side peek, database views, quick find, section tracking */
 (() => {
   'use strict';
   const $ = (s, el = document) => el.querySelector(s);
@@ -92,20 +92,26 @@
   lb?.addEventListener('click', (e) => { if (e.target === lb || e.target.closest('.lb-x')) lb.close(); });
   if (location.hash.startsWith('#pub-')) setTimeout(() => openPeek(location.hash.slice(5), false), 200);
 
-  /* ---------- sidebar (mobile) + active section ---------- */
-  const toggleSb = (open) => document.body.classList.toggle('sb-open', open);
-  $$('[data-sidebar-toggle]').forEach((b) => b.addEventListener('click', () => toggleSb(!document.body.classList.contains('sb-open'))));
-  $$('[data-sidebar-close], .sidebar a').forEach((el) => el.addEventListener('click', () => toggleSb(false)));
-  const items = $$('.sidebar [data-sb]');
-  const secs = items.map((a) => document.getElementById(a.dataset.sb)).filter(Boolean);
-  if (secs.length && 'IntersectionObserver' in window) {
-    const seen = new Set();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => (en.isIntersecting ? seen.add(en.target) : seen.delete(en.target)));
-      const cur = secs.find((s) => seen.has(s));
-      items.forEach((a) => a.classList.toggle('is-active', !!cur && a.dataset.sb === cur.id));
-    }, { rootMargin: '-20% 0px -70% 0px' });
-    secs.forEach((s) => io.observe(s));
+  /* ---------- top bar: current section -> active link + breadcrumb ---------- */
+  const links = $$('.tb-link[data-sec]');
+  const secs = links.map((a) => document.getElementById(a.dataset.sec)).filter(Boolean);
+  const crumb = $('[data-crumb]');
+  const home = crumb?.textContent;
+  if (secs.length) {
+    let raf = 0, last;
+    const track = () => {
+      raf = 0;
+      const line = innerHeight * 0.3;
+      let cur = null;
+      for (const s of secs) if (s.getBoundingClientRect().top < line) cur = s;
+      if (cur === last) return;
+      last = cur;
+      const link = cur && links.find((l) => l.dataset.sec === cur.id);
+      links.forEach((l) => l.classList.toggle('is-active', l === link));
+      if (crumb) crumb.textContent = link ? `${link.dataset.emoji} ${link.textContent}` : home;
+    };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(track); }, { passive: true });
+    track();
   }
 
   /* ---------- quick find (⌘K) ---------- */

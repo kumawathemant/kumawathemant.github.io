@@ -12,6 +12,9 @@ description: >-
   Research on multimodal foundation models, robot learning, multi-agent forecasting and efficient perception.
 location: Seattle, WA
 cv: /assets/pdf/HemantCV.pdf
+# Writing/blog. false = no Writing section, nav links, /blog/ pages or feeds in any theme
+# (old /blog/ URLs redirect to the homepage). Posts stay in content/posts/ — set true to bring them back.
+blog: false
 
 # Rendered as user [at] domain on the page; assembled into a mailto link by JS.
 email:
@@ -44,6 +47,14 @@ hero:
     - efficient adaptation of vision-action models
     - evaluating LLM assistants in the wild
     - 3D occupancy with Gaussian queries
+
+# Short bio for the homepage intro — two sentences, so visitors reach the research quickly
+intro: >-
+  I'm an Applied Scientist on Microsoft's **Gaming AI** team, building efficient, real-time
+  vision-language models that understand gameplay. I did my Ph.D. at **Georgia Tech** with
+  [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay) on robot learning,
+  multi-agent forecasting and perception that decides what to sense, with internships at **Qualcomm**,
+  **Amazon Robotics** and **CMU**.
 
 # Google Scholar snapshot (update occasionally)
 stats:

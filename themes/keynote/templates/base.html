@@ -32,7 +32,7 @@
       <a href="{{ url('/#research') }}">Research</a>
       <a href="{{ url('/#lineup') }}">Papers</a>
       <a href="{{ url('/#journey') }}">Journey</a>
-      <a href="{{ url('/blog/') }}">Writing</a>
+      {% if posts %}<a href="{{ url('/blog/') }}">Writing</a>{% endif %}
       {% if page == 'home' %}<button class="ln-play" type="button" data-present aria-label="Play as a keynote presentation">{{ icon('play') }}Play</button>{% endif %}
       <a class="pill-btn sm" href="{{ site.cv }}">CV</a>
     </div>
@@ -46,7 +46,7 @@
     <div class="foot-cols">
       <div><h3>Research</h3><a href="{{ url('/#research') }}">Threads</a><a href="{{ url('/#lineup') }}">Papers</a><a href="{{ url('/#numbers') }}">By the numbers</a></div>
       <div><h3>About</h3><a href="{{ url('/#journey') }}">Journey</a><a href="{{ url('/#news') }}">Newsroom</a><a href="{{ site.cv }}">CV (PDF)</a></div>
-      <div><h3>Writing</h3>{% for p in posts[:3] %}<a href="{{ url(p.url) }}">{{ p.title }}</a>{% endfor %}</div>
+      {% if posts %}<div><h3>Writing</h3>{% for p in posts[:3] %}<a href="{{ url(p.url) }}">{{ p.title }}</a>{% endfor %}</div>{% endif %}
       <div><h3>Elsewhere</h3><a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Google Scholar</a><a href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub</a><a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a></div>
     </div>
     <p class="foot-legal">Copyright © {{ year }} {{ site.name }}. All rights reserved. · Updated {{ updated }} · {{ site.location }}</p>
@@ -61,6 +61,7 @@
 <div class="toast" role="status" aria-live="polite"></div>
 <script src="{{ asset('js/site.js') }}" defer></script>
 <script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ asset('js/viz-papers.js') }}" defer></script>
 <script src="{{ asset('js/present.js') }}" defer></script>
 <script src="{{ theme_asset('keynote.js') }}" defer></script>
 {% block scripts %}{% endblock %}

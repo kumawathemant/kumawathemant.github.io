@@ -47,6 +47,7 @@
     } else setTheme(next, true);
   }));
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+    if ('themeFixed' in root.dataset) return; // this design has a fixed default, not the OS setting
     let saved = null;
     try { saved = localStorage.getItem(STORE); } catch {}
     if (!saved) setTheme(e.matches ? 'light' : 'dark', false);
@@ -114,30 +115,6 @@
     revealEls.forEach((el) => rio.observe(el));
   } else revealEls.forEach((el) => el.classList.add('is-in'));
 
-  /* ---------------- typewriter ---------------- */
-  const typed = $('.typed');
-  if (typed && !reduceMotion) {
-    let phrases = [];
-    try { phrases = JSON.parse(typed.dataset.phrases || '[]'); } catch {}
-    if (phrases.length > 1) {
-      let i = 0, n = phrases[0].length, deleting = true;
-      const tick = () => {
-        const word = phrases[i];
-        if (deleting) {
-          n -= 1;
-          typed.textContent = word.slice(0, n);
-          if (n <= 0) { deleting = false; i = (i + 1) % phrases.length; return setTimeout(tick, 380); }
-          return setTimeout(tick, 22);
-        }
-        n += 1;
-        typed.textContent = phrases[i].slice(0, n);
-        if (n >= phrases[i].length) { deleting = true; return setTimeout(tick, 2600); }
-        return setTimeout(tick, 42 + Math.random() * 46);
-      };
-      setTimeout(tick, 3400);
-    }
-  }
-
   /* ---------------- count-up stats ---------------- */
   const counters = $$('[data-count]');
   if (counters.length && 'IntersectionObserver' in window && !reduceMotion) {
@@ -163,20 +140,6 @@
       el.style.setProperty('--mx', `${e.clientX - r.left}px`);
       el.style.setProperty('--my', `${e.clientY - r.top}px`);
     }));
-  }
-
-  /* ---------------- portrait tilt ---------------- */
-  const tilt = $('[data-tilt]');
-  if (tilt && finePointer && !reduceMotion) {
-    tilt.addEventListener('pointermove', (e) => {
-      const r = tilt.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-      tilt.style.setProperty('--ry', `${(x - 0.5) * 10}deg`);
-      tilt.style.setProperty('--rx', `${(0.5 - y) * 10}deg`);
-      tilt.style.setProperty('--sx', `${x * 100}%`);
-      tilt.style.setProperty('--sy', `${y * 100}%`);
-    });
-    tilt.addEventListener('pointerleave', () => { tilt.style.setProperty('--rx', '0deg'); tilt.style.setProperty('--ry', '0deg'); });
   }
 
   /* ---------------- timeline progress line ---------------- */
@@ -283,6 +246,18 @@
     const all = list.classList.toggle('show-all');
     $$('.news-item.is-extra', list).forEach((li) => li.classList.add('is-in'));
     e.currentTarget.textContent = all ? 'Show fewer' : `Show all ${$$('.news-item', list).length} updates`;
+  });
+
+  /* ---------------- paper media: animation <-> figure ---------------- */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-show]');
+    const media = btn?.closest('[data-media]');
+    if (!media) return;
+    media.dataset.media = btn.dataset.show;
+    $$('[data-show]', media).forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    const canvas = $('canvas', media);
+    if (btn.dataset.show === 'anim') window.hkViz?.resume(canvas);
+    else window.hkViz?.pause(canvas);
   });
 
   /* ---------------- email (assembled client-side to deter scrapers) ---------------- */

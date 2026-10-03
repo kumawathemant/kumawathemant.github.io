@@ -37,7 +37,8 @@
   <h1>Design drafts</h1>
   <p class="lead">Same content, {{ themes | length }} designs. Click a preview to open it — every page shows a
     switcher at the bottom-left, and <code>[</code> / <code>]</code> flips between drafts on the same page.
-    To publish one, set <code>theme: &lt;name&gt;</code> in <code>content/site.yml</code>.</p>
+    To publish one, set <code>theme: &lt;name&gt;</code> in <code>content/site.yml</code>.
+    All paper animations side by side: <a href="/drafts/vizlab/" style="color:#f2f2f4">animation lab →</a></p>
   <div class="grid">
     {% for t in themes %}
     <article class="card">
@@ -49,7 +50,7 @@
         <div class="row"><span class="name">{{ t.label }}{% if t.key == live %}<span class="live">live</span>{% endif %}</span><span class="num">draft {{ t.draft }} · theme: {{ t.key }}</span></div>
         <span class="tag">{{ t.tagline }}</span>
         <span class="insp">Inspired by {{ t.inspiration }}</span>
-        <div class="links"><a href="/drafts/{{ t.key }}/">Home</a><a href="/drafts/{{ t.key }}/blog/">Writing</a><a href="/drafts/{{ t.key }}/blog/2024/kan/">A post</a></div>
+        <div class="links"><a href="/drafts/{{ t.key }}/">Home</a>{% if posts %}<a href="/drafts/{{ t.key }}/blog/">Writing</a><a href="/drafts/{{ t.key }}{{ posts[0].url }}">A post</a>{% endif %}</div>
       </div>
     </article>
     {% endfor %}
