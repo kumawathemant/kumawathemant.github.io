@@ -118,11 +118,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .screen-glass canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .screen figcaption { margin: 18px auto 0; max-width: 640px; font-size: 14px; color: var(--muted); letter-spacing: -.01em; }
 .screen.sm { max-width: 760px; }
-.feature-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 48px; max-width: 980px; margin: 52px auto 0; text-align: left; }
-.feature-cols h3 { margin: 0 0 8px; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--text); }
-.feature-cols .next h3 { color: var(--accent, var(--link)); }
-.feature-cols p { margin: 0; font-size: 17px; line-height: 1.5; letter-spacing: -.01em; color: var(--text-2); }
-@media (max-width: 720px) { .feature-cols { grid-template-columns: 1fr; } }
 .feature-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 30px; margin: 32px 0 0; }
 
 /* lineup carousel */

@@ -63,8 +63,6 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .tb-btn:hover { background: var(--hover); color: var(--text); }
 .tb-btn .icon { width: 18px; height: 18px; }
 .tb-text { padding: 0 8px; }
-.tb-cv { padding: 0 10px; color: var(--text); font-weight: 500; }
-.tb-cv .icon { width: 16px; height: 16px; }
 .theme-toggle .i-sun, [data-theme="dark"] .theme-toggle .i-moon { display: none; }
 [data-theme="dark"] .theme-toggle .i-sun { display: block; }
 
@@ -155,12 +153,7 @@ strong { font-weight: 600; }
 .r-body { padding: 18px 22px 20px; }
 .r-title { display: flex; gap: 10px; margin: 0 0 8px; font-size: 21px; font-weight: 650; line-height: 1.3; letter-spacing: -.01em; }
 .r-kicker { margin: 0 0 4px; font-size: 12.5px; font-weight: 500; letter-spacing: .02em; color: var(--muted); }
-.r-problem { margin: 0 0 10px; font-size: 16.5px; line-height: 1.6; }
-.r-text { margin: 0 0 12px; font-size: 15px; line-height: 1.6; color: var(--text-2); }
-.r-text strong, .r-next strong { color: var(--text); font-weight: 600; }
-.r-next { display: flex; gap: 10px; margin: 0 0 14px; padding: 11px 14px; border-radius: 6px; background: var(--b-blue); font-size: 15px; line-height: 1.55; }
-.r-next p { margin: 0; }
-.r-next-icon { flex: none; font-size: 17px; line-height: 1.35; }
+.r-text { margin: 0 0 12px; font-size: 16px; line-height: 1.6; color: var(--text-2); }
 
 /* paper media: animation <-> real figure */
 .media { position: relative; margin: 6px 0 16px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: var(--b-gray); box-shadow: inset 0 0 0 1px var(--line-2); }

@@ -13,7 +13,7 @@
     <h1 class="hero-title" data-reveal style="--d:2">Hemant <span class="grad">Kumawat.</span></h1>
     <p class="hero-sub" data-reveal style="--d:3">Agents that perceive, predict and act.<br>In the physical world — and in virtual ones.</p>
     <div class="hero-ctas" data-reveal style="--d:4">
-      <a class="pill-btn" href="{{ site.cv }}">Download CV</a>
+      <a class="pill-btn" href="#contact">Get in touch</a>
       <button class="link-arrow" type="button" data-present>Watch the keynote {{ icon('chevron-right') }}</button>
     </div>
   </div>
@@ -67,15 +67,11 @@
   <div class="wrap">
     <p class="eyebrow accent" data-reveal>{{ t.kicker | title }}</p>
     <h2 class="headline" data-reveal style="--d:1">{{ t.title }}</h2>
-    <p class="lede narrow" data-reveal style="--d:2">{{ t.problem }}</p>
+    <p class="lede narrow" data-reveal style="--d:2">{{ t.text }}</p>
     <figure class="screen" data-reveal style="--d:3">
       <div class="screen-glass"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas></div>
       <figcaption>{{ t.caption }}</figcaption>
     </figure>
-    <div class="feature-cols" data-reveal>
-      <div><h3>So far</h3><p>{{ t.text }}</p></div>
-      <div class="next"><h3>Next</h3><p>{{ t.next }}</p></div>
-    </div>
     <p class="feature-links" data-reveal>
       {% for pid in t.get('papers') or [] %}<a class="link-arrow" href="#pub-{{ pid }}">{{ pubs_by_id[pid].short }} {{ icon('chevron-right') }}</a>{% endfor %}
       {% for c in t.get('chips') or [] %}<a class="link-arrow" href="{{ c.href }}">{{ c.label }} {{ icon('chevron-right') }}</a>{% endfor %}

@@ -12,12 +12,11 @@
     <p class="intro-role">{{ site.now.role }} @ <strong>{{ site.now.org }}</strong><span class="dim"> · {{ site.location }}</span></p>
     <p class="intro-bio">{{ site.intro | md }}</p>
     <div class="intro-links">
-      <a class="n-btn" href="{{ site.cv }}">{{ icon('file') }}CV</a>
+      <a class="n-btn" href="#" data-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}Email</a>
       <a class="n-btn ghost" href="{{ site.links.scholar }}" target="_blank" rel="noopener">{{ icon('scholar') }}Scholar</a>
       <a class="n-btn ghost" href="{{ site.links.github }}" target="_blank" rel="noopener">{{ icon('github') }}GitHub</a>
       <a class="n-btn ghost" href="{{ site.links.linkedin }}" target="_blank" rel="noopener">{{ icon('linkedin') }}LinkedIn</a>
       <a class="n-btn ghost" href="{{ site.links.x }}" target="_blank" rel="noopener">{{ icon('x') }}X</a>
-      <a class="n-btn ghost" href="#" data-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}Email</a>
     </div>
   </header>
 
@@ -31,9 +30,7 @@
       <div class="r-body">
         <p class="r-kicker">{{ t.kicker | capitalize }}</p>
         <h3 class="r-title"><span class="r-emoji">{{ t.emoji }}</span>{{ t.title }}</h3>
-        <p class="r-problem">{{ t.problem }}</p>
-        <p class="r-text"><strong>So far</strong> — {{ t.text }}</p>
-        <div class="r-next"><span class="r-next-icon" aria-hidden="true">🔭</span><p><strong>Next</strong> — {{ t.next }}</p></div>
+        <p class="r-text">{{ t.text }}</p>
         <div class="mentions">
           {% for pid in t.get('papers') or [] %}<a class="mention" href="#pub-{{ pid }}" data-peek="{{ pid }}"><span>📄</span><span class="m-t">{{ pubs_by_id[pid].short }}</span></a>{% endfor %}
           {% for c in t.get('chips') or [] %}<a class="mention" href="{{ c.href }}"><span>💼</span><span class="m-t">{{ c.label }}</span></a>{% endfor %}
@@ -199,7 +196,7 @@
     <span class="callout-icon">📬</span>
     <div>
       <p><strong>Get in touch.</strong> Happy to talk research, collaborations or ideas — email is fastest.</p>
-      <p class="contact-row"><button class="n-btn" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}<span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span></button><a class="n-btn ghost" href="{{ site.cv }}">{{ icon('download') }}Download CV</a></p>
+      <p class="contact-row"><button class="n-btn" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}<span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span></button></p>
     </div>
   </div>
   <p class="page-foot dim">Last edited {{ updated }}</p>

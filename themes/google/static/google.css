@@ -161,15 +161,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .thread-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .thread.c-green .chip-label { color: var(--green-on); } .thread.c-blue .chip-label { color: var(--blue-on); }
 .thread.c-yellow .chip-label { color: var(--yellow-on); } .thread.c-red .chip-label { color: var(--red-on); }
-.thread .body-m { margin: 2px 0 12px; }
-.thread .body-m.problem { color: var(--on); font-size: 16.5px; }
-.thread .body-m strong { color: var(--on); font-weight: 600; }
-.next-box { margin: 0 0 16px; padding: 12px 16px 13px; border-radius: 16px; background: var(--s-high); font-size: 15px; line-height: 1.55; }
-.next-l { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
-.thread.c-green .next-box { background: var(--green-c); } .thread.c-green .next-l { color: var(--green-on); }
-.thread.c-blue .next-box { background: var(--blue-c); } .thread.c-blue .next-l { color: var(--blue-on); }
-.thread.c-yellow .next-box { background: var(--yellow-c); } .thread.c-yellow .next-l { color: var(--yellow-on); }
-.thread.c-red .next-box { background: var(--red-c); } .thread.c-red .next-l { color: var(--red-on); }
+.thread .body-m { margin: 2px 0 14px; }
 .chipset { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
 .chip { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--outline-var); font-size: 14px; font-weight: 500; color: var(--on-var); background: transparent; transition: background-color .2s, border-color .2s, color .2s; }
 a.chip:hover, button.chip:hover { background: color-mix(in srgb, var(--on) 8%, transparent); }

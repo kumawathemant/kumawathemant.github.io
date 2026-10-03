@@ -11,7 +11,6 @@ description: >-
   Hemant Kumawat — Applied Scientist, Gaming AI at Microsoft; Ph.D. in ECE from Georgia Tech.
   Research on world models, multimodal foundation models and robot learning: agents that model the world and act in it.
 location: Seattle, WA
-cv: /assets/pdf/HemantCV.pdf
 # Writing/blog. false = no Writing section, nav links, /blog/ pages or feeds in any theme
 # (old /blog/ URLs redirect to the homepage). Posts stay in content/posts/ — set true to bring them back.
 blog: false
@@ -92,10 +91,9 @@ about:
     - Multi-agent prediction
     - Efficient, closed-loop perception
 
-# Research, framed as open problems: what is hard, what I have built toward it, where I am taking it next.
-#   title    the problem, as a question        problem  why it is hard / why it matters
-#   text     the work so far                   next     where it goes next
-#   viz      animated figure: koopman | agents | lidar | tokens | events | chirp | ... (see README)
+# Research, framed as open problems. Each thread: `title` is the problem as a question; `text` is one
+# paragraph — why it is hard, what I have built toward it, where it leads. `viz` is its animated figure
+# (koopman | agents | lidar | tokens | events | chirp | ..., see README).
 research:
   title: Four open problems on the way to agents that *model the world and act in it*.
 threads:
@@ -105,17 +103,12 @@ threads:
     viz: koopman
     kicker: world models
     title: How do we learn world models an agent can plan with?
-    problem: >-
-      Generative models can already imagine convincing futures. Planning asks for more: a model that
-      responds to actions, stays consistent over long horizons, and is cheap enough to query inside a
-      control loop.
     text: >-
-      I learn compact, action-conditioned dynamics — Koopman embeddings that make visual dynamics linear,
-      so a linear controller acts directly from pixels (10× less compute, +20% accuracy), and
-      object-centric 3D occupancy world models built from sparse, trackable Gaussian queries.
-    next: >-
-      Structured, controllable world models learned from video and interaction, for games and robots —
-      and agents that plan inside them.
+      Generative models can imagine convincing futures, but planning needs models that respond to actions,
+      stay consistent over long horizons and are cheap enough to run inside a control loop. I learn
+      compact, action-conditioned dynamics — Koopman embeddings that let a linear controller act directly
+      from pixels, and object-centric 3D occupancy world models — building toward controllable world
+      models for games and robots.
     caption: "Koopman lifting — tangled orbits in observation space become clean rotations in the latent space, where a linear controller suffices."
     legend: "hover to scrub"
     papers: [robokoop]
@@ -128,17 +121,11 @@ threads:
     viz: tokens
     kicker: multimodal foundation models
     title: How do we turn foundation models that describe into agents that act?
-    problem: >-
-      Vision-language models can caption a frame, yet still struggle to track state over time, ground
-      language in action, adapt to a new embodiment from little data — and stay truthful, in real time.
     text: >-
-      At Microsoft I build real-time vision-language models that understand gameplay, and evaluation
-      pipelines that catch hallucinations in Copilot. In my Ph.D.: decision transformers that credit only
-      the tokens that matter, Mamba state-space policies over event streams, and adapting vision-action
-      models to new embodiments from limited data.
-    next: >-
-      Vision-language-action models grounded in interaction — with games as a scalable testbed for
-      embodied agents.
+      Vision-language models can caption a frame, yet struggle to track state, ground language in action
+      and stay truthful in real time. I work on closing that gap: real-time VLMs that understand gameplay
+      at Microsoft and, in my Ph.D., decision transformers and Mamba policies that learn from interaction,
+      and vision-action models adapted to new embodiments from little data.
     caption: "Patch attention follows the entities that matter while a compact state description is decoded token by token."
     legend: "illustrative"
     papers: [adacred, maple]
@@ -151,16 +138,12 @@ threads:
     viz: agents
     kicker: multi-agent world models
     title: How should agents reason about what they can't see?
-    problem: >-
-      Real environments are partially observed: other agents are hidden, their interactions are unknown
-      and the future is uncertain. A useful world model has to represent that uncertainty, not average it
-      away.
     text: >-
-      I build stochastic generative models that infer hidden agents and their interactions from the agents
-      we can see, spiking networks that learn interaction graphs straight from event streams, and
-      goal-conditioned forecasting that anticipates deadlocks in warehouse robot fleets.
-    next: >-
-      Uncertainty-aware multi-agent world models for planning among people and robots.
+      Real environments are partially observed: other agents are hidden, their interactions unknown, the
+      future uncertain. I build stochastic generative models that infer hidden agents and their
+      interactions from the ones we can see, spiking networks that learn interaction graphs from event
+      streams, and forecasting for warehouse robot fleets — toward multi-agent world models that plan with
+      uncertainty rather than around it.
     caption: "Spring-coupled agents. Hollow nodes are never observed; their positions and interactions are inferred. Dotted paths are forecasts."
     legend: "drag an agent"
     papers: [stemfold, stagenet, sdgn]
@@ -173,16 +156,12 @@ threads:
     viz: lidar
     kicker: closed-loop perception
     title: How can perception spend compute only where the task needs it?
-    problem: >-
-      Robots and on-device models can't afford to sense and process everything, everywhere. Perception
-      should be closed-loop: the task decides what to look at, and how closely.
     text: >-
-      Radar that steers a camera detector toward the objects it misses (+14% recall, 3× less compute),
-      LiDAR fired only where the camera points, radar processed chirp by chirp (3× lower latency),
-      uncertainty-guided sensing resolution, and fully sparse LiDAR detection.
-    next: >-
-      The same principle inside foundation-model agents: adaptive tokens and compute, driven by what the
-      policy is uncertain about.
+      Robots and on-device models can't afford to sense and process everything, everywhere. I build
+      closed-loop perception in which the task decides what to look at: radar that steers a camera
+      detector to the objects it misses (+14% recall, 3× less compute), LiDAR fired only where the camera
+      points, and chirp-by-chirp radar with 3× lower latency — ideas that carry over to adaptive compute
+      in foundation models.
     caption: "Radar returns propose regions of interest; the LiDAR sweep samples densely inside them and sparsely everywhere else."
     legend: "live sweep"
     papers: [radar-attention, rgb-lidar-fusion, chirpnet, luga, dfdnet]

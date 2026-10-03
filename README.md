@@ -12,7 +12,7 @@ content/                  ← everything you normally edit
   posts/*.md                blog posts (front matter + Markdown, TeX math supported)
 themes/<name>/            one design each: Jinja2 templates + CSS/JS (site.yml `theme:` picks the live one)
 templates/                shared templates: drafts gallery, animation lab, sitemap, feeds, redirects
-static/                   copied as-is: JS (site.js, viz.js, viz-papers.js), images, figures, CV, CNAME
+static/                   copied as-is: JS (site.js, viz.js, viz-papers.js), images, figures, CNAME
 scripts/                  image helpers (optional, need Pillow)
 build.py                  builds content + templates → _site/
 ```
@@ -60,8 +60,6 @@ Text with inline math \( x_t \) and display math \[ z_{t+1} = K z_t \].
 ```
 
 It is published at `/blog/YYYY/slug/` and added to the RSS feed. Add `draft: true` to hide it.
-
-**Update the CV** — replace `static/assets/pdf/HemantCV.pdf` (same URL as before).
 
 **Social preview card** — after changing your title or portrait: `python scripts/make_social_card.py`.
 

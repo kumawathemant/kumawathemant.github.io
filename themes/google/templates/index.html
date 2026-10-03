@@ -59,9 +59,7 @@
         <div class="m-body">
           <p class="chip-label">{{ t.emoji }} {{ t.kicker | capitalize }}</p>
           <h3 class="title-l">{{ t.title }}</h3>
-          <p class="body-m problem">{{ t.problem }}</p>
-          <p class="body-m"><strong>So far.</strong> {{ t.text }}</p>
-          <p class="next-box"><span class="next-l">Next</span>{{ t.next }}</p>
+          <p class="body-m">{{ t.text }}</p>
           <div class="chipset">
             {% for pid in t.get('papers') or [] %}<a class="chip" href="#pub-{{ pid }}">{{ pubs_by_id[pid].short }}</a>{% endfor %}
             {% for c in t.get('chips') or [] %}<a class="chip" href="{{ c.href }}">{{ c.label }}</a>{% endfor %}

@@ -19,7 +19,6 @@
       <h1 class="intro-name" data-reveal style="--d:1">Hemant <em>Kumawat</em></h1>
       <p class="intro-bio" data-reveal style="--d:2">{{ site.intro | md }}</p>
       <div class="intro-actions" data-reveal style="--d:3">
-        <a class="btn btn-primary" href="{{ site.cv }}">{{ icon('download') }}Download CV</a>
         {{ socials() }}
       </div>
     </div>
@@ -46,9 +45,7 @@
         <div class="thread-body">
           <p class="thread-kicker mono">{{ '%02d' % loop.index }} / {{ t.kicker }}</p>
           <h3>{{ t.title }}</h3>
-          <p class="thread-problem">{{ t.problem }}</p>
-          <p class="thread-work"><span class="thread-lbl mono">so far</span>{{ t.text }}</p>
-          <p class="thread-next"><span class="thread-lbl mono">next</span>{{ t.next }}</p>
+          <p>{{ t.text }}</p>
           <div class="thread-papers">
             {% for pid in t.get('papers') or [] %}
             <a class="paper-chip" href="#pub-{{ pid }}" style="--tc:var(--{{ pubs_by_id[pid].color }})">{{ pubs_by_id[pid].short }} <span class="mono">{{ pubs_by_id[pid].venue_short }} {{ pubs_by_id[pid].year }}</span></a>

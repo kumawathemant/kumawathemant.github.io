@@ -19,7 +19,7 @@
   {# ---------- topline box ---------- #}
   <aside class="update" id="about">
     <p><strong>Update:</strong> {{ site.about.paragraphs[0] | md }} <em>-HK, {{ updated }}</em></p>
-    <p class="see-also"><strong>See also:</strong> <a href="#publications">publications</a>, <a href="#dashboard">research dashboard</a>, and <a href="{{ site.cv }}">CV</a>.</p>
+    <p class="see-also"><strong>See also:</strong> <a href="#publications">publications</a>, the <a href="#dashboard">research dashboard</a> and <a href="#contact">contact</a>.</p>
   </aside>
 
   <div class="prose">
@@ -35,9 +35,7 @@
       <div class="feature-media"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas></div>
       <p class="kicker">{{ t.kicker | upper }}</p>
       <h3 class="feature-title">{{ t.title }}</h3>
-      <p class="feature-sub">{{ t.problem }}</p>
-      <p class="feature-body"><strong>So far:</strong> {{ t.text }}</p>
-      <p class="feature-body"><strong>Next:</strong> {{ t.next }}</p>
+      <p class="feature-sub">{{ t.text }}</p>
       <p class="row-meta">
         {% for pid in t.get('papers') or [] %}<a href="{{ paper_url(pid) }}">{{ pubs_by_id[pid].short | upper }}</a>{{ ' · ' if not loop.last }}{% endfor %}
         {% if t.get('papers') and t.get('chips') %} · {% endif %}
