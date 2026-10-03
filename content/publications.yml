@@ -5,7 +5,8 @@
 #      for its animation — sketch names are listed in README.md › Animations
 # Fields
 #   authors      list; append * for equal contribution. "Hemant Kumawat" is highlighted automatically.
-#   topics       any of: robot-learning, multi-agent, perception, edge   (drive the filter chips)
+#   topics       any of: world-models, robot-learning, multi-agent, perception, edge   (drive the filter chips;
+#                the first one sets the card colour)
 #   selected     shown under the "Selected" filter
 #   status       optional badge, e.g. "under review"
 #   highlights   key numbers shown as chips
@@ -191,7 +192,7 @@
   venue_short: CoRL
   year: 2024
   citations: 12
-  topics: [robot-learning]
+  topics: [robot-learning, world-models]
   selected: true
   figure: robokoop
   tldr: >-
@@ -234,7 +235,7 @@
   venue_short: L4DC
   year: 2024
   citations: 7
-  topics: [multi-agent]
+  topics: [multi-agent, world-models]
   selected: true
   figure: stemfold
   tldr: >-
@@ -336,7 +337,7 @@
   venue_short: Preprint
   year: 2023
   citations: 4
-  topics: [multi-agent]
+  topics: [multi-agent, world-models]
   tldr: >-
     Spatiotemporal attention with neural inter-node messaging models systems of interacting agents in which
     some agents are never observed, with no prior on the interaction graph.

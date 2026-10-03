@@ -43,6 +43,7 @@ SELF = "Hemant Kumawat"
 
 # filter key -> (label, colour token)
 TOPICS = {
+    "world-models": ("World models", "mint"),  # papers that learn predictive dynamics models; listed as a secondary topic
     "robot-learning": ("Robot learning", "mint"),
     "multi-agent": ("Multi-agent", "indigo"),
     "perception": ("Perception", "amber"),
@@ -329,7 +330,7 @@ def process_publications(pubs: list[dict]) -> list[dict]:
             p["fig_sm"] = f"/assets/fig/{p['figure']}-640.webp"
             p["fig_lg"] = f"/assets/fig/{p['figure']}-1600.webp"
         if not p.get("viz"):  # every paper gets an animation (the real figure, if any, sits beside it)
-            p["viz"] = {"robot-learning": "koopman", "multi-agent": "agents", "perception": "lidar"}.get(topics[0] if topics else "", "flow")
+            p["viz"] = {"robot-learning": "koopman", "multi-agent": "agents", "perception": "lidar"}.get(topics[0] if topics else "", "koopman")
     return pubs
 
 

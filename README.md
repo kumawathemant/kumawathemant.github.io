@@ -67,8 +67,8 @@ It is published at `/blog/YYYY/slug/` and added to the RSS feed. Add `draft: tru
 
 ## Animations
 
-`static/assets/js/viz.js` renders every `<canvas data-viz="…">` — research-thread sketches `flow`,
-`koopman`, `agents`, `lidar`, `tokens`, `events`, `chirp`, `chirp-adaptive`, plus the variants `stemfold`,
+`static/assets/js/viz.js` renders every `<canvas data-viz="…">` — `contours` (Notion cover), research-thread
+sketches `koopman`, `agents`, `lidar`, `tokens`, `events`, `chirp`, `chirp-adaptive`, plus the variants `stemfold`,
 `lidar-camera` and `maple`. `static/assets/js/viz-papers.js` registers one sketch per paper: `robokoop`,
 `adacred`, `dfdnet`, `luga`, `sdgn`, `s2a`, `cogsense`, `chirpnet`, `stagenet`, `radarcam`,
 `fnbacktrace`. Each is a schematic of the paper's idea, not a figure from it. They only run while visible,

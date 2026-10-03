@@ -100,95 +100,68 @@
   };
 
   /* ======================================================================
-     flow — hero: particles advected by the curl of time-varying simplex noise.
-     The pointer adds a local vortex ("control input").
+     contours — topographic iso-lines of a slowly drifting landscape (think loss
+     surface or terrain map): valleys in one hue, ridges in another, every third
+     line drawn heavier. The pointer raises a soft hill under the cursor.
      ====================================================================== */
-  function flowSketch(v) {
-    const noise = makeNoise(11);
-    const R = mulberry(7);
-    const K = 26; // trail length (ring buffer)
-    let parts = [];
-    let influence = 0;
-    const make = () => ({ xs: new Float32Array(K), ys: new Float32Array(K), head: 0, len: 1, age: 0, life: 1, c: 0, dying: false });
-    const spawn = (p) => {
-      const x = R() * v.w, y = R() * v.h;
-      p.head = 0; p.len = 1; p.xs[0] = x; p.ys[0] = y;
-      p.age = 0; p.life = 3 + R() * 7; p.dying = false;
-      const cn = noise(x * 0.0011, y * 0.0011, 17.3);
-      p.c = cn < -0.15 ? 0 : cn < 0.2 ? 1 : 2;
-      return p;
-    };
+  function contoursSketch(v) {
+    const noise = makeNoise(29);
+    const LEVELS = 12, LO = -0.95, HI = 0.95;
+    let cell = 10, cols = 0, rows = 0, f = new Float32Array(0);
+    let hx = 0, hy = 0, amp = 0;
+    // marching squares: edge pairs per case (edges: 0 top, 1 right, 2 bottom, 3 left); 5 and 10 are saddles
+    const SEG = [[], [3, 2], [2, 1], [3, 1], [0, 1], null, [0, 2], [3, 0], [3, 0], [0, 2], null, [0, 1], [3, 1], [2, 1], [3, 2], []];
+    const px = new Float32Array(4), py = new Float32Array(4);
     return {
-      maxDpr: 1.75,
-      warmup: 120,
-      resize() {
-        const n = Math.round(clamp((v.w * v.h) / 1500, 200, 1000));
-        parts = Array.from({ length: n }, () => spawn(make()));
-        parts.forEach((p) => { p.age = R() * p.life; });
-      },
-      frame(dt, noDraw) {
+      warmup: 1,
+      frame(dt) {
         const { w, h, ctx } = v;
-        const P = v.pointer;
-        if (dt > 0) {
-          const f = 1 / 380, z = v.t * 0.045, e = 0.012;
-          const S = 66 * clamp(Math.min(w, h) / 800, 0.75, 1.35);
-          influence += ((P.active ? 1 : 0) - influence) * (1 - Math.exp(-dt * 3));
-          const sig2 = 2 * 130 * 130;
-          for (const p of parts) {
-            if (p.dying) { p.len -= 1; if (p.len <= 1) spawn(p); continue; }
-            p.age += dt;
-            const x = p.xs[p.head], y = p.ys[p.head];
-            const nx = x * f, ny = y * f;
-            const a = (noise(nx, ny + e, z) - noise(nx, ny - e, z)) / (2 * e);
-            const b = -(noise(nx + e, ny, z) - noise(nx - e, ny, z)) / (2 * e);
-            const m = Math.hypot(a, b);
-            let vx = (a / (0.6 + m)) * S + 7, vy = (b / (0.6 + m)) * S;
-            if (influence > 0.01) {
-              const dx = x - P.x, dy = y - P.y, d2 = dx * dx + dy * dy;
-              const g = influence * Math.exp(-d2 / sig2);
-              if (g > 0.002) {
-                const d = Math.sqrt(d2) + 18;
-                vx += ((-dy / d) * 190 + (dx / d) * 45) * g;
-                vy += ((dx / d) * 190 + (dy / d) * 45) * g;
-              }
-            }
-            const nxp = x + vx * dt, nyp = y + vy * dt;
-            p.head = (p.head + 1) % K;
-            p.xs[p.head] = nxp; p.ys[p.head] = nyp;
-            if (p.len < K) p.len += 1;
-            if (p.age > p.life || nxp < -40 || nxp > w + 40 || nyp < -40 || nyp > h + 40) p.dying = true;
+        cell = w < 640 ? 8 : 10;
+        const C = Math.ceil(w / cell) + 1, Rr = Math.ceil(h / cell) + 1;
+        if (C !== cols || Rr !== rows) { cols = C; rows = Rr; f = new Float32Array(cols * rows); }
+        // the hill follows the pointer with a little lag, and settles back when it leaves
+        const k = dt > 0 ? 1 - Math.exp(-dt * 3) : 1;
+        amp += ((v.pointer.active ? 1 : 0) - amp) * (dt > 0 ? 1 - Math.exp(-dt * 1.6) : 1);
+        if (v.pointer.active) {
+          if (amp < 0.05) { hx = v.pointer.x; hy = v.pointer.y; } // rise in place rather than slide in
+          hx += (v.pointer.x - hx) * k; hy += (v.pointer.y - hy) * k;
+        }
+        const t = v.t * 0.045, sc = 1 / Math.max(240, w * 0.3), R2 = 2 * Math.pow(Math.min(90, h * 0.32), 2);
+        for (let j = 0; j < rows; j++) {
+          for (let i = 0; i < cols; i++) {
+            const x = i * cell, y = j * cell;
+            let z = noise(x * sc + t * 0.4, y * sc * 1.2, t) + 0.42 * noise(x * sc * 2.3 + 11.7, y * sc * 2.3 - 4.1, t * 1.4);
+            if (amp > 0.002) z += amp * 0.85 * Math.exp(-((x - hx) ** 2 + (y - hy) ** 2) / R2);
+            f[j * cols + i] = z;
           }
         }
-        if (noDraw) return;
         ctx.clearRect(0, 0, w, h);
-        ctx.globalCompositeOperation = PAL.dark ? 'lighter' : 'source-over';
         ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        ctx.lineWidth = 1.15;
-        const cols = [PAL.mint, PAL.indigo, PAL.rose];
-        const alphas = PAL.dark ? [0.06, 0.15, 0.4] : [0.07, 0.17, 0.42];
-        for (let c = 0; c < 3; c++) {
-          for (let band = 0; band < 3; band++) {
-            ctx.beginPath();
-            for (const p of parts) {
-              if (p.c !== c || p.len < 2) continue;
-              const L = p.len, seg = (L - 1) / 3;
-              const i0 = Math.floor(band * seg), i1 = Math.ceil((band + 1) * seg);
-              if (i1 <= i0) continue;
-              const base = p.head - L + 1 + 2 * K;
-              let idx = (base + i0) % K;
-              ctx.moveTo(p.xs[idx], p.ys[idx]);
-              for (let k = i0 + 1; k <= i1; k++) { idx = (base + k) % K; ctx.lineTo(p.xs[idx], p.ys[idx]); }
+        for (let L = 0; L < LEVELS; L++) {
+          const iso = LO + ((HI - LO) * (L + 0.5)) / LEVELS, major = L % 3 === 1;
+          ctx.beginPath();
+          for (let j = 0; j < rows - 1; j++) {
+            for (let i = 0; i < cols - 1; i++) {
+              const a = f[j * cols + i], b = f[j * cols + i + 1], c = f[(j + 1) * cols + i + 1], d = f[(j + 1) * cols + i];
+              const idx = (a >= iso ? 8 : 0) | (b >= iso ? 4 : 0) | (c >= iso ? 2 : 0) | (d >= iso ? 1 : 0);
+              if (idx === 0 || idx === 15) continue;
+              const x0 = i * cell, y0 = j * cell;
+              px[0] = x0 + (cell * (iso - a)) / (b - a); py[0] = y0;
+              px[1] = x0 + cell; py[1] = y0 + (cell * (iso - b)) / (c - b);
+              px[2] = x0 + (cell * (iso - d)) / (c - d); py[2] = y0 + cell;
+              px[3] = x0; py[3] = y0 + (cell * (iso - a)) / (d - a);
+              let s = SEG[idx];
+              if (!s) {
+                const up = (a + b + c + d) / 4 >= iso;
+                s = (idx === 5) === up ? [3, 0, 2, 1] : [0, 1, 3, 2];
+              }
+              for (let q = 0; q < s.length; q += 2) { ctx.moveTo(px[s[q]], py[s[q]]); ctx.lineTo(px[s[q + 1]], py[s[q + 1]]); }
             }
-            ctx.strokeStyle = rgba(cols[c], alphas[band]);
-            ctx.stroke();
           }
-          ctx.fillStyle = rgba(cols[c], PAL.dark ? 0.8 : 0.65);
-          for (const p of parts) {
-            if (p.c === c && !p.dying) ctx.fillRect(p.xs[p.head] - 0.8, p.ys[p.head] - 0.8, 1.6, 1.6);
-          }
+          ctx.strokeStyle = rgba(L < LEVELS / 2 ? PAL.indigo : PAL.mint, (major ? 0.5 : 0.26) * (PAL.dark ? 0.9 : 1));
+          ctx.lineWidth = major ? 1.25 : 0.8;
+          ctx.stroke();
         }
-        ctx.globalCompositeOperation = 'source-over';
       },
     };
   }
@@ -1031,7 +1004,7 @@
   });
 
   const SKETCHES = {
-    flow: flowSketch,
+    contours: contoursSketch,
     koopman: koopmanSketch,
     agents: agentsSketch,
     lidar: lidarSketch,

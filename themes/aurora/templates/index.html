@@ -34,7 +34,7 @@
   <div class="container">
     <header class="section-head" data-reveal>
       <p class="eyebrow"><span>01</span>Research</p>
-      <h2 class="section-title">Four threads, one question: <em>what does an agent need to know to act well?</em></h2>
+      <h2 class="section-title">{{ site.research.title | md }}</h2>
     </header>
     <div class="threads">
       {% for t in site.threads %}
@@ -46,8 +46,9 @@
         <div class="thread-body">
           <p class="thread-kicker mono">{{ '%02d' % loop.index }} / {{ t.kicker }}</p>
           <h3>{{ t.title }}</h3>
-          <p>{{ t.text }}</p>
-          <p class="fig-caption mono"><span>fig. {{ loop.index }}</span> {{ t.caption }}</p>
+          <p class="thread-problem">{{ t.problem }}</p>
+          <p class="thread-work"><span class="thread-lbl mono">so far</span>{{ t.text }}</p>
+          <p class="thread-next"><span class="thread-lbl mono">next</span>{{ t.next }}</p>
           <div class="thread-papers">
             {% for pid in t.get('papers') or [] %}
             <a class="paper-chip" href="#pub-{{ pid }}" style="--tc:var(--{{ pubs_by_id[pid].color }})">{{ pubs_by_id[pid].short }} <span class="mono">{{ pubs_by_id[pid].venue_short }} {{ pubs_by_id[pid].year }}</span></a>

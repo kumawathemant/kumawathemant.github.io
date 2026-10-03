@@ -9,7 +9,7 @@ theme: aurora
 url: https://www.hemantkumawat.com
 description: >-
   Hemant Kumawat — Applied Scientist, Gaming AI at Microsoft; Ph.D. in ECE from Georgia Tech.
-  Research on multimodal foundation models, robot learning, multi-agent forecasting and efficient perception.
+  Research on world models, multimodal foundation models and robot learning: agents that model the world and act in it.
 location: Seattle, WA
 cv: /assets/pdf/HemantCV.pdf
 # Writing/blog. false = no Writing section, nav links, /blog/ pages or feeds in any theme
@@ -32,29 +32,20 @@ now:
   org: Microsoft
 
 hero:
-  sub: >-
-    Applied Scientist at **Microsoft Gaming AI**. Ph.D. from **Georgia Tech**, where I worked on
-    robot learning, multi-agent forecasting and resource-efficient perception.
-  # One-paragraph statement used by the keynote-style drafts (revealed word by word)
+  # One-paragraph statement used by the keynote-style draft (revealed word by word)
   statement: >-
-    I build efficient, real-time vision-language models that understand games at Microsoft. Before that,
-    a Ph.D. at Georgia Tech — teaching robots compact representations, forecasting agents we can't see,
-    and building perception that decides what to sense.
-  # Rotating phrases after "currently exploring →"
-  phrases:
-    - vision-language models that understand games
-    - world models for embodied agents
-    - efficient adaptation of vision-action models
-    - evaluating LLM assistants in the wild
-    - 3D occupancy with Gaussian queries
+    I'm working toward agents that model the world and act in it. At Microsoft I build real-time
+    vision-language models that understand games. At Georgia Tech I built control-ready world models for
+    robots, forecast agents we can't see, and designed perception that decides what to sense.
 
 # Short bio for the homepage intro — two sentences, so visitors reach the research quickly
 intro: >-
-  I'm an Applied Scientist on Microsoft's **Gaming AI** team, building efficient, real-time
-  vision-language models that understand gameplay. I did my Ph.D. at **Georgia Tech** with
-  [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay) on robot learning,
-  multi-agent forecasting and perception that decides what to sense, with internships at **Qualcomm**,
-  **Amazon Robotics** and **CMU**.
+  I'm an Applied Scientist on Microsoft's **Gaming AI** team, building real-time vision-language models
+  that understand gameplay. My research asks how agents can learn **world models** — compact enough to
+  run in real time, rich enough to plan with, honest about what they can't see — and how to turn
+  **multimodal foundation models** into agents that act, in games and on robots. Ph.D. from
+  **Georgia Tech** with [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay);
+  internships at **Qualcomm**, **Amazon Robotics** and **CMU**.
 
 # Google Scholar snapshot (update occasionally)
 stats:
@@ -65,7 +56,7 @@ stats:
   by_year: {2021: 3, 2022: 13, 2023: 21, 2024: 35, 2025: 43, 2026: 45}
 
 about:
-  title: "Closing the loop between *perception*, *prediction* and *control*."
+  title: "Agents that *model the world* — and act in it."
   paragraphs:
     - >-
       I'm an Applied Scientist on the **Gaming AI** team at **Microsoft** in Seattle. I build efficient,
@@ -73,12 +64,12 @@ about:
       assistance and persistent player profiles behind recaps and recommendations — along with evaluation
       pipelines that catch hallucinations and failure points in **Microsoft Copilot** conversations.
     - >-
-      I did my M.S. and Ph.D. in ECE at **Georgia Tech**, advised by
-      [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay). My research
-      develops compositional and causal models that bridge perception, prediction and control: compact,
-      task-conditioned representations for decision-making, forecasting of multi-agent systems in which
-      some agents are never observed, and closed-loop perception that adapts what it senses to what the
-      task needs.
+      My research asks how agents can learn models of the world that are compact enough to run in real
+      time, rich enough to plan with, and honest about what they can't observe — and how to turn
+      multimodal foundation models into agents that act, in games and on robots. I did my M.S. and Ph.D.
+      in ECE at **Georgia Tech**, advised by
+      [Prof. Saibal Mukhopadhyay](https://ece.gatech.edu/directory/saibal-mukhopadhyay), on control-ready
+      world models, multi-agent forecasting with hidden agents, and closed-loop perception.
     - >-
       Along the way I interned at **Qualcomm** (3D occupancy world models), **Amazon Robotics**
       (multi-agent forecasting for warehouse fleets) and the **CMU Robotics Institute** (evasive maneuver
@@ -93,73 +84,108 @@ about:
     - label: Based in
       value: Seattle, WA
   interests:
+    - World models
     - Multimodal foundation models
     - Vision-language-action models
-    - World models
-    - Robot learning & RL
-    - Multi-agent forecasting
-    - Efficient perception
-    - Sensor fusion
+    - Robot learning
+    - Sequence models & RL
+    - Multi-agent prediction
+    - Efficient, closed-loop perception
 
-# Research threads: each gets an animated figure (viz: flow | koopman | agents | lidar | tokens | events | chirp)
+# Research, framed as open problems: what is hard, what I have built toward it, where I am taking it next.
+#   title    the problem, as a question        problem  why it is hard / why it matters
+#   text     the work so far                   next     where it goes next
+#   viz      animated figure: koopman | agents | lidar | tokens | events | chirp | ... (see README)
+research:
+  title: Four open problems on the way to agents that *model the world and act in it*.
 threads:
-  - key: control
-    emoji: "🎛️"
+  - key: world-models
+    emoji: "🌍"
     color: mint
     viz: koopman
-    kicker: representations for control
-    title: Compact representations for decision-making
+    kicker: world models
+    title: How do we learn world models an agent can plan with?
+    problem: >-
+      Generative models can already imagine convincing futures. Planning asks for more: a model that
+      responds to actions, stays consistent over long horizons, and is cheap enough to query inside a
+      control loop.
     text: >-
-      Agents act better when their latent space is built for the task. I learn control-conditioned
-      representations — Koopman embeddings where nonlinear dynamics become linear, causal decision
-      transformers that credit only the features that matter, and state-space agents for event streams.
+      I learn compact, action-conditioned dynamics — Koopman embeddings that make visual dynamics linear,
+      so a linear controller acts directly from pixels (10× less compute, +20% accuracy), and
+      object-centric 3D occupancy world models built from sparse, trackable Gaussian queries.
+    next: >-
+      Structured, controllable world models learned from video and interaction, for games and robots —
+      and agents that plan inside them.
     caption: "Koopman lifting — tangled orbits in observation space become clean rotations in the latent space, where a linear controller suffices."
     legend: "hover to scrub"
-    papers: [robokoop, adacred, maple]
+    papers: [robokoop]
+    chips:
+      - label: 3D occupancy world models @ Qualcomm
+        href: "#exp-qualcomm"
+  - key: foundation
+    emoji: "🎮"
+    color: rose
+    viz: tokens
+    kicker: multimodal foundation models
+    title: How do we turn foundation models that describe into agents that act?
+    problem: >-
+      Vision-language models can caption a frame, yet still struggle to track state over time, ground
+      language in action, adapt to a new embodiment from little data — and stay truthful, in real time.
+    text: >-
+      At Microsoft I build real-time vision-language models that understand gameplay, and evaluation
+      pipelines that catch hallucinations in Copilot. In my Ph.D.: decision transformers that credit only
+      the tokens that matter, Mamba state-space policies over event streams, and adapting vision-action
+      models to new embodiments from limited data.
+    next: >-
+      Vision-language-action models grounded in interaction — with games as a scalable testbed for
+      embodied agents.
+    caption: "Patch attention follows the entities that matter while a compact state description is decoded token by token."
+    legend: "illustrative"
+    papers: [adacred, maple]
+    chips:
+      - label: Gaming AI @ Microsoft
+        href: "#exp-microsoft"
   - key: agents
     emoji: "🕸️"
     color: indigo
     viz: agents
-    kicker: multi-agent dynamics
-    title: Forecasting interacting agents under partial observability
+    kicker: multi-agent world models
+    title: How should agents reason about what they can't see?
+    problem: >-
+      Real environments are partially observed: other agents are hidden, their interactions are unknown
+      and the future is uncertain. A useful world model has to represent that uncertainty, not average it
+      away.
     text: >-
-      Real systems are never fully observed. I build stochastic generative graph models — temporal
-      manifolds, spatiotemporal graph attention and neural ODEs — that infer hidden agents and their
-      interactions from the agents we can see.
+      I build stochastic generative models that infer hidden agents and their interactions from the agents
+      we can see, spiking networks that learn interaction graphs straight from event streams, and
+      goal-conditioned forecasting that anticipates deadlocks in warehouse robot fleets.
+    next: >-
+      Uncertainty-aware multi-agent world models for planning among people and robots.
     caption: "Spring-coupled agents. Hollow nodes are never observed; their positions and interactions are inferred. Dotted paths are forecasts."
     legend: "drag an agent"
     papers: [stemfold, stagenet, sdgn]
+    chips:
+      - label: Fleet forecasting @ Amazon Robotics
+        href: "#exp-amazon"
   - key: perception
     emoji: "📡"
     color: amber
     viz: lidar
     kicker: closed-loop perception
-    title: Perception that decides what to sense
+    title: How can perception spend compute only where the task needs it?
+    problem: >-
+      Robots and on-device models can't afford to sense and process everything, everywhere. Perception
+      should be closed-loop: the task decides what to look at, and how closely.
     text: >-
-      Sensing everything everywhere wastes compute and power. My work lets cheap sensors guide expensive
-      ones — radar-proposed regions of interest, task-driven LiDAR sampling, per-chirp radar processing and
-      fully-sparse LiDAR detectors for low-compute autonomy.
+      Radar that steers a camera detector toward the objects it misses (+14% recall, 3× less compute),
+      LiDAR fired only where the camera points, radar processed chirp by chirp (3× lower latency),
+      uncertainty-guided sensing resolution, and fully sparse LiDAR detection.
+    next: >-
+      The same principle inside foundation-model agents: adaptive tokens and compute, driven by what the
+      policy is uncertain about.
     caption: "Radar returns propose regions of interest; the LiDAR sweep samples densely inside them and sparsely everywhere else."
     legend: "live sweep"
-    papers: [radar-attention, rgb-lidar-fusion, chirpnet, dfdnet]
-  - key: foundation
-    emoji: "🎮"
-    color: rose
-    viz: tokens
-    kicker: foundation & world models
-    title: Multimodal models that understand worlds — real and virtual
-    text: >-
-      Today I build real-time vision-language models for game understanding at Microsoft, and previously
-      designed object-centric 3D occupancy world models with sparse, trackable Gaussian queries at Qualcomm.
-      The common thread: efficient multimodal models that turn pixels into state an agent can use.
-    caption: "Patch attention follows the entities that matter while a compact state description is decoded token by token."
-    legend: "illustrative"
-    papers: []
-    chips:
-      - label: Gaming AI @ Microsoft
-        href: "#exp-microsoft"
-      - label: 3D occupancy @ Qualcomm
-        href: "#exp-qualcomm"
+    papers: [radar-attention, rgb-lidar-fusion, chirpnet, luga, dfdnet]
 
 experience:
   - id: microsoft
@@ -193,7 +219,8 @@ experience:
     highlights:
       - {value: "2×", label: faster occupancy prediction}
       - {value: "−30%", label: memory vs. projection baselines}
-  - org: Georgia Tech · GREEN Lab
+  - id: gatech
+    org: Georgia Tech · GREEN Lab
     short: GREEN Lab, Georgia Tech
     span: [2021.0, 2025.95]  # decimal years for timeline charts (null = present)
     mark: GT
@@ -209,7 +236,8 @@ experience:
       - "**Closed-loop perception** — noise-resilient RGB / LiDAR / radar processing that adapts memory and compute to real-time needs (IEEE T-IV, IJCNN, IMS)."
       - "**Vision-action adaptation** — guiding a vision-action model's generation toward a target domain for cross-embodiment and cross-task transfer with limited data."
     tags: [Causal decision transformers, Offline RL, Contrastive learning, Mamba, Neural ODEs, Sensor fusion]
-  - org: Amazon Robotics
+  - id: amazon
+    org: Amazon Robotics
     short: Amazon Robotics
     span: [2024.33, 2024.67]  # decimal years for timeline charts (null = present)
     mark: AR

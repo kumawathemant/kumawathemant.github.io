@@ -17,7 +17,7 @@ INK = "#363737"
 GRID = "#E6E6E6"
 GRAY = "#B7B7B7"
 PURPLE = "#8B5CF6"
-TOPIC_COLORS = {"robot-learning": GREEN, "multi-agent": PURPLE, "perception": "#F59E0B", "edge": "#3B82F6"}
+TOPIC_COLORS = {"world-models": "#14B8A6", "robot-learning": GREEN, "multi-agent": PURPLE, "perception": "#F59E0B", "edge": "#3B82F6"}
 
 
 def _nice_max(v: float, ticks: int = 4) -> tuple[float, float]:
@@ -153,9 +153,12 @@ def papers_by_year(pubs: list, topics: dict) -> Markup:
     return _svg(W, H, "".join(out), "Papers per year by primary topic", "stack")
 
 
-def topic_legend(topics: dict) -> Markup:
+def topic_legend(topics: dict, pubs: list | None = None) -> Markup:
+    """Legend for papers_by_year; with pubs, only topics that are some paper's primary topic (what the bars show)."""
+    used = {(p.get("topics") or [None])[0] for p in pubs} if pubs else set(topics)
     items = "".join(
-        f'<span class="lg"><i style="background:{TOPIC_COLORS.get(k, GRAY)}"></i>{escape(v["label"])}</span>' for k, v in topics.items()
+        f'<span class="lg"><i style="background:{TOPIC_COLORS.get(k, GRAY)}"></i>{escape(v["label"])}</span>'
+        for k, v in topics.items() if k in used
     )
     return Markup(f'<div class="legend">{items}</div>')
 
