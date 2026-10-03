@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "partials/n.html" import pe %}
+{% block title %}Writing — {{ site.name }}{% endblock %}
+{% block description %}Notes and essays by {{ site.name }} on robot learning, reinforcement learning and the math underneath.{% endblock %}
+{% block crumbs %}<span class="crumb-sep">/</span><span class="crumb-cur">✍️ Writing</span>{% endblock %}
+{% block content %}
+<div class="cover cover-grad g-2" aria-hidden="true"></div>
+<article class="page">
+  <div class="page-icon emoji">✍️</div>
+  <h1 class="page-title">Writing</h1>
+  <p class="block dim">Notes on robot learning, RL and the math underneath — {{ posts | length }} pages · <a href="/blog/feed.xml">RSS</a></p>
+  <div class="db">
+    <div class="db-head">
+      <div class="db-views"><span class="db-view is-active">{{ icon('list') }}List</span></div>
+    </div>
+    <div class="n-listview">
+      {% for p in posts %}
+      <a class="lv-row" href="{{ url(p.url) }}">
+        <span class="pl-icon">{{ pe(p.slug) }}</span>
+        <span class="lv-main"><span class="lv-title">{{ p.title }}</span>{% if p.description %}<span class="lv-desc">{{ p.description }}</span>{% endif %}</span>
+        <span class="lv-tags">{% for t in p.tags[:3] %}<span class="tag c-{{ loop.cycle('blue', 'green', 'purple') }}">{{ t }}</span>{% endfor %}</span>
+        <span class="lv-date">{{ p.date_str }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</article>
+{% endblock %}

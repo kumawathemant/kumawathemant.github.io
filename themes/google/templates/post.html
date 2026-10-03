@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ post.description or post.title }}{% endblock %}
+{% block head %}
+{% if post.has_math %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.querySelector('.prose'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+{% endif %}
+{% endblock %}
+{% block content %}
+<article class="article">
+  <a class="btn-text" href="{{ url('/blog/') }}" style="margin-left:-12px">{{ icon('arrow-left') }}All writing</a>
+  <h1 class="art-title">{{ post.title }}</h1>
+  {% if post.description %}<p class="art-sub">{{ post.description }}</p>{% endif %}
+  <div class="art-meta">
+    <img src="/assets/img/portrait-480.webp" alt="" width="32" height="32">
+    <span>{{ site.name }}</span><span>·</span><span>{{ post.date_str }}</span><span>·</span><span>{{ post.read_min }} min read</span>
+    <span class="chipset" style="margin:0 0 0 auto">{% for t in post.tags[:3] %}<span class="chip static">{{ t }}</span>{% endfor %}</span>
+  </div>
+  {% if post.toc %}
+  <nav class="toc-card" aria-label="Contents">
+    <p class="chip-label">On this page</p>
+    <ol>{% for h in post.toc if h.level == 2 %}<li><a href="#{{ h.id }}">{{ h.name }}</a></li>{% endfor %}</ol>
+  </nav>
+  {% endif %}
+  <div class="prose">
+    {{ post.html }}
+  </div>
+  <nav class="post-nav" aria-label="More posts">
+    {% for p in [post.older, post.newer] if p %}
+    <a class="m-card" href="{{ url(p.url) }}"><div class="m-body"><p class="chip-label">{{ 'Older' if p == post.older else 'Newer' }}</p><h2 class="title-s">{{ p.title }}</h2></div></a>
+    {% endfor %}
+  </nav>
+</article>
+{% endblock %}

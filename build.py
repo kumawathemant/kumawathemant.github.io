@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Static site builder for hemantkumawat.com.
 
-    python build.py              build into _site/
-    python build.py serve        build, serve on http://localhost:8000, rebuild + live-reload on change
+    python build.py              build the live theme (site.yml `theme:`) into _site/
+    python build.py --drafts     ...plus every theme under /drafts/<theme>/ for comparison
+    python build.py serve        build with drafts, serve on http://localhost:8000, live-reload on change
     python build.py serve -p 4000
 
-Content lives in content/ (YAML + Markdown), layout in templates/ (Jinja2), assets in static/.
+Content lives in content/ (YAML + Markdown), designs in themes/<name>/ (Jinja2 + CSS/JS), shared assets in static/.
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ import datetime as dt
 import hashlib
 import html
 import http.server
+import importlib.util
 import itertools
 import os
 import re
@@ -33,6 +35,7 @@ ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
 TEMPLATES = ROOT / "templates"
 STATIC = ROOT / "static"
+THEMES = ROOT / "themes"
 OUT = ROOT / "_site"
 SELF = "Hemant Kumawat"
 
@@ -85,6 +88,27 @@ _STROKE = {
     "chevron-left": '<path d="m15 18-6-6 6-6"/>',
     "chevron-right": '<path d="m9 18 6-6-6-6"/>',
     "clock": '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    "link": '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+    "calendar": '<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    "hash": '<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+    "list": '<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
+    "briefcase": '<rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+    "graduation": '<path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+    "grid": '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>',
+    "table": '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18M3 15h18M12 3v18"/>',
+    "more": '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+    "share": '<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
+    "sidebar": '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/>',
+    "chevron-down": '<path d="m6 9 6 6 6-6"/>',
+    "chevrons-right": '<path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/>',
+    "user": '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    "chart": '<path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/>',
+    "plus": '<path d="M5 12h14M12 5v14"/>',
+    "lock": '<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    "heart": '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+    "message": '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+    "repeat": '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+    "play": '<path d="M6 3l14 9-14 9z"/>',
 }
 _FILL = {  # brand marks from Simple Icons (CC0)
     "scholar": '<path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>',
@@ -269,6 +293,7 @@ def process_publications(pubs: list[dict]) -> list[dict]:
         if p["id"] in seen:
             raise ValueError(f"duplicate publication id: {p['id']}")
         seen.add(p["id"])
+        p.setdefault("citations", 0)
         authors = p["authors"]
         me = next((a for a in authors if a.rstrip("*") == SELF), None)
         p["first_author"] = authors[0].rstrip("*") == SELF
@@ -302,8 +327,57 @@ def process_publications(pubs: list[dict]) -> list[dict]:
     return pubs
 
 
+_hash_cache: dict = {}
+
+
 def file_hash(path: Path) -> str:
-    return hashlib.sha1(path.read_bytes()).hexdigest()[:10]
+    key = (str(path), path.stat().st_mtime_ns)
+    if key not in _hash_cache:
+        _hash_cache[key] = hashlib.sha1(path.read_bytes()).hexdigest()[:10]
+    return _hash_cache[key]
+
+
+def list_themes() -> list[dict]:
+    themes = []
+    for d in sorted(p for p in THEMES.iterdir() if (p / "templates" / "index.html").exists()):
+        meta = yaml.safe_load((d / "theme.yml").read_text(encoding="utf-8")) if (d / "theme.yml").exists() else {}
+        themes.append({"key": d.name, "draft": meta.get("draft", 99), "label": meta.get("label", d.name.title()),
+                       "tagline": meta.get("tagline", ""), "inspiration": meta.get("inspiration", "")})
+    return sorted(themes, key=lambda t: (t["draft"], t["key"]))
+
+
+def load_data() -> dict:
+    site = load_yaml("site.yml")
+    pubs = process_publications(load_yaml("publications.yml"))
+    by_id = {p["id"]: p for p in pubs}
+    for t in site["threads"]:
+        for pid in t.get("papers") or []:
+            if pid not in by_id:
+                raise KeyError(f"thread {t['key']}: unknown paper id {pid}")
+    posts = load_posts()
+    filters = [
+        {"key": "all", "label": "All", "count": len(pubs)},
+        {"key": "selected", "label": "Selected", "count": sum(1 for p in pubs if p.get("selected"))},
+        {"key": "first", "label": "First author", "count": sum(1 for p in pubs if p["first_author"] or p["co_first"])},
+    ] + [{"key": k, "label": v[0], "count": sum(1 for p in pubs if k in (p.get("topics") or []))} for k, v in TOPICS.items()]
+    return {
+        "site": site,
+        "pubs": pubs,
+        "pubs_by_id": by_id,
+        "pubs_by_year": [(y, list(g)) for y, g in itertools.groupby(sorted(pubs, key=lambda p: -p["year"]), key=lambda p: p["year"])],
+        "filters": filters,
+        "topics": {k: {"label": v[0], "color": v[1]} for k, v in TOPICS.items()},
+        "news": load_yaml("news.yml"),
+        "posts": posts,
+        "posts_by_year": [(y, list(g)) for y, g in itertools.groupby(posts, key=lambda p: p["year"])],
+        "stats": {
+            "papers": len(pubs),
+            "first": sum(1 for p in pubs if p["first_author"] or p["co_first"]),
+            "citations": site["stats"]["citations"],
+            "h_index": site["stats"]["h_index"],
+            "venues": len({p["venue_short"] for p in pubs}),
+        },
+    }
 
 
 # --------------------------------------------------------------------------- build
@@ -313,86 +387,117 @@ LIVE_RELOAD = Markup(
 )
 
 
-def build(dev: bool = False) -> int:
-    t0 = time.time()
-    site = load_yaml("site.yml")
-    pubs = process_publications(load_yaml("publications.yml"))
-    news = load_yaml("news.yml")
-    posts = load_posts()
-    by_id = {p["id"]: p for p in pubs}
-    for t in site["threads"]:
-        for pid in t.get("papers") or []:
-            if pid not in by_id:
-                raise KeyError(f"thread {t['key']}: unknown paper id {pid}")
-
-    filters = [
-        {"key": "all", "label": "All", "count": len(pubs)},
-        {"key": "selected", "label": "Selected", "count": sum(1 for p in pubs if p.get("selected"))},
-        {"key": "first", "label": "First author", "count": sum(1 for p in pubs if p["first_author"] or p["co_first"])},
-    ] + [{"key": k, "label": v[0], "count": sum(1 for p in pubs if k in (p.get("topics") or []))} for k, v in TOPICS.items()]
-
-    tmp = ROOT / f"_site.tmp-{os.getpid()}"
-    shutil.rmtree(tmp, ignore_errors=True)
-    shutil.copytree(STATIC, tmp, ignore=shutil.ignore_patterns(".DS_Store"))
-
-    assets = {
-        rel: f"/assets/{rel}?v={file_hash(STATIC / 'assets' / rel)}"
-        for rel in ("css/site.css", "js/site.js", "js/viz.js")
-        if (STATIC / "assets" / rel).exists()
-    }
-    today = dt.date.today()
+def make_env(theme: str, base: str, themes: list[dict], dev: bool) -> Environment:
     env = Environment(
-        loader=FileSystemLoader(TEMPLATES),
+        loader=FileSystemLoader([THEMES / theme / "templates", TEMPLATES]),
         autoescape=select_autoescape(["html", "xml"]),
         undefined=StrictUndefined,
         trim_blocks=True,
         lstrip_blocks=True,
     )
     env.filters["md"] = md_inline
+    today = dt.date.today()
+    url = lambda path="/": base + path  # noqa: E731  — page links are prefixed when previewing a draft
     env.globals.update(
-        site=site,
         icon=icon,
-        asset=lambda rel: assets[rel],
+        url=url,
+        base=base,
+        theme=theme,
+        is_draft=bool(base),
+        themes=themes,
+        asset=lambda rel: f"/assets/{rel}?v={file_hash(STATIC / 'assets' / rel)}",
+        theme_asset=lambda rel: f"/assets/themes/{theme}/{rel}?v={file_hash(THEMES / theme / 'static' / rel)}",
         year=today.year,
         updated=today.strftime("%B %Y"),
         live_reload=LIVE_RELOAD if dev else "",
+        paper_pages=(THEMES / theme / "templates" / "paper.html").exists(),
+        paper_url=lambda pid: url(f"/papers/{pid}/"),
         nav=[
-            {"id": "research", "label": "Research", "href": "/#research"},
-            {"id": "publications", "label": "Publications", "href": "/#publications"},
-            {"id": "experience", "label": "Experience", "href": "/#experience"},
-            {"id": "news", "label": "News", "href": "/#news"},
-            {"id": "writing", "label": "Writing", "href": "/blog/"},
+            {"id": "research", "label": "Research", "href": url("/#research")},
+            {"id": "publications", "label": "Publications", "href": url("/#publications")},
+            {"id": "experience", "label": "Experience", "href": url("/#experience")},
+            {"id": "news", "label": "News", "href": url("/#news")},
+            {"id": "writing", "label": "Writing", "href": url("/blog/")},
         ],
     )
+    hooks = THEMES / theme / "theme.py"
+    if hooks.exists():  # optional per-theme Python helpers, e.g. SVG chart builders
+        spec = importlib.util.spec_from_file_location(f"theme_{theme}", hooks)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.register(env)
+    return env
+
+
+def render_theme(theme: str, out: Path, base: str, data: dict, themes: list[dict], dev: bool, switcher: bool) -> None:
+    env = make_env(theme, base, themes, dev)
+    shared = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True)
 
     def render(template: str, rel_path: str, **ctx) -> None:
-        dest = tmp / rel_path
+        dest = out / base.strip("/") / rel_path
         dest.parent.mkdir(parents=True, exist_ok=True)
         page_url = "/" + rel_path.removesuffix("index.html")
-        dest.write_text(env.get_template(template).render(page_url=page_url, **ctx), encoding="utf-8")
+        html_out = env.get_template(template).render(page_url=page_url, **{**data, **ctx})
+        if switcher:
+            widget = shared.get_template("partials/switcher.html").render(themes=themes, current=theme, page_url=page_url, base=base)
+            html_out = html_out.replace("</body>", widget + "\n</body>", 1)
+        dest.write_text(html_out, encoding="utf-8")
 
-    pubs_by_year = [(y, list(items)) for y, items in itertools.groupby(sorted(pubs, key=lambda p: -p["year"]), key=lambda p: p["year"])]
-    posts_by_year = [(y, list(items)) for y, items in itertools.groupby(posts, key=lambda p: p["year"])]
-    stats = {
-        "papers": len(pubs),
-        "first": sum(1 for p in pubs if p["first_author"] or p["co_first"]),
-        "citations": site["stats"]["citations"],
-        "h_index": site["stats"]["h_index"],
-    }
-    render("index.html", "index.html", pubs=pubs, pubs_by_id=by_id, pubs_by_year=pubs_by_year, filters=filters,
-           news=news, posts=posts, stats=stats, page="home")
-    render("blog.html", "blog/index.html", posts_by_year=posts_by_year, posts=posts, page="blog")
-    for post in posts:
+    render("index.html", "index.html", page="home")
+    render("blog.html", "blog/index.html", page="blog")
+    for post in data["posts"]:
         render("post.html", post["url"].strip("/") + "/index.html", post=post, page="blog")
+    if env.globals["paper_pages"]:
+        for p in data["pubs"]:
+            render("paper.html", f"papers/{p['id']}/index.html", paper=p, page="paper")
     render("404.html", "404.html", page="404")
+
+
+def build(dev: bool = False, drafts: bool = False) -> int:
+    t0 = time.time()
+    data = load_data()
+    site, posts = data["site"], data["posts"]
+    themes = list_themes()
+    keys = [t["key"] for t in themes]
+    live = site.get("theme", "aurora")
+    if live not in keys:
+        raise ValueError(f"site.yml theme '{live}' not found in themes/ ({', '.join(keys)})")
+    drafts = drafts or dev
+
+    tmp = ROOT / f"_site.tmp-{os.getpid()}"
+    shutil.rmtree(tmp, ignore_errors=True)
+    shutil.copytree(STATIC, tmp, ignore=shutil.ignore_patterns(".DS_Store"))
+    for key in keys if drafts else [live]:
+        if (THEMES / key / "static").exists():
+            shutil.copytree(THEMES / key / "static", tmp / "assets" / "themes" / key, ignore=shutil.ignore_patterns(".DS_Store"))
+
+    # the live theme at the site root, plus every theme under /drafts/<key>/ for side-by-side comparison
+    render_theme(live, tmp, "", data, themes, dev, switcher=drafts)
+    if drafts:
+        for key in keys:
+            render_theme(key, tmp, f"/drafts/{key}", data, themes, dev, switcher=True)
+        gallery = Environment(loader=FileSystemLoader(TEMPLATES), autoescape=True).get_template("drafts.html")
+        (tmp / "drafts").mkdir(parents=True, exist_ok=True)
+        (tmp / "drafts" / "index.html").write_text(
+            gallery.render(themes=themes, live=live, site=site, live_reload=LIVE_RELOAD if dev else ""), encoding="utf-8")
+
+    env = make_env(live, "", themes, dev)
+
+    def render_root(template: str, rel_path: str, **ctx) -> None:
+        dest = tmp / rel_path
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(env.get_template(template).render(page_url="/" + rel_path.removesuffix("index.html"), **{**data, **ctx}),
+                        encoding="utf-8")
+
     redirects = dict(REDIRECTS)
-    redirects.update({f"blog/{y}/": "/blog/" for y, _ in posts_by_year})
+    redirects.update({f"blog/{y}/": "/blog/" for y, _ in data["posts_by_year"]})
     for src, target in redirects.items():
-        render("redirect.html", src + "index.html", target=target, page="redirect")
-    render("sitemap.xml", "sitemap.xml", posts=posts, page="sitemap")
+        render_root("redirect.html", src + "index.html", target=target, page="redirect")
+    render_root("sitemap.xml", "sitemap.xml", page="sitemap",
+                paper_ids=[p["id"] for p in data["pubs"]] if env.globals["paper_pages"] else [])
     now = dt.datetime.now(dt.timezone.utc)
-    render("feed.xml", "blog/feed.xml", posts=posts, page="feed", now=now)
-    render("feed.xml", "feed.xml", posts=posts, page="feed", now=now)  # al-folio's old feed URL
+    render_root("feed.xml", "blog/feed.xml", page="feed", now=now)
+    render_root("feed.xml", "feed.xml", page="feed", now=now)  # al-folio's old feed URL
     if dev:
         (tmp / "__build").write_text(str(time.time()))
 
@@ -403,14 +508,15 @@ def build(dev: bool = False) -> int:
     tmp.rename(OUT)
     shutil.rmtree(old, ignore_errors=True)
     n = sum(1 for _ in OUT.rglob("*.html"))
-    print(f"built {n} pages, {len(pubs)} papers, {len(posts)} posts in {time.time() - t0:.2f}s -> {OUT.relative_to(ROOT)}/")
+    extra = f", drafts: {', '.join(keys)}" if drafts else ""
+    print(f"built {n} pages ({live} live{extra}) · {len(data['pubs'])} papers · {len(posts)} posts · {time.time() - t0:.2f}s")
     return n
 
 
 # --------------------------------------------------------------------------- dev server
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, fmt, *args):
-        if "__build" not in (args[0] if args else ""):
+        if "__build" not in (str(args[0]) if args else ""):
             sys.stderr.write("  " + fmt % args + "\n")
 
     def end_headers(self):
@@ -419,16 +525,20 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 
 
 def snapshot() -> dict:
-    files = [ROOT / "build.py", *CONTENT.rglob("*"), *TEMPLATES.rglob("*"), *STATIC.rglob("*")]
+    files = [ROOT / "build.py", *CONTENT.rglob("*"), *TEMPLATES.rglob("*"), *STATIC.rglob("*"), *THEMES.rglob("*")]
     return {str(f): f.stat().st_mtime for f in files if f.is_file()}
 
 
 def serve(port: int) -> None:
-    build(dev=True)
+    try:
+        build(dev=True)
+    except Exception as e:  # keep watching so a fix can be picked up
+        print(f"  build error: {e!r}")
+        OUT.mkdir(exist_ok=True)
     handler = partial(QuietHandler, directory=str(OUT))
     httpd = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
-    print(f"\n  ➜  http://localhost:{port}   (watching content/, templates/, static/ — Ctrl+C to stop)\n")
+    print(f"\n  ➜  http://localhost:{port}          live theme\n  ➜  http://localhost:{port}/drafts/   compare all drafts   (Ctrl+C to stop)\n")
     last = snapshot()
     try:
         while True:
@@ -453,8 +563,9 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Build hemantkumawat.com")
     ap.add_argument("command", nargs="?", default="build", choices=["build", "serve"])
     ap.add_argument("-p", "--port", type=int, default=8000)
+    ap.add_argument("--drafts", action="store_true", help="also build every theme under /drafts/<theme>/")
     args = ap.parse_args()
-    serve(args.port) if args.command == "serve" else build()
+    serve(args.port) if args.command == "serve" else build(drafts=args.drafts)
 
 
 if __name__ == "__main__":

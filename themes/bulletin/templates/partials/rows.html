@@ -1,0 +1,31 @@
+{# Silver Bulletin-style archive rows #}
+{% macro short_authors(authors) -%}
+{%- for a in authors[:3] -%}{%- set n = a.rstrip('*').split() -%}{{ n[0][0] }}. {{ n[-1] }}{{ ', ' if not loop.last }}{%- endfor -%}{%- if authors | length > 3 %}, ET AL.{%- endif -%}
+{%- endmacro %}
+
+{% macro paper_row(p, rank=None) %}
+<article class="row pub" data-topics="{{ p.filters }}" data-search="{{ p.search }}" id="pub-{{ p.id }}">
+  <div class="row-text">
+    <h3 class="row-title"><a href="{{ paper_url(p.id) }}">{% if rank %}<span class="rank">{{ rank }}.</span> {% endif %}{{ p.title }}</a></h3>
+    <p class="row-sub">{{ p.get('tldr', p.venue) }}</p>
+    <p class="row-meta">
+      {% if p.first_author or p.co_first %}<span class="star" title="{{ 'First author' if p.first_author else 'Co-first author' }}">★</span>{% endif %}
+      <span>{{ p.venue_short }} {{ p.year }}</span> · <span>{{ short_authors(p.authors) | upper }}</span>{% if p.get('citations') %} · <span>{{ p.citations }} CITATION{{ 'S' if p.citations != 1 }}</span>{% endif %}
+    </p>
+  </div>
+  <a class="row-thumb{% if not p.get('fig_sm') %} is-viz{% endif %}" href="{{ paper_url(p.id) }}" tabindex="-1" aria-hidden="true">
+    {% if p.get('fig_sm') %}<img src="{{ p.fig_sm }}" alt="" loading="lazy" decoding="async">{% else %}<canvas data-viz="{{ p.viz }}"></canvas>{% endif %}
+  </a>
+</article>
+{% endmacro %}
+
+{% macro post_row(p) %}
+<article class="row post" data-search="{{ p.title | lower }} {{ p.tags | join(' ') }}">
+  <div class="row-text">
+    <h3 class="row-title"><a href="{{ url(p.url) }}">{{ p.title }}</a></h3>
+    {% if p.description %}<p class="row-sub">{{ p.description }}</p>{% endif %}
+    <p class="row-meta"><span>{{ p.date_str | upper }}</span> · <span>{{ site.name | upper }}</span> · <span>{{ p.read_min }} MIN READ</span></p>
+  </div>
+  <a class="row-thumb is-type" href="{{ url(p.url) }}" tabindex="-1" aria-hidden="true"><span>{{ p.tags[0] if p.tags else 'notes' }}</span></a>
+</article>
+{% endmacro %}

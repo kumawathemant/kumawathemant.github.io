@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% from "partials/rows.html" import paper_row with context %}
+{% set p = paper %}
+{% block title %}{{ p.short }}: {{ p.title.split(': ', 1)[-1] }} — {{ site.name }}{% endblock %}
+{% block description %}{{ p.get('tldr', p.title) }}{% endblock %}
+{% block content %}
+<article class="article">
+  <header class="art-head">
+    <p class="kicker"><a href="{{ url('/#publications') }}">PUBLICATIONS</a> · {{ p.venue_short | upper }} {{ p.year }}{% if p.get('status') %} · {{ p.status | upper }}{% endif %}</p>
+    <h1 class="art-title">{{ p.title }}</h1>
+    {% if p.get('tldr') %}<p class="art-sub">{{ p.tldr }}</p>{% endif %}
+    <div class="byline">
+      <img src="/assets/img/portrait-480.webp" alt="" width="36" height="36">
+      <div>
+        <p class="by-names">{{ p.authors_html }}</p>
+        <p class="by-date">{{ p.venue | upper }} · {{ p.year }}</p>
+      </div>
+    </div>
+    <div class="pills">
+      {% if p.citations %}<span class="pill" title="Google Scholar citations">{{ icon('repeat') }}{{ p.citations }}</span>{% endif %}
+      {% for l in p.links %}<a class="pill" href="{{ l.url }}" target="_blank" rel="noopener">{{ icon(l.icon) }}{{ l.label }}</a>{% endfor %}
+      <a class="pill" href="#cite">{{ icon('braces') }}Cite</a>
+      <button class="pill pill-r" type="button" data-share>Share</button>
+    </div>
+  </header>
+
+  <figure class="hero-fig">
+    {% if p.get('fig_lg') %}
+    <img src="{{ p.fig_lg }}" alt="Figure from {{ p.short }}">
+    <figcaption>Figure from the paper.</figcaption>
+    {% else %}
+    <div class="hero-viz"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas></div>
+    <figcaption>Schematic illustration — not a figure from the paper.</figcaption>
+    {% endif %}
+  </figure>
+
+  <div class="prose">
+    {% if p.get('highlights') %}
+    <aside class="update keyres">
+      <p class="sans-strong">The topline</p>
+      <div class="topline small">{% for h in p.highlights %}<div><strong>{{ h.value }}</strong><span>{{ h.label }}</span></div>{% endfor %}</div>
+    </aside>
+    {% endif %}
+    {% if p.get('abstract') %}
+    <h2>Abstract</h2>
+    <p>{{ p.abstract }}</p>
+    {% else %}
+    <p>{{ p.tldr }} The full paper is available via the links above.</p>
+    {% endif %}
+    <h2 id="cite">Cite this paper</h2>
+    <div class="bib"><button class="bib-copy" type="button" data-copy="#bib-{{ p.id }}" data-copy-msg="BibTeX copied">{{ icon('copy') }}Copy</button><pre><code id="bib-{{ p.id }}">{{ p.bibtex }}</code></pre></div>
+  </div>
+
+  {% set related = pubs | selectattr('id', 'ne', p.id) | selectattr('color', 'equalto', p.color) | list %}
+  {% if related %}
+  <section class="more">
+    <h2 class="h2">More on {{ topics[p.topics[0]].label | lower if p.topics else 'this' }}</h2>
+    <div class="archive">{% for r in related[:3] %}{{ paper_row(r) }}{% endfor %}</div>
+  </section>
+  {% endif %}
+</article>
+{% endblock %}

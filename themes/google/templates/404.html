@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Not found — {{ site.name }}{% endblock %}
+{% block content %}
+<section class="nf">
+  <div class="shapes" aria-hidden="true"><span class="sh s1"></span><span class="sh s2"></span><span class="sh s3"></span><span class="sh s4"></span></div>
+  <h1 class="display"><span class="gem">404.</span> That's an error.</h1>
+  <p class="hero-sub">The requested page was not found on this server. That's all we know.</p>
+  <div class="hero-ctas center"><a class="btn-filled lg" href="{{ url('/') }}">Go home</a><a class="btn-outlined lg" href="{{ url('/#papers') }}">Browse papers</a></div>
+</section>
+{% endblock %}

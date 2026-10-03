@@ -9,6 +9,7 @@
 #   status       optional badge, e.g. "under review"
 #   highlights   key numbers shown as chips
 #   links        label + url; the first link is used for the title
+#   citations    Google Scholar count (snapshot; see stats.as_of in site.yml)
 #   bib          extra BibTeX fields (type defaults: journal -> article, booktitle -> inproceedings)
 # ---------------------------------------------------------------------------
 
@@ -51,6 +52,7 @@
   venue: IEEE Transactions on Radar Systems
   venue_short: T-RS
   year: 2025
+  citations: 1
   topics: [perception]
   viz: chirp
   tldr: >-
@@ -67,6 +69,7 @@
   venue: IEEE SENSORS
   venue_short: SENSORS
   year: 2025
+  citations: 1
   topics: [perception, edge]
   viz: chirp-adaptive
   tldr: >-
@@ -111,6 +114,7 @@
   venue: Design, Automation & Test in Europe (DATE)
   venue_short: DATE
   year: 2025
+  citations: 21
   topics: [edge]
   figure: sensing-to-action
   tldr: >-
@@ -146,6 +150,7 @@
   venue: International Conference on Autonomous Agents and Multiagent Systems (AAMAS)
   venue_short: AAMAS
   year: 2025
+  citations: 14
   topics: [robot-learning]
   selected: true
   figure: adacred
@@ -176,6 +181,7 @@
   venue: Conference on Robot Learning (CoRL) · Munich
   venue_short: CoRL
   year: 2024
+  citations: 12
   topics: [robot-learning]
   selected: true
   figure: robokoop
@@ -217,6 +223,7 @@
   venue: Learning for Dynamics and Control (L4DC) · Oxford
   venue_short: L4DC
   year: 2024
+  citations: 7
   topics: [multi-agent]
   selected: true
   figure: stemfold
@@ -255,6 +262,7 @@
   venue: IEEE/MTT-S International Microwave Symposium (IMS)
   venue_short: IMS
   year: 2024
+  citations: 5
   topics: [perception, edge]
   selected: true
   figure: chirpnet
@@ -285,6 +293,7 @@
   venue: Design, Automation & Test in Europe (DATE)
   venue_short: DATE
   year: 2024
+  citations: 2
   topics: [edge]
   figure: cognitive-sensing
   tldr: >-
@@ -313,6 +322,7 @@
   venue: OpenReview preprint
   venue_short: Preprint
   year: 2023
+  citations: 4
   topics: [multi-agent]
   viz: agents
   tldr: >-
@@ -346,6 +356,7 @@
   venue: International Joint Conference on Neural Networks (IJCNN)
   venue_short: IJCNN
   year: 2022
+  citations: 18
   topics: [perception]
   selected: true
   figure: radar-attention
@@ -383,6 +394,7 @@
   venue: International Joint Conference on Neural Networks (IJCNN)
   venue_short: IJCNN
   year: 2022
+  citations: 5
   topics: [perception]
   figure: false-negatives
   tldr: >-
@@ -412,6 +424,7 @@
   venue: IEEE Transactions on Intelligent Vehicles, vol. 7, no. 1
   venue_short: T-IV
   year: 2022
+  citations: 71
   topics: [perception]
   selected: true
   figure: rgb-lidar-fusion

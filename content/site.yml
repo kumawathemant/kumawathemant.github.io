@@ -4,6 +4,8 @@
 # ---------------------------------------------------------------------------
 
 name: Hemant Kumawat
+# Which design is live at the site root (see themes/). Every theme is previewable at /drafts/<name>/.
+theme: aurora
 url: https://www.hemantkumawat.com
 description: >-
   Hemant Kumawat — Applied Scientist, Gaming AI at Microsoft; Ph.D. in ECE from Georgia Tech.
@@ -30,6 +32,11 @@ hero:
   sub: >-
     Applied Scientist at **Microsoft Gaming AI**. Ph.D. from **Georgia Tech**, where I worked on
     robot learning, multi-agent forecasting and resource-efficient perception.
+  # One-paragraph statement used by the keynote-style drafts (revealed word by word)
+  statement: >-
+    I build efficient, real-time vision-language models that understand games at Microsoft. Before that,
+    a Ph.D. at Georgia Tech — teaching robots compact representations, forecasting agents we can't see,
+    and building perception that decides what to sense.
   # Rotating phrases after "currently exploring →"
   phrases:
     - vision-language models that understand games
@@ -43,6 +50,8 @@ stats:
   citations: 161
   h_index: 6
   as_of: Oct 2026
+  # citations received per calendar year (Google Scholar histogram; current year is partial)
+  by_year: {2021: 3, 2022: 13, 2023: 21, 2024: 35, 2025: 43, 2026: 45}
 
 about:
   title: "Closing the loop between *perception*, *prediction* and *control*."
@@ -84,6 +93,7 @@ about:
 # Research threads: each gets an animated figure (viz: flow | koopman | agents | lidar | tokens | events | chirp)
 threads:
   - key: control
+    emoji: "🎛️"
     color: mint
     viz: koopman
     kicker: representations for control
@@ -96,6 +106,7 @@ threads:
     legend: "hover to scrub"
     papers: [robokoop, adacred, maple]
   - key: agents
+    emoji: "🕸️"
     color: indigo
     viz: agents
     kicker: multi-agent dynamics
@@ -108,6 +119,7 @@ threads:
     legend: "drag an agent"
     papers: [stemfold, stagenet, sdgn]
   - key: perception
+    emoji: "📡"
     color: amber
     viz: lidar
     kicker: closed-loop perception
@@ -120,6 +132,7 @@ threads:
     legend: "live sweep"
     papers: [radar-attention, rgb-lidar-fusion, chirpnet, dfdnet]
   - key: foundation
+    emoji: "🎮"
     color: rose
     viz: tokens
     kicker: foundation & world models
@@ -139,6 +152,8 @@ threads:
 
 experience:
   - id: microsoft
+    short: Microsoft
+    span: [2026.0, null]  # decimal years for timeline charts (null = present)
     org: Microsoft
     mark: MS
     brand: "#0078D4"
@@ -151,6 +166,8 @@ experience:
       - Designed evaluation pipelines for Microsoft Copilot that detect hallucinations and assess session and query quality, pinpointing failure points to accelerate targeted model and prompt improvements.
     tags: [Vision-language-action models, Multimodal learning, Efficient adaptation, Personalization, Model evaluation]
   - id: qualcomm
+    short: Qualcomm
+    span: [2025.33, 2025.67]  # decimal years for timeline charts (null = present)
     org: Qualcomm · ADAS Vision
     mark: QC
     brand: "#3253DC"
@@ -162,7 +179,12 @@ experience:
       - Designed a query-centric semantic occupancy framework using sparse, trackable 3D Gaussian queries anchored to object-level primitives for efficient scene understanding.
       - Proposed a Gaussian-to-voxel splatting strategy — **2× faster** runtime and **30% lower memory** than projection-based baselines (in submission).
     tags: [3D world models, Gaussian splatting, NeRF, Deformable attention]
+    highlights:
+      - {value: "2×", label: faster occupancy prediction}
+      - {value: "−30%", label: memory vs. projection baselines}
   - org: Georgia Tech · GREEN Lab
+    short: GREEN Lab, Georgia Tech
+    span: [2021.0, 2025.95]  # decimal years for timeline charts (null = present)
     mark: GT
     brand: "#B3A369"
     role: Graduate Research Assistant
@@ -177,6 +199,8 @@ experience:
       - "**Vision-action adaptation** — guiding a vision-action model's generation toward a target domain for cross-embodiment and cross-task transfer with limited data."
     tags: [Causal decision transformers, Offline RL, Contrastive learning, Mamba, Neural ODEs, Sensor fusion]
   - org: Amazon Robotics
+    short: Amazon Robotics
+    span: [2024.33, 2024.67]  # decimal years for timeline charts (null = present)
     mark: AR
     brand: "#FF9900"
     role: Applied Scientist II Intern
@@ -188,7 +212,11 @@ experience:
       - Built a scalable multi-agent interaction engine estimating inter-robot influence across **20 TB** of real-world sensing and occupancy-grid data.
       - Integrated goal-aware trajectory prediction with planning to reduce navigation conflicts — an order-of-magnitude improvement in coordination.
     tags: [Multi-agent forecasting, Goal-conditioned planning, Motion prediction]
+    highlights:
+      - {value: "20 TB", label: of fleet data modeled}
   - org: Robotics Institute · Carnegie Mellon
+    short: CMU Robotics Institute
+    span: [2019.33, 2019.67]  # decimal years for timeline charts (null = present)
     mark: RI
     brand: "#C41230"
     role: Research Scholar
@@ -200,6 +228,8 @@ experience:
       - Combined iLQR with RRT* to plan evasive maneuvers with large tire slip — including drifting — and deployed the planner in ROS simulation and on an RC car avoiding suddenly-appearing obstacles at speed. ([code](https://github.com/kumawathemant/Evasive-Planner))
     tags: [Motion planning, iLQR, ROS]
   - org: SeDriCa · UMIC, IIT Bombay
+    short: SeDriCa, IIT Bombay
+    span: [2019.0, 2020.4]  # decimal years for timeline charts (null = present)
     mark: IITB
     brand: "#E5484D"
     role: Student Project Lead, Self-Driving Car Team
@@ -212,10 +242,14 @@ experience:
 
 education:
   - school: Georgia Institute of Technology
+    short: Ph.D., Georgia Tech
+    span: [2021.0, 2025.95]
     degree: M.S. & Ph.D., Electrical & Computer Engineering
     when: 2021 — 2025
     note: Advisor — Prof. Saibal Mukhopadhyay
   - school: Indian Institute of Technology Bombay
+    short: B.Tech, IIT Bombay
+    span: [2016.5, 2020.4]
     degree: B.Tech, Mechanical Engineering & Computer Science
     when: 2016 — 2020
 

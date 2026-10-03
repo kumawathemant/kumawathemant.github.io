@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Writing — {{ site.name }}{% endblock %}
+{% block description %}Notes and essays by {{ site.name }} on robot learning, reinforcement learning and the math underneath.{% endblock %}
+{% block content %}
+<div class="wrap">
+  <header class="list-head">
+    <p class="eyebrow" data-reveal>Writing</p>
+    <h1 class="headline" data-reveal style="--d:1">From the <span class="grad">notebook.</span></h1>
+    <p class="lede" data-reveal style="--d:2">Notes on robot learning, RL and the math underneath. <a href="/blog/feed.xml">RSS</a></p>
+  </header>
+  <div class="blog-list">
+    {% for p in posts %}
+    <a class="post-card" href="{{ url(p.url) }}" data-reveal style="--d:{{ loop.index0 % 2 }}">
+      <p class="news-kind">{{ p.date_str | upper }} · {{ p.read_min }} MIN READ</p>
+      <h3>{{ p.title }}</h3>
+      {% if p.description %}<p>{{ p.description }}</p>{% endif %}
+      <span class="link-arrow">Read {{ icon('chevron-right') }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

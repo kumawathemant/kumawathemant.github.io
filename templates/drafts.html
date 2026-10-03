@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Design drafts — {{ site.name }}</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0b0b0d; color: #f2f2f4; font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  main { width: min(100% - 48px, 1480px); margin: 0 auto; padding: 64px 0 96px; }
+  h1 { font-size: clamp(2.2rem, 4vw, 3.4rem); letter-spacing: -.03em; line-height: 1.05; margin: 0 0 12px; font-weight: 650; }
+  .lead { color: #a3a3ad; max-width: 70ch; margin: 0 0 40px; }
+  code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; background: #1c1c21; border: 1px solid #2a2a31; padding: 2px 7px; border-radius: 6px; color: #e9e9ee; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 28px; }
+  .card { border: 1px solid #24242b; border-radius: 18px; overflow: hidden; background: #121216; transition: border-color .25s, transform .4s cubic-bezier(.22,1,.36,1); }
+  .card:hover { border-color: #3a3a44; transform: translateY(-3px); }
+  .shot { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #000; }
+  .shot iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; }
+  .shot a { position: absolute; inset: 0; }
+  .meta { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 6px; }
+  .row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .name { font-size: 18px; font-weight: 650; letter-spacing: -.01em; }
+  .num { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: #8b8b96; }
+  .tag { color: #a3a3ad; font-size: 14px; }
+  .insp { color: #6f6f7a; font-size: 12.5px; }
+  .live { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: rgba(0,200,50,.16); color: #4ade80; font-size: 11px; font-weight: 600; vertical-align: 2px; }
+  .links { display: flex; gap: 14px; margin-top: 8px; font-size: 13.5px; }
+  .links a { color: #f2f2f4; text-decoration: none; border-bottom: 1px solid #3a3a44; padding-bottom: 1px; }
+  .links a:hover { border-color: #f2f2f4; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Design drafts</h1>
+  <p class="lead">Same content, {{ themes | length }} designs. Click a preview to open it — every page shows a
+    switcher at the bottom-left, and <code>[</code> / <code>]</code> flips between drafts on the same page.
+    To publish one, set <code>theme: &lt;name&gt;</code> in <code>content/site.yml</code>.</p>
+  <div class="grid">
+    {% for t in themes %}
+    <article class="card">
+      <div class="shot">
+        <iframe src="/drafts/{{ t.key }}/" loading="lazy" title="Preview of {{ t.label }}" tabindex="-1"></iframe>
+        <a href="/drafts/{{ t.key }}/" aria-label="Open {{ t.label }}"></a>
+      </div>
+      <div class="meta">
+        <div class="row"><span class="name">{{ t.label }}{% if t.key == live %}<span class="live">live</span>{% endif %}</span><span class="num">draft {{ t.draft }} · theme: {{ t.key }}</span></div>
+        <span class="tag">{{ t.tagline }}</span>
+        <span class="insp">Inspired by {{ t.inspiration }}</span>
+        <div class="links"><a href="/drafts/{{ t.key }}/">Home</a><a href="/drafts/{{ t.key }}/blog/">Writing</a><a href="/drafts/{{ t.key }}/blog/2024/kan/">A post</a></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</main>
+<script>
+  const fit = () => document.querySelectorAll('.shot').forEach((s) => { s.querySelector('iframe').style.transform = `scale(${s.clientWidth / 1440})`; });
+  addEventListener('resize', fit); fit();
+</script>
+{{ live_reload }}
+</body>
+</html>

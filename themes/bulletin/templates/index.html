@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% from "partials/rows.html" import paper_row, post_row with context %}
+{% block content %}
+
+{# ---------- landing card (Substack welcome) ---------- #}
+<section class="welcome">
+  <div class="welcome-logo"><img src="/assets/img/portrait-480.webp" alt="Portrait of {{ site.name }}" width="480" height="600"></div>
+  <h1 class="welcome-title">{{ site.name }}</h1>
+  <p class="welcome-desc">{{ site.now.role }} at {{ site.now.org }}. Ph.D., Georgia Tech. Robot learning, multi-agent forecasting, efficient perception — and the models that connect them.</p>
+  <p class="welcome-count">{{ stats.citations }} citations · {{ stats.papers }} papers · h-index {{ stats.h_index }}</p>
+  <div class="welcome-form">
+    <span class="fake-input">{{ site.email.user }}@{{ site.email.domain }}</span>
+    <button class="btn-green" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}"><span class="email-text" hidden></span>Copy email</button>
+  </div>
+  <a class="continue" href="#about">Continue reading {{ icon('chevron-right') }}</a>
+</section>
+
+<div class="col">
+  {# ---------- topline box ---------- #}
+  <aside class="update" id="about">
+    <p><strong>Update:</strong> {{ site.about.paragraphs[0] | md }} <em>-HK, {{ updated }}</em></p>
+    <p class="see-also"><strong>See also:</strong> <a href="#publications">publications</a>, <a href="#dashboard">research dashboard</a>, and <a href="{{ site.cv }}">CV</a>.</p>
+  </aside>
+
+  <div class="prose">
+    {% for para in site.about.paragraphs[1:] %}<p>{{ para | md }}</p>{% endfor %}
+  </div>
+
+  {# ---------- research ---------- #}
+  <h2 class="h2" id="research">What I work on</h2>
+  <p class="dek">Four research threads. The figures are live — hover or drag inside them.</p>
+  <div class="features">
+    {% for t in site.threads %}
+    <article class="feature">
+      <div class="feature-media"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas></div>
+      <p class="kicker">{{ t.kicker | upper }}</p>
+      <h3 class="feature-title">{{ t.title }}</h3>
+      <p class="feature-sub">{{ t.text }}</p>
+      <p class="row-meta">
+        {% for pid in t.get('papers') or [] %}<a href="{{ paper_url(pid) }}">{{ pubs_by_id[pid].short | upper }}</a>{{ ' · ' if not loop.last }}{% endfor %}
+        {% for c in t.get('chips') or [] %}<a href="{{ c.href }}">{{ c.label | upper }}</a>{{ ' · ' if not loop.last }}{% endfor %}
+      </p>
+    </article>
+    {% endfor %}
+  </div>
+</div>
+
+{# ---------- dashboard ---------- #}
+<section class="dash" id="dashboard">
+  <div class="col">
+    <p class="kicker green"><span class="sq" aria-hidden="true"></span>RESEARCH DASHBOARD</p>
+    <h2 class="h2 big">The topline: how is the research doing?</h2>
+    <p class="dek">A running tally of papers and citations, updated whenever I remember to check Google Scholar. Last update: {{ site.stats.as_of }}.</p>
+    <div class="topline">
+      <div><strong data-count="{{ stats.papers }}">{{ stats.papers }}</strong><span>papers</span></div>
+      <div><strong data-count="{{ stats.first }}">{{ stats.first }}</strong><span>first-author</span></div>
+      <div><strong data-count="{{ stats.citations }}">{{ stats.citations }}</strong><span>citations</span></div>
+      <div><strong data-count="{{ stats.h_index }}">{{ stats.h_index }}</strong><span>h-index</span></div>
+    </div>
+
+    <figure class="figure">
+      <h3 class="fig-title">Citations keep compounding</h3>
+      <p class="fig-sub">Citations received each year (bars) and running total (line)</p>
+      {{ charts.citations_by_year(site.stats.by_year, stats.citations, site.stats.as_of) }}
+      {% set ysum = site.stats.by_year.values() | sum %}<figcaption>*{{ site.stats.as_of.split()[-1] }} is partial (through {{ site.stats.as_of }}).{% if ysum != stats.citations %} Yearly counts sum to {{ ysum }}; Scholar's headline total of {{ stats.citations }} also counts citations without a year.{% endif %} Source: Google Scholar.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3 class="fig-title">Which papers get cited?</h3>
+      <p class="fig-sub">Google Scholar citations by paper · <span class="hl-green">first-author work in green</span></p>
+      {{ charts.citations_by_paper(pubs) }}
+      <figcaption>Source: Google Scholar, {{ site.stats.as_of }}. Papers with no citations yet are omitted.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3 class="fig-title">What I publish, year by year</h3>
+      <p class="fig-sub">Papers per year, by primary topic</p>
+      {{ charts.topic_legend(topics) }}
+      {{ charts.papers_by_year(pubs, topics) }}
+      <figcaption>Includes preprints and papers under review. Source: <a href="#publications">publication list</a>.</figcaption>
+    </figure>
+
+    <figure class="figure">
+      <h3 class="fig-title">The career, as a Gantt chart</h3>
+      <p class="fig-sub">Degrees, research, internships and industry roles</p>
+      {{ charts.career_legend() }}
+      {{ charts.career_gantt(site.experience, site.education) }}
+      <figcaption>Arrows mark roles that are ongoing. Details in <a href="#experience">Experience</a>.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<div class="col">
+  {# ---------- archive ---------- #}
+  <h2 class="h2" id="publications">Publications</h2>
+  <div class="tabs-row">
+    <div class="tabs" role="tablist" aria-label="Sort">
+      <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="latest">Latest</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-tab="top">Top</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-tab="first">First author</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-tab="writing">Writing</button>
+    </div>
+    <button class="ico" type="button" data-search-toggle aria-label="Search">{{ icon('search') }}</button>
+  </div>
+  <div class="archive" data-panel="latest">
+    {% for p in pubs %}{{ paper_row(p) }}{% endfor %}
+  </div>
+  <div class="archive" data-panel="top" hidden>
+    {% for p in pubs | sort(attribute='citations', reverse=true) if p.get('citations') %}{{ paper_row(p, loop.index) }}{% endfor %}
+  </div>
+  <div class="archive" data-panel="first" hidden>
+    {% for p in pubs if p.first_author or p.co_first %}{{ paper_row(p) }}{% endfor %}
+  </div>
+  <div class="archive" data-panel="writing" hidden>
+    {% for p in posts %}{{ post_row(p) }}{% endfor %}
+  </div>
+  <p class="empty" hidden>Nothing matches that search.</p>
+  <p class="note">★ first or co-first author · * equal contribution · citations from Google Scholar, {{ site.stats.as_of }}</p>
+
+  {# ---------- experience ---------- #}
+  <h2 class="h2" id="experience">Experience</h2>
+  <div class="archive">
+    {% for e in site.experience %}
+    <article class="row exp" id="exp-{{ e.get('id') or loop.index }}">
+      <div class="row-text">
+        <h3 class="row-title">{{ e.role }}, {{ e.org }}</h3>
+        {% if e.get('topic') %}<p class="row-sub">{{ e.topic }}</p>{% endif %}
+        <ul class="exp-list">{% for b in e.bullets %}<li>{{ b | md }}</li>{% endfor %}</ul>
+        <p class="row-meta"><span>{{ e.when | upper }}</span>{% if e.get('where') %} · <span>{{ e.where | upper }}</span>{% endif %}{% if e.get('mentor') %} · <span>{{ e.mentor | upper }}</span>{% endif %}</p>
+      </div>
+      <span class="row-thumb is-org" style="--org: {{ e.brand }}" aria-hidden="true"><span>{{ e.mark }}</span></span>
+    </article>
+    {% endfor %}
+  </div>
+  <p class="edu-line"><strong>Education:</strong> {% for e in site.education %}{{ e.degree }}, {{ e.school }} ({{ e.when | replace(' — ', '–') }}){{ '; ' if not loop.last else '.' }}{% endfor %}</p>
+
+  {# ---------- news ---------- #}
+  <h2 class="h2" id="news">Latest updates</h2>
+  <div class="newslist">
+    {% for n in news %}
+    <p class="newsitem"><span class="nd">{{ n.date | upper }}</span>{{ n.text | md }}</p>
+    {% endfor %}
+  </div>
+
+  {# ---------- service ---------- #}
+  <h2 class="h2" id="service">Service, talks &amp; mentoring</h2>
+  <div class="prose">
+    <p><strong class="sans">Reviewer:</strong> {{ site.service.reviewing | join(', ') }}.</p>
+    <p><strong class="sans">Talks:</strong> {% for t in site.service.talks %}<em>{{ t.title }}</em> ({{ t.where }}){{ '; ' if not loop.last else '.' }}{% endfor %}</p>
+    <p><strong class="sans">Mentoring:</strong> {% for m in site.service.mentoring %}{{ m.title }} — {{ m.where }}{{ '; ' if not loop.last else '.' }}{% endfor %}</p>
+  </div>
+
+  {# ---------- contact ---------- #}
+  <section class="subscribe" id="contact">
+    <h2 class="sub-title">Get in touch</h2>
+    <p class="sub-desc">Research, collaborations, or a good argument about world models — email is fastest.</p>
+    <div class="welcome-form">
+      <span class="fake-input">{{ site.email.user }}@{{ site.email.domain }}</span>
+      <button class="btn-green" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}"><span class="email-text" hidden></span>Copy email</button>
+    </div>
+  </section>
+</div>
+{% endblock %}

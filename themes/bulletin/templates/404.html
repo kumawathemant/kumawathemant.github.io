@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Page not found — {{ site.name }}{% endblock %}
+{% block content %}
+<section class="welcome nf">
+  <p class="nf-num">404</p>
+  <h1 class="welcome-title">This page is outside the confidence interval</h1>
+  <p class="welcome-desc">We couldn't find it. It may have moved when the site was redesigned.</p>
+  <p><a class="btn-green" href="{{ url('/') }}">Back to home</a></p>
+  <a class="continue" href="{{ url('/#publications') }}">Browse publications {{ icon('chevron-right') }}</a>
+</section>
+{% endblock %}

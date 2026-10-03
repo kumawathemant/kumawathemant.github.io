@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-store="theme-google">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ site.name }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+<link rel="canonical" href="{{ site.url }}{{ page_url }}">
+{% if is_draft %}<meta name="robots" content="noindex">{% endif %}
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:image" content="{{ site.url }}/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>
+  (function () {
+    var d = document.documentElement, t;
+    try { t = localStorage.getItem('theme-google'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    d.dataset.theme = t;
+    d.classList.add('js');
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,300..800&family=Google+Sans+Code:wght@400;500&display=swap">
+<link rel="stylesheet" href="{{ theme_asset('google.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body class="page-{{ page }}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="tb-inner">
+    <a class="brand" href="{{ url('/') }}">
+      <span class="g-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span class="brand-name">{{ site.name }}</span>
+    </a>
+    <nav class="tabs" aria-label="Sections">
+      <a href="{{ url('/#overview') }}" data-section="overview">Overview</a>
+      <a href="{{ url('/#research') }}" data-section="research">Research</a>
+      <a href="{{ url('/#papers') }}" data-section="papers">Papers</a>
+      <a href="{{ url('/#journey') }}" data-section="journey">Journey</a>
+      <a href="{{ url('/blog/') }}"{% if page == 'blog' %} aria-current="page"{% endif %}>Writing</a>
+    </nav>
+    <div class="tb-actions">
+      {% if page == 'home' %}<button class="btn-tonal" type="button" data-present>{{ icon('play') }}<span>Present</span></button>{% endif %}
+      <button class="icon-btn theme-toggle" type="button" aria-label="Switch color theme">{{ icon('moon', 'i-moon') }}{{ icon('sun', 'i-sun') }}</button>
+      <a class="btn-filled" href="{{ site.cv }}">{{ icon('download') }}<span>CV</span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+<footer class="foot">
+  <div class="foot-inner">
+    <a class="brand" href="{{ url('/') }}"><span class="g-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span class="brand-name">{{ site.name }}</span></a>
+    <nav class="foot-links" aria-label="Elsewhere">
+      <a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Scholar</a>
+      <a href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub</a>
+      <a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a>
+      <a href="/blog/feed.xml">RSS</a>
+    </nav>
+    <p class="foot-meta">© {{ year }} {{ site.name }} · Updated {{ updated }}</p>
+  </div>
+</footer>
+<dialog class="lightbox" aria-label="Figure viewer">
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-btn lb-close" type="button" aria-label="Close">{{ icon('close') }}</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous figure">{{ icon('chevron-left') }}</button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next figure">{{ icon('chevron-right') }}</button>
+</dialog>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="{{ asset('js/site.js') }}" defer></script>
+<script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ asset('js/present.js') }}" defer></script>
+<script src="{{ theme_asset('google.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+{{ live_reload }}
+</body>
+</html>

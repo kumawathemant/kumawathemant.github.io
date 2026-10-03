@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% from "partials/rows.html" import post_row with context %}
+{% block title %}{{ post.title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ post.description or post.title }}{% endblock %}
+{% block head %}
+{% if post.has_math %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.querySelector('.prose'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+{% endif %}
+{% endblock %}
+{% block content %}
+<article class="article">
+  <header class="art-head">
+    <p class="kicker"><a href="{{ url('/blog/') }}">WRITING</a>{% for t in post.tags[:2] %} · {{ t | upper }}{% endfor %}</p>
+    <h1 class="art-title">{{ post.title }}</h1>
+    {% if post.description %}<p class="art-sub">{{ post.description }}</p>{% endif %}
+    <div class="byline">
+      <img src="/assets/img/portrait-480.webp" alt="" width="36" height="36">
+      <div>
+        <p class="by-names"><strong>{{ site.name | upper }}</strong></p>
+        <p class="by-date">{{ post.date_str | upper }} · {{ post.read_min }} MIN READ</p>
+      </div>
+    </div>
+    <div class="pills">
+      <a class="pill" href="{{ url('/blog/') }}">{{ icon('list') }}All posts</a>
+      <a class="pill" href="/blog/feed.xml">{{ icon('rss') }}RSS</a>
+      <button class="pill pill-r" type="button" data-share>Share</button>
+    </div>
+  </header>
+  {% if post.toc %}
+  <nav class="update toc" aria-label="Contents">
+    <p class="sans-strong">In this post</p>
+    <ol>{% for h in post.toc if h.level == 2 %}<li><a href="#{{ h.id }}">{{ h.name }}</a></li>{% endfor %}</ol>
+  </nav>
+  {% endif %}
+  <div class="prose">
+    {{ post.html }}
+  </div>
+  <section class="more">
+    <h2 class="h2">More from {{ site.name }}</h2>
+    <div class="archive">
+      {% if post.newer %}{{ post_row(post.newer) }}{% endif %}
+      {% if post.older %}{{ post_row(post.older) }}{% endif %}
+    </div>
+  </section>
+</article>
+{% endblock %}

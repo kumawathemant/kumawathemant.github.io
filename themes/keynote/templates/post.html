@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — {{ site.name }}{% endblock %}
+{% block description %}{{ post.description or post.title }}{% endblock %}
+{% block head %}
+{% if post.has_math %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.querySelector('.prose'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false})"></script>
+{% endif %}
+{% endblock %}
+{% block content %}
+<article class="article">
+  <p class="news-kind">{{ (post.tags[1] if post.tags | length > 1 else (post.tags[0] if post.tags else 'notes')) | upper }}</p>
+  <h1 class="art-title">{{ post.title }}</h1>
+  {% if post.description %}<p class="art-sub">{{ post.description }}</p>{% endif %}
+  <p class="art-meta">{{ post.date_str }} · {{ post.read_min }} min read · {{ site.name }}</p>
+  <div class="prose">
+    {{ post.html }}
+  </div>
+  <section class="more-posts">
+    <h2>More from the notebook</h2>
+    <div class="post-grid" style="grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 0">
+      {% for p in [post.newer, post.older] if p %}
+      <a class="post-card" href="{{ url(p.url) }}">
+        <p class="news-kind">{{ p.date_str | upper }}</p>
+        <h3>{{ p.title }}</h3>
+        <span class="link-arrow">Read {{ icon('chevron-right') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+</article>
+{% endblock %}

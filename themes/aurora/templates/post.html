@@ -17,7 +17,7 @@
 <article class="post">
   <header class="page-hero post-hero">
     <div class="container post-head">
-      <a class="back-link mono" href="/blog/">{{ icon('arrow-left') }}all writing</a>
+      <a class="back-link mono" href="{{ url('/blog/') }}">{{ icon('arrow-left') }}all writing</a>
       <p class="post-meta mono" data-reveal>{{ post.date_str }} · {{ icon('clock') }}{{ post.read_min }} min read</p>
       <h1 class="page-title" data-reveal style="--d:1">{{ post.title }}</h1>
       {% if post.description %}<p class="page-sub" data-reveal style="--d:2">{{ post.description }}</p>{% endif %}
@@ -38,8 +38,8 @@
     {% endif %}
   </div>
   <nav class="container post-nav" aria-label="More posts">
-    {% if post.older %}<a class="post-nav-link" href="{{ post.older.url }}"><span class="mono">{{ icon('arrow-left') }}older</span>{{ post.older.title }}</a>{% else %}<span></span>{% endif %}
-    {% if post.newer %}<a class="post-nav-link next" href="{{ post.newer.url }}"><span class="mono">newer{{ icon('arrow-right') }}</span>{{ post.newer.title }}</a>{% endif %}
+    {% if post.older %}<a class="post-nav-link" href="{{ url(post.older.url) }}"><span class="mono">{{ icon('arrow-left') }}older</span>{{ post.older.title }}</a>{% else %}<span></span>{% endif %}
+    {% if post.newer %}<a class="post-nav-link next" href="{{ url(post.newer.url) }}"><span class="mono">newer{{ icon('arrow-right') }}</span>{{ post.newer.title }}</a>{% endif %}
   </nav>
 </article>
 {% endblock %}

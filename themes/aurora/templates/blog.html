@@ -4,7 +4,7 @@
 {% block content %}
 <section class="page-hero">
   <div class="container">
-    <a class="back-link mono" href="/">{{ icon('arrow-left') }}home</a>
+    <a class="back-link mono" href="{{ url('/') }}">{{ icon('arrow-left') }}home</a>
     <p class="eyebrow" data-reveal><span>✎</span>Writing</p>
     <h1 class="page-title" data-reveal>Notes on robot learning, RL &amp; <em>the math underneath</em>.</h1>
     <p class="page-sub" data-reveal style="--d:1">{{ posts | length }} posts · <a href="/blog/feed.xml">{{ icon('rss') }}RSS feed</a></p>
@@ -18,7 +18,7 @@
       <ol class="blog-items">
         {% for post in items %}
         <li data-reveal style="--d:{{ loop.index0 }}">
-          <a class="blog-item" href="{{ post.url }}">
+          <a class="blog-item" href="{{ url(post.url) }}">
             <p class="mono">{{ post.date_str }} · {{ post.read_min }} min read</p>
             <h3>{{ post.title }}</h3>
             {% if post.description %}<p class="blog-desc">{{ post.description }}</p>{% endif %}

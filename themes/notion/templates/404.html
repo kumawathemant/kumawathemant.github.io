@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Page not found — {{ site.name }}{% endblock %}
+{% block content %}
+<div class="notfound">
+  <div class="nf-emoji">🕳️</div>
+  <h1>This page couldn't be found</h1>
+  <p class="dim">It may have moved, or it's a hidden agent we can't observe.</p>
+  <p><a class="n-btn" href="{{ url('/') }}">🏠 Back to Home</a> <a class="n-btn ghost" href="{{ url('/#publications') }}">📄 Publications</a></p>
+</div>
+{% endblock %}

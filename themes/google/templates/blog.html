@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Writing — {{ site.name }}{% endblock %}
+{% block description %}Notes and essays by {{ site.name }} on robot learning, reinforcement learning and the math underneath.{% endblock %}
+{% block content %}
+<div class="wrap">
+  <header class="list-head">
+    <p class="overline" data-reveal>Writing</p>
+    <h1 class="headline" data-reveal style="--d:1">Notes on robot learning, RL and <span class="gem">the math underneath</span></h1>
+  </header>
+  <div class="blog-grid">
+    {% for p in posts %}
+    <a class="m-card" href="{{ url(p.url) }}" data-reveal style="--d:{{ loop.index0 % 2 }}">
+      <div class="m-body">
+        <p class="chip-label">{{ p.date_str }} · {{ p.read_min }} min read</p>
+        <h2 class="title-l">{{ p.title }}</h2>
+        {% if p.description %}<p class="body-m">{{ p.description }}</p>{% endif %}
+        <div class="chipset">{% for t in p.tags[:3] %}<span class="chip static">{{ t }}</span>{% endfor %}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

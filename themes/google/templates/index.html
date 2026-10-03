@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% set gcol = {'mint': 'green', 'indigo': 'blue', 'amber': 'yellow', 'rose': 'red'} %}
+{% block content %}
+
+{# ============ 1 · title ============ #}
+<section class="slide hero" id="overview">
+  <div class="shapes" aria-hidden="true">
+    <span class="sh s1"></span><span class="sh s2"></span><span class="sh s3"></span><span class="sh s4"></span><span class="sh s5"></span>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="chip-assist" data-reveal><span class="live-dot"></span>{{ site.now.role }} at {{ site.now.org }}</p>
+      <h1 class="display" data-reveal style="--d:1">Hello, I'm <span class="gem">Hemant.</span></h1>
+      <p class="hero-sub" data-reveal style="--d:2">I build multimodal models and agents that perceive, predict and act — from robots and autonomous vehicles to virtual worlds.</p>
+      <div class="hero-ctas" data-reveal style="--d:3">
+        <a class="btn-filled lg" href="#papers">Explore research</a>
+        <button class="btn-outlined lg" type="button" data-present>{{ icon('play') }}Watch the keynote</button>
+      </div>
+    </div>
+    <div class="hero-media" data-reveal style="--d:2">
+      <div class="blob"><img src="/assets/img/portrait-800.webp" srcset="/assets/img/portrait-480.webp 480w, /assets/img/portrait-800.webp 800w" sizes="(max-width: 900px) 70vw, 420px" width="800" height="1000" alt="Portrait of {{ site.name }}" fetchpriority="high"></div>
+      <span class="badge-float b1">{{ icon('graduation') }}Ph.D., Georgia Tech</span>
+      <span class="badge-float b2">{{ icon('pin') }}{{ site.location }}</span>
+    </div>
+  </div>
+</section>
+
+{# ============ 2 · stats ============ #}
+<section class="slide stats-sec" id="numbers">
+  <div class="wrap">
+    <p class="overline" data-reveal>At a glance</p>
+    <h2 class="headline" data-reveal style="--d:1">Research, <span class="gem">by the numbers</span></h2>
+    <div class="stat-grid">
+      <div class="stat c-blue" data-reveal><p class="stat-num"><span data-count="{{ stats.citations }}">{{ stats.citations }}</span></p><p class="stat-label">citations</p><p class="stat-src">Google Scholar · {{ site.stats.as_of }}</p></div>
+      <div class="stat c-red" data-reveal style="--d:1"><p class="stat-num"><span data-count="{{ stats.papers }}">{{ stats.papers }}</span></p><p class="stat-label">papers</p><p class="stat-src">{{ stats.first }} first-author</p></div>
+      <div class="stat c-yellow" data-reveal style="--d:2"><p class="stat-num"><span data-count="{{ stats.h_index }}">{{ stats.h_index }}</span></p><p class="stat-label">h-index</p><p class="stat-src">Google Scholar</p></div>
+      <div class="stat c-green" data-reveal style="--d:3"><p class="stat-num"><span data-count="{{ stats.venues }}">{{ stats.venues }}</span></p><p class="stat-label">venues</p><p class="stat-src">CoRL · RA-L · AAMAS · L4DC · …</p></div>
+    </div>
+    <div class="results" data-reveal>
+      {% for p in pubs if p.get('highlights') %}
+      {% for h in p.highlights[:1] %}<div class="result"><strong>{{ h.value }}</strong><span>{{ h.label }}</span><em>{{ p.short }}</em></div>{% endfor %}
+      {% endfor %}
+      {% for e in site.experience if e.get('highlights') %}
+      {% for h in e.highlights[:1] %}<div class="result"><strong>{{ h.value }}</strong><span>{{ h.label }}</span><em>{{ e.org.split(' · ')[0] }}</em></div>{% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============ 3 · research ============ #}
+<section class="slide research" id="research">
+  <div class="wrap">
+    <p class="overline" data-reveal>Research</p>
+    <h2 class="headline" data-reveal style="--d:1">What does an agent need to know <span class="gem">to act well?</span></h2>
+    <div class="thread-grid">
+      {% for t in site.threads %}
+      <article class="m-card thread c-{{ gcol[t.color] }}" data-reveal style="--d:{{ loop.index0 % 2 }}">
+        <div class="m-media"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas><span class="m-hint">{{ t.legend }}</span></div>
+        <div class="m-body">
+          <p class="chip-label">{{ t.emoji }} {{ t.kicker | capitalize }}</p>
+          <h3 class="title-l">{{ t.title }}</h3>
+          <p class="body-m">{{ t.text }}</p>
+          <div class="chipset">
+            {% for pid in t.get('papers') or [] %}<a class="chip" href="#pub-{{ pid }}">{{ pubs_by_id[pid].short }}</a>{% endfor %}
+            {% for c in t.get('chips') or [] %}<a class="chip" href="{{ c.href }}">{{ c.label }}</a>{% endfor %}
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============ 4 · papers ============ #}
+<section class="slide papers" id="papers">
+  <div class="wrap">
+    <p class="overline" data-reveal>Publications</p>
+    <h2 class="headline" data-reveal style="--d:1">Papers, <span class="gem">with figures</span></h2>
+    <div class="toolbar" data-reveal>
+      <div class="chipset filters" role="group" aria-label="Filter publications">
+        {% for f in filters %}<button class="chip filter" type="button" data-filter="{{ f.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ icon('check', 'chk') }}{{ f.label }}</button>{% endfor %}
+      </div>
+      <label class="search pub-search">{{ icon('search') }}<input type="search" placeholder="Search papers" aria-label="Search publications" autocomplete="off"></label>
+    </div>
+    <div class="paper-grid pub-list">
+      {% for p in pubs %}
+      <article class="m-card paper pub c-{{ gcol[p.color] }}" id="pub-{{ p.id }}" data-topics="{{ p.filters }}" data-search="{{ p.search }}">
+        {% if p.get('fig_sm') %}
+        <button class="paper-fig" type="button" data-lightbox data-full="{{ p.fig_lg }}" data-caption="{{ p.short }} — {{ p.title }}" aria-label="Enlarge figure: {{ p.short }}"><img src="{{ p.fig_sm }}" alt="Figure from {{ p.short }}" loading="lazy" decoding="async"></button>
+        {% else %}
+        <div class="paper-fig is-viz"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas><span class="m-hint show">illustration</span></div>
+        {% endif %}
+        <div class="m-body">
+          <div class="paper-top">
+            <span class="venue-chip">{{ p.venue_short }} {{ p.year }}</span>
+            {% if p.first_author or p.co_first %}<span class="tag-star">{{ '★ First author' if p.first_author else '★ Co-first' }}</span>{% endif %}
+            {% if p.get('status') %}<span class="tag-star alt">{{ p.status }}</span>{% endif %}
+          </div>
+          <h3 class="title-m">{{ p.title }}</h3>
+          <p class="authors">{{ p.authors_html }}</p>
+          {% if p.get('highlights') %}<p class="hl">{% for h in p.highlights %}<span><strong>{{ h.value }}</strong> {{ h.label }}</span>{% endfor %}</p>{% endif %}
+          <div class="paper-actions">
+            {% for l in p.links[:2] %}<a class="btn-text" href="{{ l.url }}" target="_blank" rel="noopener">{{ icon(l.icon) }}{{ l.label }}</a>{% endfor %}
+            <button class="btn-text" type="button" data-copy="#gbib-{{ p.id }}" data-copy-msg="BibTeX copied">{{ icon('braces') }}BibTeX</button>
+          </div>
+          <pre hidden><code id="gbib-{{ p.id }}">{{ p.bibtex }}</code></pre>
+        </div>
+      </article>
+      {% endfor %}
+      <p class="pub-empty" hidden>No papers match your filters.</p>
+    </div>
+  </div>
+</section>
+
+{# ============ 5 · journey ============ #}
+<section class="slide journey" id="journey">
+  <div class="wrap">
+    <p class="overline" data-reveal>Journey</p>
+    <h2 class="headline" data-reveal style="--d:1">From self-driving cars to <span class="gem">virtual worlds</span></h2>
+    <ol class="stepper">
+      {% for e in site.experience %}
+      <li class="step" id="exp-{{ e.get('id') or loop.index }}" style="--org: {{ e.brand }}" data-reveal>
+        <span class="step-dot"><span>{{ e.mark }}</span></span>
+        <div class="m-card step-card">
+          <div class="m-body">
+            <p class="chip-label">{{ e.when }}{% if e.get('current') %} · <span class="now">Now</span>{% endif %}</p>
+            <h3 class="title-m">{{ e.role }}</h3>
+            <p class="body-s">{{ e.org }}{% if e.get('where') %} · {{ e.where }}{% endif %}{% if e.get('mentor') %} · {{ e.mentor }}{% endif %}</p>
+            <ul class="body-m">{% for b in e.bullets %}<li>{{ b | md }}</li>{% endfor %}</ul>
+            {% if e.get('tags') %}<div class="chipset small">{% for t in e.tags %}<span class="chip static">{{ t }}</span>{% endfor %}</div>{% endif %}
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{# ============ 6 · news & writing ============ #}
+<section class="slide updates" id="news">
+  <div class="wrap two">
+    <div>
+      <p class="overline" data-reveal>Latest</p>
+      <h2 class="headline left" data-reveal>News</h2>
+      <ul class="list">
+        {% for n in news[:7] %}<li class="list-item" data-reveal style="--d:{{ loop.index0 % 3 }}"><span class="li-lead">{{ n.date }}</span><span class="li-text">{{ n.text | md }}</span></li>{% endfor %}
+      </ul>
+    </div>
+    <div>
+      <p class="overline" data-reveal>Writing</p>
+      <h2 class="headline left" data-reveal>From the blog</h2>
+      <div class="post-list">
+        {% for p in posts[:4] %}
+        <a class="m-card post-row" href="{{ url(p.url) }}" data-reveal style="--d:{{ loop.index0 % 3 }}">
+          <div class="m-body"><p class="chip-label">{{ p.date_str }} · {{ p.read_min }} min</p><h3 class="title-s">{{ p.title }}</h3></div>
+          <span class="post-go">{{ icon('arrow-right') }}</span>
+        </a>
+        {% endfor %}
+        <a class="btn-text" href="{{ url('/blog/') }}">All posts {{ icon('arrow-right') }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ 7 · thank you ============ #}
+<section class="slide closing" id="contact">
+  <div class="shapes" aria-hidden="true"><span class="sh s1"></span><span class="sh s3"></span><span class="sh s5"></span></div>
+  <h2 class="display center" data-reveal>Thank <span class="gem">you.</span></h2>
+  <p class="hero-sub center" data-reveal style="--d:1">Let's talk research, collaborations, or what comes next.</p>
+  <div class="hero-ctas center" data-reveal style="--d:2">
+    <button class="btn-filled lg" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}<span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span></button>
+    <a class="btn-outlined lg" href="{{ site.links.scholar }}" target="_blank" rel="noopener">{{ icon('scholar') }}Scholar</a>
+    <a class="btn-outlined lg" href="{{ site.links.linkedin }}" target="_blank" rel="noopener">{{ icon('linkedin') }}LinkedIn</a>
+  </div>
+</section>
+{% endblock %}

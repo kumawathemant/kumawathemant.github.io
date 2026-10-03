@@ -31,9 +31,10 @@
   };
 
   /* ---------------- theme ---------------- */
+  const STORE = root.dataset.store || 'theme'; // each design draft remembers its own light/dark choice
   const setTheme = (t, persist) => {
     root.dataset.theme = t;
-    if (persist) try { localStorage.setItem('theme', t); } catch {}
+    if (persist) try { localStorage.setItem(STORE, t); } catch {}
     window.dispatchEvent(new CustomEvent('themechange', { detail: t }));
   };
   $$('.theme-toggle').forEach((btn) => btn.addEventListener('click', (e) => {
@@ -47,7 +48,7 @@
   }));
   matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
     let saved = null;
-    try { saved = localStorage.getItem('theme'); } catch {}
+    try { saved = localStorage.getItem(STORE); } catch {}
     if (!saved) setTheme(e.matches ? 'light' : 'dark', false);
   });
 

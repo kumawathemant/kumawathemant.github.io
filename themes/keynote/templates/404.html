@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not found — {{ site.name }}{% endblock %}
+{% block content %}
+<section class="nf">
+  <h1 class="mega"><span class="grad">404.</span></h1>
+  <p class="lede">This page isn't part of the lineup.</p>
+  <div class="hero-ctas"><a class="pill-btn" href="{{ url('/') }}">Go home</a><a class="link-arrow" href="{{ url('/#lineup') }}">Explore papers {{ icon('chevron-right') }}</a></div>
+</section>
+{% endblock %}

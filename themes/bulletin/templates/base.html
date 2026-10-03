@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-store="theme-bulletin">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ site.name }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+<link rel="canonical" href="{{ site.url }}{{ page_url }}">
+{% if is_draft %}<meta name="robots" content="noindex">{% endif %}
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:image" content="{{ site.url }}/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<link rel="stylesheet" href="{{ theme_asset('bulletin.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body class="page-{{ page }}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="mast">
+  <div class="mast-inner">
+    <a class="logo" href="{{ url('/') }}" aria-label="Home"><span>HK</span></a>
+    <a class="wordmark" href="{{ url('/') }}">{{ site.name | upper }}</a>
+    <div class="mast-tools">
+      <button class="ico" type="button" data-search-toggle aria-label="Search">{{ icon('search') }}</button>
+      <button class="ico" type="button" data-share aria-label="Copy link">{{ icon('share') }}</button>
+      <a class="btn-green" href="{{ site.cv }}">Download CV</a>
+      <a class="mast-link" href="{{ url('/#contact') }}">Contact</a>
+    </div>
+  </div>
+  <nav class="secnav" aria-label="Sections">
+    <a href="{{ url('/') }}">Home</a>
+    <a href="{{ url('/#research') }}">Research</a>
+    <a href="{{ url('/#dashboard') }}"><span class="sq" aria-hidden="true"></span>Research Dashboard</a>
+    <a href="{{ url('/#publications') }}">Publications</a>
+    <a href="{{ url('/#experience') }}">Experience</a>
+    <a href="{{ url('/#news') }}">News</a>
+    <a href="{{ url('/blog/') }}">Writing</a>
+    <a href="{{ url('/#about') }}">About</a>
+  </nav>
+  <div class="searchbar" hidden>
+    <label>{{ icon('search') }}<input type="search" placeholder="Search papers and posts…" aria-label="Search papers and posts" autocomplete="off"></label>
+  </div>
+</header>
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+<footer class="foot">
+  <div class="foot-inner">
+    <a class="logo sm" href="{{ url('/') }}" aria-hidden="true" tabindex="-1"><span>HK</span></a>
+    <p><strong>{{ site.name }}</strong> · {{ site.now.role }} at {{ site.now.org }}</p>
+    <p class="foot-links">
+      <a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Scholar</a> ∙
+      <a href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub</a> ∙
+      <a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn</a> ∙
+      <a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a> ∙
+      <a href="/blog/feed.xml">RSS</a>
+    </p>
+    <p class="foot-meta">© {{ year }} {{ site.name }} · Updated {{ updated }} · No trackers, no paywall</p>
+  </div>
+</footer>
+<div class="tip" role="tooltip" hidden></div>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="{{ asset('js/site.js') }}" defer></script>
+<script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ theme_asset('bulletin.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+{{ live_reload }}
+</body>
+</html>

@@ -34,15 +34,15 @@
     const [r, g, b] = toRgb(c);
     return `rgba(${r},${g},${b},${clamp(a, 0, 1).toFixed(3)})`;
   };
-  let PAL;
+  const PAL = {};
   const readPalette = () => {
     const cs = getComputedStyle(document.documentElement);
     const v = (n) => cs.getPropertyValue(n).trim();
-    PAL = {
+    Object.assign(PAL, {
       mint: v('--mint'), indigo: v('--indigo'), amber: v('--amber'), rose: v('--rose'),
       text: v('--text'), text2: v('--text-2'), muted: v('--muted'), bg: v('--bg'),
       dark: document.documentElement.dataset.theme !== 'light',
-    };
+    });
   };
   readPalette();
 
@@ -905,7 +905,7 @@
       if (!this.running) this.still();
     }
     start() {
-      if (this.running || reduce) return;
+      if (this.running || reduce || this.c.closest('[data-media="fig"]')) return;
       this.running = true;
       this.last = performance.now();
       requestAnimationFrame(this.loop);
@@ -947,6 +947,9 @@
     events: eventsSketch,
     chirp: (v) => chirpSketch(v, false),
     'chirp-adaptive': (v) => chirpSketch(v, true),
+    stemfold: (v) => agentsSketch(v, { fans: true }),
+    'lidar-camera': (v) => lidarSketch(v, { mode: 'camera' }),
+    maple: (v) => eventsSketch(v, { value: true }),
   };
   const boot = () => document.querySelectorAll('canvas[data-viz]').forEach((c) => {
     const f = SKETCHES[c.dataset.viz];
@@ -954,4 +957,12 @@
   });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => instances.forEach((v) => !v.running && v.still()));
   boot();
+  window.hkVizBoot = boot; // lets themes animate canvases inserted later (e.g. side panels)
+  // Plugin API: other scripts (e.g. viz-papers.js) register sketches, then call boot().
+  window.hkViz = {
+    register(name, factory) { SKETCHES[name] = factory; },
+    boot,
+    resume(canvas) { const vz = canvas && canvas._viz; if (vz && vz.visible && !document.hidden) vz.start(); },
+    lib: { TAU, clamp, lerp, easeIO, mulberry, makeNoise, rgba, label, roundRect, PAL, MONO, reduce },
+  };
 })();

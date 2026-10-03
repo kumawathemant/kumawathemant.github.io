@@ -5,4 +5,7 @@
 {% for post in posts %}
   <url><loc>{{ site.url }}{{ post.url }}</loc><lastmod>{{ post.date.isoformat() }}</lastmod><priority>0.5</priority></url>
 {% endfor %}
+{% for pid in paper_ids %}
+  <url><loc>{{ site.url }}/papers/{{ pid }}/</loc><priority>0.6</priority></url>
+{% endfor %}
 </urlset>

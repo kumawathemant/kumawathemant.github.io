@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}{{ site.name }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
+<link rel="canonical" href="{{ site.url }}{{ page_url }}">
+{% if is_draft %}<meta name="robots" content="noindex">{% endif %}
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="{{ self.title() }}">
+<meta property="og:description" content="{{ self.description() }}">
+<meta property="og:image" content="{{ site.url }}/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap">
+<link rel="stylesheet" href="{{ theme_asset('keynote.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body class="page-{{ page }}">
+<a class="skip" href="#main">Skip to content</a>
+<nav class="localnav" aria-label="Site">
+  <div class="ln-inner">
+    <a class="ln-title" href="{{ url('/') }}">{{ site.name }}</a>
+    <div class="ln-links">
+      <a href="{{ url('/#overview') }}">Overview</a>
+      <a href="{{ url('/#research') }}">Research</a>
+      <a href="{{ url('/#lineup') }}">Papers</a>
+      <a href="{{ url('/#journey') }}">Journey</a>
+      <a href="{{ url('/blog/') }}">Writing</a>
+      {% if page == 'home' %}<button class="ln-play" type="button" data-present aria-label="Play as a keynote presentation">{{ icon('play') }}Play</button>{% endif %}
+      <a class="pill-btn sm" href="{{ site.cv }}">CV</a>
+    </div>
+  </div>
+</nav>
+<main id="main">
+{% block content %}{% endblock %}
+</main>
+<footer class="foot">
+  <div class="foot-inner">
+    <div class="foot-cols">
+      <div><h3>Research</h3><a href="{{ url('/#research') }}">Threads</a><a href="{{ url('/#lineup') }}">Papers</a><a href="{{ url('/#numbers') }}">By the numbers</a></div>
+      <div><h3>About</h3><a href="{{ url('/#journey') }}">Journey</a><a href="{{ url('/#news') }}">Newsroom</a><a href="{{ site.cv }}">CV (PDF)</a></div>
+      <div><h3>Writing</h3>{% for p in posts[:3] %}<a href="{{ url(p.url) }}">{{ p.title }}</a>{% endfor %}</div>
+      <div><h3>Elsewhere</h3><a href="{{ site.links.scholar }}" target="_blank" rel="noopener">Google Scholar</a><a href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub</a><a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn</a><a href="{{ site.links.x }}" target="_blank" rel="noopener">X</a></div>
+    </div>
+    <p class="foot-legal">Copyright © {{ year }} {{ site.name }}. All rights reserved. · Updated {{ updated }} · {{ site.location }}</p>
+  </div>
+</footer>
+<dialog class="lightbox" aria-label="Figure viewer">
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="lb-btn lb-close" type="button" aria-label="Close">{{ icon('close') }}</button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Previous figure">{{ icon('chevron-left') }}</button>
+  <button class="lb-btn lb-next" type="button" aria-label="Next figure">{{ icon('chevron-right') }}</button>
+</dialog>
+<div class="toast" role="status" aria-live="polite"></div>
+<script src="{{ asset('js/site.js') }}" defer></script>
+<script src="{{ asset('js/viz.js') }}" defer></script>
+<script src="{{ asset('js/present.js') }}" defer></script>
+<script src="{{ theme_asset('keynote.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+{{ live_reload }}
+</body>
+</html>

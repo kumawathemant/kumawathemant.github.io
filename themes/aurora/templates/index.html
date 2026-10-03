@@ -222,11 +222,11 @@
         <p class="eyebrow"><span>06</span>Writing</p>
         <h2 class="section-title">Notes &amp; <em>essays</em>.</h2>
       </div>
-      <a class="link-arrow" href="/blog/" data-reveal>All {{ posts | length }} posts {{ icon('arrow-right') }}</a>
+      <a class="link-arrow" href="{{ url('/blog/') }}" data-reveal>All {{ posts | length }} posts {{ icon('arrow-right') }}</a>
     </header>
     <div class="posts-grid">
       {% for post in posts[:3] %}
-      <a class="post-card spot" href="{{ post.url }}" data-reveal style="--d:{{ loop.index0 }}">
+      <a class="post-card spot" href="{{ url(post.url) }}" data-reveal style="--d:{{ loop.index0 }}">
         <p class="mono post-date">{{ post.date_str }} · {{ post.read_min }} min read</p>
         <h3>{{ post.title }}</h3>
         {% if post.description %}<p>{{ post.description }}</p>{% endif %}

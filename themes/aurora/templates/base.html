@@ -7,6 +7,7 @@
 <meta name="description" content="{% block description %}{{ site.description }}{% endblock %}">
 <meta name="author" content="{{ site.name }}">
 <link rel="canonical" href="{{ site.url }}{{ page_url }}">
+{% if is_draft %}<meta name="robots" content="noindex">{% endif %}
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#07090d">
 <meta property="og:type" content="{% block og_type %}website{% endblock %}">
@@ -34,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap">
-<link rel="stylesheet" href="{{ asset('css/site.css') }}">
+<link rel="stylesheet" href="{{ theme_asset('site.css') }}">
 <noscript><style>.pub-panel{grid-template-rows:1fr!important}.authors-more{display:inline!important}.authors-toggle{display:none}</style></noscript>
 {% block head %}{% endblock %}
 </head>

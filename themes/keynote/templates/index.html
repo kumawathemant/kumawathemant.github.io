@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block content %}
+
+{# ============ 1 · title ============ #}
+<section class="slide hero" id="overview">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="portrait-ring" data-reveal>
+      <div class="ring" aria-hidden="true"></div>
+      <img src="/assets/img/portrait-800.webp" srcset="/assets/img/portrait-480.webp 480w, /assets/img/portrait-800.webp 800w" sizes="240px" width="800" height="1000" alt="Portrait of {{ site.name }}" fetchpriority="high">
+    </div>
+    <p class="eyebrow" data-reveal style="--d:1">{{ site.now.role }} · {{ site.now.org }}</p>
+    <h1 class="hero-title" data-reveal style="--d:2">Hemant <span class="grad">Kumawat.</span></h1>
+    <p class="hero-sub" data-reveal style="--d:3">Agents that perceive, predict and act.<br>In the physical world — and in virtual ones.</p>
+    <div class="hero-ctas" data-reveal style="--d:4">
+      <a class="pill-btn" href="{{ site.cv }}">Download CV</a>
+      <button class="link-arrow" type="button" data-present>Watch the keynote {{ icon('chevron-right') }}</button>
+    </div>
+  </div>
+  <a class="scroll-hint" href="#statement" aria-label="Scroll down"><span></span></a>
+</section>
+
+{# ============ 2 · statement (words light up on scroll) ============ #}
+<section class="slide statement" id="statement">
+  <p class="scrub" data-scrub>{{ site.hero.statement }}</p>
+</section>
+
+{# ============ 3 · numbers ============ #}
+<section class="slide numbers" id="numbers">
+  <div class="wrap">
+    <h2 class="headline" data-reveal>By the numbers.</h2>
+    <div class="bento">
+      <div class="tile t-big" data-reveal>
+        <p class="t-kick">Google Scholar</p>
+        <p class="t-num grad-a"><span data-count="{{ stats.citations }}">{{ stats.citations }}</span></p>
+        <p class="t-label">citations, and counting.</p>
+        <p class="t-src">h-index {{ stats.h_index }} · {{ site.stats.as_of }}</p>
+      </div>
+      {% set tiles = [] %}
+      {% for p in pubs if p.get('highlights') %}{% set _ = tiles.append({'value': p.highlights[0].value, 'label': p.highlights[0].label, 'src': p.short ~ ' · ' ~ p.venue_short ~ ' ' ~ p.year}) %}{% endfor %}
+      {% for e in site.experience if e.get('highlights') %}{% set _ = tiles.append({'value': e.highlights[0].value, 'label': e.highlights[0].label, 'src': e.org.split(' · ')[0] ~ ' · ' ~ e.when.split(' — ')[-1]}) %}{% endfor %}
+      {% for t in tiles[:5] %}
+      <div class="tile t-{{ loop.index }}" data-reveal style="--d:{{ loop.index % 3 }}">
+        <p class="t-num grad-{{ loop.cycle('b', 'c', 'd', 'e', 'f') }}">{{ t.value }}</p>
+        <p class="t-label">{{ t.label }}</p>
+        <p class="t-src">{{ t.src }}</p>
+      </div>
+      {% endfor %}
+      <div class="tile t-wide" data-reveal>
+        <div><p class="t-num sm"><span data-count="{{ stats.papers }}">{{ stats.papers }}</span></p><p class="t-label">papers</p></div>
+        <div><p class="t-num sm"><span data-count="{{ stats.first }}">{{ stats.first }}</span></p><p class="t-label">first-author</p></div>
+        <div><p class="t-num sm"><span data-count="{{ stats.venues }}">{{ stats.venues }}</span></p><p class="t-label">venues</p></div>
+        <div><p class="t-num sm">{{ (site.experience | length) - 1 }}</p><p class="t-label">industry &amp; lab stints</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ============ 4 · research ============ #}
+<section class="slide section-intro" id="research">
+  <p class="eyebrow" data-reveal>Research</p>
+  <h2 class="mega" data-reveal style="--d:1">Four threads.<br><span class="dim">One question.</span></h2>
+  <p class="lede" data-reveal style="--d:2">What does an agent need to know to act well?</p>
+</section>
+{% for t in site.threads %}
+<section class="slide feature" id="thread-{{ t.key }}" style="--accent: var(--{{ t.color }})">
+  <div class="wrap">
+    <p class="eyebrow accent" data-reveal>{{ t.kicker | title }}</p>
+    <h2 class="headline" data-reveal style="--d:1">{{ t.title }}</h2>
+    <p class="lede narrow" data-reveal style="--d:2">{{ t.text }}</p>
+    <figure class="screen" data-reveal style="--d:3">
+      <div class="screen-glass"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas></div>
+      <figcaption>{{ t.caption }}</figcaption>
+    </figure>
+    <p class="feature-links" data-reveal>
+      {% for pid in t.get('papers') or [] %}<a class="link-arrow" href="#pub-{{ pid }}">{{ pubs_by_id[pid].short }} {{ icon('chevron-right') }}</a>{% endfor %}
+      {% for c in t.get('chips') or [] %}<a class="link-arrow" href="{{ c.href }}">{{ c.label }} {{ icon('chevron-right') }}</a>{% endfor %}
+    </p>
+  </div>
+</section>
+{% endfor %}
+
+{# ============ 5 · lineup ============ #}
+<section class="slide lineup" id="lineup">
+  <div class="wrap">
+    <h2 class="headline" data-reveal>Explore the lineup.</h2>
+    <div class="seg-row" data-reveal>
+      <div class="segmented filters" role="group" aria-label="Filter papers">
+        {% for f in filters %}<button class="filter" type="button" data-filter="{{ f.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ f.label }}</button>{% endfor %}
+      </div>
+      <div class="car-nav"><button class="car-btn" type="button" data-car="-1" aria-label="Previous papers">{{ icon('chevron-left') }}</button><button class="car-btn" type="button" data-car="1" aria-label="Next papers">{{ icon('chevron-right') }}</button></div>
+    </div>
+  </div>
+  <div class="carousel pub-list" data-carousel>
+    {% for p in pubs %}
+    <article class="card pub" id="pub-{{ p.id }}" data-topics="{{ p.filters }}" data-search="{{ p.search }}" style="--accent: var(--{{ p.color }})">
+      {% if p.get('fig_sm') %}
+      <button class="card-fig" type="button" data-lightbox data-full="{{ p.fig_lg }}" data-caption="{{ p.short }} — {{ p.title }}" aria-label="Enlarge figure: {{ p.short }}"><img src="{{ p.fig_sm }}" alt="Figure from {{ p.short }}" loading="lazy" decoding="async"></button>
+      {% else %}
+      <div class="card-fig is-viz"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas></div>
+      {% endif %}
+      <p class="card-new">{% if p.get('status') %}{{ p.status | title }}{% elif p.year >= 2026 %}New{% elif p.first_author or p.co_first %}First author{% endif %}</p>
+      <h3 class="card-title">{{ p.short }}</h3>
+      <p class="card-sub">{{ p.title.split(': ', 1)[-1] if ': ' in p.title else p.title }}</p>
+      <p class="card-venue">{{ p.venue_short }} {{ p.year }}{% if p.citations %} · {{ p.citations }} citation{{ 's' if p.citations != 1 }}{% endif %}</p>
+      <div class="card-actions">
+        {% if p.main_url %}<a class="link-arrow" href="{{ p.main_url }}" target="_blank" rel="noopener">Read the paper {{ icon('chevron-right') }}</a>{% endif %}
+        <button class="link-arrow muted" type="button" data-copy="#kbib-{{ p.id }}" data-copy-msg="BibTeX copied">Copy BibTeX</button>
+      </div>
+      <pre hidden><code id="kbib-{{ p.id }}">{{ p.bibtex }}</code></pre>
+    </article>
+    {% endfor %}
+    <p class="pub-empty" hidden>No papers match.</p>
+  </div>
+</section>
+
+{# ============ 6 · journey ============ #}
+<section class="slide journey" id="journey">
+  <div class="wrap">
+    <h2 class="headline" data-reveal>The journey.</h2>
+    <ol class="milestones">
+      {% for e in site.experience %}
+      <li class="ms" id="exp-{{ e.get('id') or loop.index }}" data-reveal>
+        <p class="ms-when">{{ e.when }}</p>
+        <div class="ms-body">
+          <p class="ms-org">{% if e.get('current') %}<span class="now-dot"></span>{% endif %}{{ e.org }}</p>
+          <h3>{{ e.role }}</h3>
+          {% if e.get('topic') %}<p class="ms-topic">{{ e.topic }}</p>{% endif %}
+          <ul>{% for b in e.bullets %}<li>{{ b | md }}</li>{% endfor %}</ul>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+    <p class="edu" data-reveal>{% for e in site.education %}<span><strong>{{ e.degree }}</strong> — {{ e.school }}, {{ e.when | replace(' — ', '–') }}</span>{% endfor %}</p>
+  </div>
+</section>
+
+{# ============ 7 · one more thing ============ #}
+<section class="slide omt" id="one-more-thing">
+  <p class="omt-title" data-reveal>One more thing<span class="ell">…</span></p>
+  <div class="omt-reveal" data-reveal style="--d:2">
+    <p class="eyebrow accent" style="--accent: var(--rose)">Now at {{ site.now.org }}</p>
+    <h2 class="headline">Models that understand <span class="grad">games.</span></h2>
+    <p class="lede narrow">{{ site.experience[0].bullets[0] }}</p>
+    <figure class="screen sm">
+      <div class="screen-glass"><canvas data-viz="tokens" aria-hidden="true"></canvas></div>
+      <figcaption>Illustrative: patch attention follows what matters while a compact state description is decoded.</figcaption>
+    </figure>
+  </div>
+</section>
+
+{# ============ 8 · newsroom ============ #}
+<section class="slide news" id="news">
+  <div class="wrap">
+    <h2 class="headline" data-reveal>Newsroom.</h2>
+    <div class="news-grid">
+      {% for n in news[:6] %}
+      {% set kind = 'TALK' if 'Presenting' in n.text else ('MILESTONE' if 'Completed' in n.text else ('CAREER' if ('Joined' in n.text or 'internship' in n.text) else ('PAPER' if ('accepted' in n.text or ' at **' in n.text) else 'UPDATE'))) %}
+      <article class="news-card" data-reveal style="--d:{{ loop.index0 % 3 }}">
+        <p class="news-kind k-{{ kind | lower }}">{{ kind }}</p>
+        <p class="news-text">{{ n.text | md }}</p>
+        <p class="news-date">{{ n.date }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ============ 9 · writing ============ #}
+<section class="slide writing" id="writing">
+  <div class="wrap">
+    <h2 class="headline" data-reveal>From the notebook.</h2>
+    <div class="post-grid">
+      {% for p in posts[:3] %}
+      <a class="post-card" href="{{ url(p.url) }}" data-reveal style="--d:{{ loop.index0 }}">
+        <p class="news-kind">{{ (p.tags[1] if p.tags | length > 1 else p.tags[0]) | upper }}</p>
+        <h3>{{ p.title }}</h3>
+        {% if p.description %}<p>{{ p.description }}</p>{% endif %}
+        <span class="link-arrow">Read {{ icon('chevron-right') }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    <p class="center" data-reveal><a class="link-arrow" href="{{ url('/blog/') }}">All {{ posts | length }} posts {{ icon('chevron-right') }}</a></p>
+  </div>
+</section>
+
+{# ============ 10 · thank you ============ #}
+<section class="slide closing" id="contact">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <h2 class="mega grad" data-reveal>Thank you.</h2>
+  <p class="lede" data-reveal style="--d:1">Let's talk research, collaborations, or what comes next.</p>
+  <div class="hero-ctas" data-reveal style="--d:2">
+    <button class="pill-btn" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}"><span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span></button>
+    <a class="link-arrow" href="{{ site.links.scholar }}" target="_blank" rel="noopener">Google Scholar {{ icon('chevron-right') }}</a>
+    <a class="link-arrow" href="{{ site.links.linkedin }}" target="_blank" rel="noopener">LinkedIn {{ icon('chevron-right') }}</a>
+    <a class="link-arrow" href="{{ site.links.github }}" target="_blank" rel="noopener">GitHub {{ icon('chevron-right') }}</a>
+  </div>
+</section>
+{% endblock %}

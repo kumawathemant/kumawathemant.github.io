@@ -1,0 +1,3 @@
+{# Notion helpers: page emoji for posts, Notion select-tag colors for topics #}
+{% macro pe(slug) %}{{ {'kan': '🧮', 'rl': '🤖', 'benchmark': '📊', 'mujoco': '🛠️', 'robot': '🦾', 'ode': '📈'}.get(slug, '📝') }}{% endmacro %}
+{% macro tcol(topic) %}{{ {'robot-learning': 'green', 'multi-agent': 'purple', 'perception': 'orange', 'edge': 'pink'}.get(topic, 'gray') }}{% endmacro %}

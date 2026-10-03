@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% from "partials/rows.html" import post_row with context %}
+{% block title %}Writing — {{ site.name }}{% endblock %}
+{% block description %}Notes and essays by {{ site.name }} on robot learning, reinforcement learning and the math underneath.{% endblock %}
+{% block content %}
+<div class="col">
+  <header class="list-head">
+    <p class="kicker green"><span class="sq" aria-hidden="true"></span>WRITING</p>
+    <h1 class="art-title">Notes on robot learning, RL and the math underneath</h1>
+    <p class="art-sub">{{ posts | length }} posts · <a href="/blog/feed.xml">RSS feed</a></p>
+  </header>
+  <div class="tabs-row">
+    <div class="tabs" role="tablist" aria-label="Sort">
+      <button class="tab is-active" type="button" role="tab" aria-selected="true" data-tab="latest">Latest</button>
+      <button class="tab" type="button" role="tab" aria-selected="false" data-tab="longest">Longest</button>
+    </div>
+    <button class="ico" type="button" data-search-toggle aria-label="Search">{{ icon('search') }}</button>
+  </div>
+  <div class="archive" data-panel="latest">{% for p in posts %}{{ post_row(p) }}{% endfor %}</div>
+  <div class="archive" data-panel="longest" hidden>{% for p in posts | sort(attribute='read_min', reverse=true) %}{{ post_row(p) }}{% endfor %}</div>
+  <p class="empty" hidden>Nothing matches that search.</p>
+</div>
+{% endblock %}

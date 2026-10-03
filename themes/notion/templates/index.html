@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% from "partials/n.html" import pe, tcol %}
+{% from "partials/macros.html" import socials with context %}
+{% block crumbs %}<span class="crumb-sep">/</span><span class="crumb-cur">🏠 Home</span>{% endblock %}
+{% block content %}
+<div class="cover" aria-hidden="true">
+  <canvas data-viz="flow"></canvas>
+  <span class="cover-note">cover · curl-noise flow field — move your cursor</span>
+</div>
+
+<article class="page">
+  <div class="page-icon"><img src="/assets/img/portrait-480.webp" alt="Portrait of {{ site.name }}" width="480" height="600"></div>
+  <h1 class="page-title">{{ site.name }}</h1>
+
+  <div class="props" role="table" aria-label="Profile">
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('briefcase') }}Role</span><span class="prop-v">{{ site.now.role }} @ <strong>{{ site.now.org }}</strong></span></div>
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('pin') }}Location</span><span class="prop-v">{{ site.location }}</span></div>
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('graduation') }}Education</span><span class="prop-v">Ph.D. ECE, Georgia Tech <span class="dim">2025</span> · B.Tech, IIT Bombay <span class="dim">2020</span></span></div>
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('list') }}Interests</span><span class="prop-v tags">{% for it in site.about.interests %}<span class="tag c-{{ loop.cycle('blue', 'green', 'purple', 'orange', 'pink', 'yellow', 'brown') }}">{{ it }}</span>{% endfor %}</span></div>
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('hash') }}Citations</span><span class="prop-v"><span data-count="{{ stats.citations }}">{{ stats.citations }}</span> · h-index {{ stats.h_index }} · {{ stats.papers }} papers <span class="dim">(Scholar, {{ site.stats.as_of }})</span></span></div>
+    <div class="prop" role="row"><span class="prop-k" role="rowheader">{{ icon('link') }}Links</span><span class="prop-v links">
+      <a href="{{ site.links.scholar }}" target="_blank" rel="noopener">{{ icon('scholar') }}Scholar</a>
+      <a href="{{ site.links.github }}" target="_blank" rel="noopener">{{ icon('github') }}GitHub</a>
+      <a href="{{ site.links.linkedin }}" target="_blank" rel="noopener">{{ icon('linkedin') }}LinkedIn</a>
+      <a href="{{ site.links.x }}" target="_blank" rel="noopener">{{ icon('x') }}X</a>
+      <a href="#" data-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}Email</a>
+      <a href="{{ site.cv }}">{{ icon('file') }}CV</a>
+    </span></div>
+  </div>
+
+  <div class="callout c-bg-gray" id="about">
+    <span class="callout-icon">👋</span>
+    <div>{{ site.about.paragraphs[0] | md }}</div>
+  </div>
+  {% for para in site.about.paragraphs[1:] %}
+  <p class="block">{{ para | md }}</p>
+  {% endfor %}
+
+  {# ---------------- research ---------------- #}
+  <h2 class="h1" id="research"><span class="h-emoji">🔬</span>Research</h2>
+  <p class="block dim">Four threads, one question — <em>what does an agent need to know to act well?</em> Each figure below is live: hover or drag inside it.</p>
+  <div class="columns">
+    {% for t in site.threads %}
+    <div class="column">
+      <figure class="embed"><canvas data-viz="{{ t.viz }}" aria-hidden="true"></canvas><span class="embed-hint">{{ t.legend }}</span></figure>
+      <figcaption class="caption">fig. {{ loop.index }} — {{ t.caption }}</figcaption>
+      <h3 class="h3">{{ t.emoji }} {{ t.title }}</h3>
+      <p class="block">{{ t.text }}</p>
+      <div class="mentions">
+        {% for pid in t.get('papers') or [] %}<a class="mention" href="#pub-{{ pid }}" data-peek="{{ pid }}"><span>📄</span><span class="m-t">{{ pubs_by_id[pid].short }}</span></a>{% endfor %}
+        {% for c in t.get('chips') or [] %}<a class="mention" href="{{ c.href }}"><span>💼</span><span class="m-t">{{ c.label }}</span></a>{% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {# ---------------- publications database ---------------- #}
+  <h2 class="h1" id="publications"><span class="h-emoji">📄</span>Publications</h2>
+  <div class="db" data-db>
+    <div class="db-head">
+      <div class="db-views" role="tablist" aria-label="Database views">
+        <button class="db-view is-active" type="button" role="tab" aria-selected="true" data-view="gallery">{{ icon('grid') }}Gallery</button>
+        <button class="db-view" type="button" role="tab" aria-selected="false" data-view="table">{{ icon('table') }}Table</button>
+      </div>
+      <div class="db-tools">
+        <label class="pub-search db-search">{{ icon('search') }}<input type="search" placeholder="Search…" aria-label="Search publications" autocomplete="off"></label>
+      </div>
+    </div>
+    <div class="db-filters filters" role="group" aria-label="Filter publications">
+      {% for f in filters %}
+      <button class="filter" type="button" data-filter="{{ f.key }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">{{ f.label }}<span class="count">{{ f.count }}</span></button>
+      {% endfor %}
+    </div>
+    <div class="pub-list" data-mode="gallery">
+      <div class="gallery">
+        {% for p in pubs %}
+        <article class="pub card" id="pub-{{ p.id }}" data-topics="{{ p.filters }}" data-search="{{ p.search }}" data-peek="{{ p.id }}" tabindex="0" role="button" aria-label="Open {{ p.short }}">
+          <div class="card-cover">
+            {% if p.get('fig_sm') %}<img src="{{ p.fig_sm }}" alt="" loading="lazy" decoding="async">{% else %}<canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas>{% endif %}
+          </div>
+          <div class="card-body">
+            <p class="card-title"><span class="card-emoji">📄</span>{{ p.title }}</p>
+            <div class="card-props">
+              <span class="tag c-gray">{{ p.venue_short }} {{ p.year }}</span>
+              {% for tp in p.topics %}<span class="tag c-{{ tcol(tp) }}">{{ topics[tp].label }}</span>{% endfor %}
+              {% if p.first_author or p.co_first %}<span class="tag c-yellow">★ {{ 'First author' if p.first_author else 'Co-first' }}</span>{% endif %}
+            </div>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="n-table" role="region" aria-label="Publications table" tabindex="0">
+        <table>
+          <thead><tr>
+            <th>{{ icon('text') }}Name</th><th>{{ icon('list') }}Venue</th><th>{{ icon('hash') }}Year</th>
+            <th>{{ icon('list') }}Topics</th><th>{{ icon('user') }}Role</th><th>{{ icon('hash') }}Cites</th>
+          </tr></thead>
+          <tbody>
+            {% for p in pubs %}
+            <tr class="pub" data-topics="{{ p.filters }}" data-search="{{ p.search }}" data-peek="{{ p.id }}" tabindex="0">
+              <td class="t-name"><span class="card-emoji">📄</span><span>{{ p.title }}</span></td>
+              <td><span class="tag c-gray">{{ p.venue_short }}</span></td>
+              <td class="num">{{ p.year }}</td>
+              <td>{% for tp in p.topics %}<span class="tag c-{{ tcol(tp) }}">{{ topics[tp].label }}</span>{% endfor %}</td>
+              <td>{% if p.first_author %}<span class="tag c-yellow">First author</span>{% elif p.co_first %}<span class="tag c-yellow">Co-first</span>{% else %}<span class="dim">Co-author</span>{% endif %}</td>
+              <td class="num">{{ p.get('citations', 0) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="pub-empty" hidden>No results. Try another filter.</p>
+    </div>
+    <p class="db-note">Click any paper to open it in a side peek · citations from Google Scholar, {{ site.stats.as_of }} · * equal contribution</p>
+  </div>
+
+  {% for p in pubs %}
+  <template id="peek-{{ p.id }}">
+    <div class="peek-icon">📄</div>
+    <h1 class="peek-title">{{ p.title }}</h1>
+    <div class="props">
+      <div class="prop"><span class="prop-k">{{ icon('user') }}Authors</span><span class="prop-v">{{ p.authors_html }}</span></div>
+      <div class="prop"><span class="prop-k">{{ icon('list') }}Venue</span><span class="prop-v"><span class="tag c-gray">{{ p.venue_short }}</span> {{ p.venue }}</span></div>
+      <div class="prop"><span class="prop-k">{{ icon('calendar') }}Year</span><span class="prop-v">{{ p.year }}</span></div>
+      <div class="prop"><span class="prop-k">{{ icon('list') }}Topics</span><span class="prop-v tags">{% for tp in p.topics %}<span class="tag c-{{ tcol(tp) }}">{{ topics[tp].label }}</span>{% endfor %}{% if p.get('status') %}<span class="tag c-blue">{{ p.status }}</span>{% endif %}</span></div>
+      {% if p.get('citations') %}<div class="prop"><span class="prop-k">{{ icon('hash') }}Citations</span><span class="prop-v">{{ p.citations }}</span></div>{% endif %}
+      {% if p.links %}<div class="prop"><span class="prop-k">{{ icon('link') }}Links</span><span class="prop-v links">{% for l in p.links %}<a href="{{ l.url }}" target="_blank" rel="noopener">{{ icon(l.icon) }}{{ l.label }}</a>{% endfor %}</span></div>{% endif %}
+    </div>
+    {% if p.get('fig_lg') %}
+    <figure class="peek-fig"><button type="button" class="peek-zoom" data-zoom="{{ p.fig_lg }}" data-caption="{{ p.short }} — {{ p.title }}" aria-label="Enlarge figure"><img src="{{ p.fig_lg }}" alt="Figure from {{ p.short }}"></button><figcaption>Figure from the paper · click to enlarge</figcaption></figure>
+    {% else %}
+    <figure class="peek-fig embed"><canvas data-viz="{{ p.viz }}" aria-hidden="true"></canvas><figcaption>Schematic illustration · not a figure from the paper</figcaption></figure>
+    {% endif %}
+    {% if p.get('tldr') %}<div class="callout c-bg-blue"><span class="callout-icon">💡</span><div><strong>TL;DR</strong> — {{ p.tldr }}</div></div>{% endif %}
+    {% if p.get('highlights') %}<div class="kr">{% for h in p.highlights %}<div class="kr-item"><strong>{{ h.value }}</strong><span>{{ h.label }}</span></div>{% endfor %}</div>{% endif %}
+    {% if p.get('abstract') %}<h3 class="h3">Abstract</h3><p class="block">{{ p.abstract }}</p>{% endif %}
+    <h3 class="h3">Cite</h3>
+    <div class="code"><div class="code-head"><span>BibTeX</span><button type="button" class="code-copy-btn" data-copy-next>{{ icon('copy') }}Copy</button></div><pre><code>{{ p.bibtex }}</code></pre></div>
+  </template>
+  {% endfor %}
+
+  {# ---------------- experience ---------------- #}
+  <h2 class="h1" id="experience"><span class="h-emoji">💼</span>Experience</h2>
+  {% for e in site.experience %}
+  <details class="toggle" id="exp-{{ e.get('id') or loop.index }}"{% if loop.index <= 2 %} open{% endif %}>
+    <summary>
+      <span class="tg-arrow" aria-hidden="true"></span>
+      <span class="org-chip" style="--org: {{ e.brand }}">{{ e.mark }}</span>
+      <span class="tg-title"><strong>{{ e.role }}</strong> <span class="dim">— {{ e.org }}</span></span>
+      <span class="tg-date">{{ e.when }}</span>
+    </summary>
+    <div class="tg-body">
+      {% if e.get('topic') or e.get('mentor') %}<p class="block dim">{% if e.get('topic') %}<em>{{ e.topic }}</em>{% endif %}{% if e.get('topic') and e.get('mentor') %} · {% endif %}{{ e.get('mentor', '') }}</p>{% endif %}
+      <ul class="bullets">{% for b in e.bullets %}<li>{{ b | md }}</li>{% endfor %}</ul>
+      {% if e.get('tags') %}<p class="tags">{% for t in e.tags %}<span class="tag c-default">{{ t }}</span>{% endfor %}</p>{% endif %}
+    </div>
+  </details>
+  {% endfor %}
+  <h3 class="h3">🎓 Education</h3>
+  <ul class="bullets">
+    {% for e in site.education %}<li><strong>{{ e.school }}</strong> — {{ e.degree }} <span class="dim">· {{ e.when }}{% if e.get('note') %} · {{ e.note }}{% endif %}</span></li>{% endfor %}
+  </ul>
+
+  {# ---------------- news ---------------- #}
+  <h2 class="h1" id="news"><span class="h-emoji">📰</span>News</h2>
+  <div class="n-list">
+    {% for n in news %}
+    <div class="n-row"><span class="n-date">{{ n.date }}</span><span class="n-text">{{ n.text | md }}</span></div>
+    {% endfor %}
+  </div>
+
+  {# ---------------- writing ---------------- #}
+  <h2 class="h1" id="writing"><span class="h-emoji">✍️</span>Writing</h2>
+  <div class="pagelinks">
+    {% for p in posts %}
+    <a class="pagelink" href="{{ url(p.url) }}"><span class="pl-icon">{{ pe(p.slug) }}</span><span class="pl-title">{{ p.title }}</span><span class="pl-meta">{{ p.date_str }}</span></a>
+    {% endfor %}
+  </div>
+
+  {# ---------------- service ---------------- #}
+  <h2 class="h1" id="service"><span class="h-emoji">🎤</span>Service &amp; talks</h2>
+  <div class="columns three">
+    <div class="column">
+      <h3 class="h3">Reviewer</h3>
+      <p class="tags">{% for r in site.service.reviewing %}<span class="tag c-{{ loop.cycle('blue', 'purple', 'green', 'orange', 'pink', 'brown') }}">{{ r }}</span>{% endfor %}</p>
+    </div>
+    <div class="column">
+      <h3 class="h3">Talks</h3>
+      <ul class="bullets">{% for t in site.service.talks %}<li><strong>{{ t.title }}</strong><br><span class="dim">{{ t.where }}</span></li>{% endfor %}</ul>
+    </div>
+    <div class="column">
+      <h3 class="h3">Mentoring</h3>
+      <ul class="bullets">{% for m in site.service.mentoring %}<li><strong>{{ m.title }}</strong><br><span class="dim">{{ m.where }}</span></li>{% endfor %}</ul>
+    </div>
+  </div>
+
+  <div class="callout c-bg-blue contact" id="contact">
+    <span class="callout-icon">📬</span>
+    <div>
+      <p><strong>Get in touch.</strong> Happy to talk research, collaborations or ideas — email is fastest.</p>
+      <p class="contact-row"><button class="n-btn" type="button" data-copy-email data-user="{{ site.email.user }}" data-domain="{{ site.email.domain }}">{{ icon('mail') }}<span class="email-text">{{ site.email.user }} [at] {{ site.email.domain }}</span></button><a class="n-btn ghost" href="{{ site.cv }}">{{ icon('download') }}Download CV</a></p>
+    </div>
+  </div>
+  <p class="page-foot dim">Last edited {{ updated }} · built like a Notion page, from YAML</p>
+</article>
+
+<div class="peek" aria-hidden="true">
+  <div class="peek-scrim" data-peek-close></div>
+  <aside class="peek-panel" role="dialog" aria-modal="true" aria-label="Paper details">
+    <div class="peek-bar">
+      <button class="tb-btn" type="button" data-peek-close aria-label="Close">{{ icon('chevrons-right') }}</button>
+      <span class="peek-crumb dim">Publications</span>
+      <span class="peek-nav"><button class="tb-btn" type="button" data-peek-step="-1" aria-label="Previous paper">{{ icon('chevron-left') }}</button><button class="tb-btn" type="button" data-peek-step="1" aria-label="Next paper">{{ icon('chevron-right') }}</button></span>
+    </div>
+    <div class="peek-body"></div>
+  </aside>
+</div>
+
+<dialog class="n-lightbox lightbox-n" aria-label="Figure viewer">
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <button class="tb-btn lb-x" type="button" aria-label="Close">{{ icon('close') }}</button>
+</dialog>
+{% endblock %}
