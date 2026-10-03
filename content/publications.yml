@@ -17,7 +17,7 @@
 - id: maple
   viz: maple
   short: MAPLE
-  title: "MAPLE: Multimodal State-Space Mamba Agent for Event-based Policy with Adaptive Value Estimation"
+  title: "MAPLE: Multimodal Mamba Agent for Event Based Policy with Adaptive Value Estimation"
   authors: [Hemant Kumawat, Saibal Mukhopadhyay]
   venue: IEEE Robotics and Automation Letters (RA-L)
   venue_short: RA-L
@@ -28,8 +28,8 @@
     A multimodal state-space (Mamba) agent that learns control policies from event-based observations,
     paired with adaptive value estimation.
   links:
-    - {label: Scholar, url: "https://scholar.google.com/scholar?q=MAPLE+Multimodal+Mamba+Agent+for+Event+based+Policy+with+Adaptive+Value+Estimation"}
-  bib: {journal: IEEE Robotics and Automation Letters}
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/11520665"}
+  bib: {journal: IEEE Robotics and Automation Letters, volume: 11, number: 7, pages: 8415--8422, doi: 10.1109/LRA.2026.3693942}
 
 - id: dfdnet
   viz: dfdnet
@@ -50,8 +50,8 @@
 - id: trs
   viz: chirp
   short: Sequential-chirp radar
-  title: Towards Efficient and Robust Sequential Chirp based Data Driven Radar Processing for Object Detection
-  authors: [Sudarshan Sharma, Hemant Kumawat, Anuvab Sen, J. Park, Saibal Mukhopadhyay]
+  title: Toward Efficient and Robust Sequential Chirp-Based Data-Driven Radar Processing for Object Detection
+  authors: [Sudarshan Sharma, Hemant Kumawat, Anuvab Sen, Jinhyeok Park, Saibal Mukhopadhyay]
   venue: IEEE Transactions on Radar Systems
   venue_short: T-RS
   year: 2025
@@ -61,14 +61,14 @@
     Data-driven radar object detection that processes the signal chirp by chirp with a sequential model,
     targeting efficiency and robustness.
   links:
-    - {label: Scholar, url: "https://scholar.google.com/scholar?q=Towards+Efficient+and+Robust+Sequential+Chirp+based+Data+Driven+Radar+Processing+for+Object+Detection"}
-  bib: {journal: IEEE Transactions on Radar Systems}
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/11205887"}
+  bib: {journal: IEEE Transactions on Radar Systems, volume: 3, pages: 1435--1448, doi: 10.1109/TRS.2025.3622514}
 
 - id: luga
   viz: luga
   short: LUGA
   title: "LUGA: Lightweight Uncertainty-Guided Sensing Resolution Adaptation for Energy Efficient Radar Processing"
-  authors: [Sudarshan Sharma, J. Park, Hemant Kumawat, Saibal Mukhopadhyay]
+  authors: [Sudarshan Sharma, Jinhyeok Park, Hemant Kumawat, Saibal Mukhopadhyay]
   venue: IEEE SENSORS
   venue_short: SENSORS
   year: 2025
@@ -77,8 +77,8 @@
   tldr: >-
     A lightweight, uncertainty-guided policy that adapts radar sensing resolution on the fly to save energy.
   links:
-    - {label: Scholar, url: "https://scholar.google.com/scholar?q=LUGA+Lightweight+Uncertainty-Guided+Sensing+Resolution+Adaptation+for+Energy+Efficient+Radar+Processing"}
-  bib: {booktitle: 2025 IEEE SENSORS, pages: 1--4}
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/11330285"}
+  bib: {booktitle: 2025 IEEE SENSORS, pages: 1--4, doi: 10.1109/SENSORS59705.2025.11330285}
 
 - id: sdgn
   viz: sdgn
@@ -94,6 +94,7 @@
     Spiking neural networks with spike-timing-dependent plasticity infer dynamic spatio-temporal graphs
     directly from event data to model multivariate temporal point processes.
   links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/11227765"}
     - {label: arXiv, url: "https://arxiv.org/abs/2504.01246"}
   abstract: >-
     Modeling and predicting temporal point processes (TPPs) is critical in domains such as neuroscience,
@@ -108,7 +109,7 @@
     including NYC Taxi, 911, Reddit, and Stack Overflow, demonstrate that SDGN achieves superior predictive
     accuracy while maintaining computational efficiency. Furthermore, we include ablation studies to highlight
     the contributions of its core components.
-  bib: {booktitle: 2025 International Joint Conference on Neural Networks (IJCNN), pages: 1--8}
+  bib: {booktitle: 2025 International Joint Conference on Neural Networks (IJCNN), pages: 1--8, doi: 10.1109/IJCNN64981.2025.11227765}
 
 - id: sensing-to-action
   viz: s2a
@@ -125,6 +126,7 @@
     A perspective on sensing-to-action loops for edge autonomy: action-aware sensing, multi-agent
     sensing-action loops, neuromorphic processing and cross-layer co-design.
   links:
+    - {label: IEEE, url: "https://ieeexplore.ieee.org/document/10993258"}
     - {label: arXiv, url: "https://arxiv.org/abs/2502.02692"}
   abstract: >-
     Autonomous edge computing in robotics, smart cities, and autonomous vehicles relies on the seamless
@@ -145,7 +147,7 @@
     of end-to-end co-design strategies that align algorithmic models with hardware and environmental dynamics
     and improve cross-layer interdependencies to improve throughput, precision, and adaptability for
     energy-efficient edge autonomy in complex environments.
-  bib: {booktitle: "2025 Design, Automation & Test in Europe Conference & Exhibition (DATE)"}
+  bib: {booktitle: "2025 Design, Automation & Test in Europe Conference & Exhibition (DATE)", pages: 1--10, doi: 10.23919/DATE64628.2025.10993258}
 
 - id: adacred
   viz: adacred
@@ -163,6 +165,7 @@
     Treats trajectories as causal graphs over short action–reward–state sequences and prunes low-importance
     representations, so decision transformers need shorter contexts — and still outperform.
   links:
+    - {label: AAMAS, url: "https://doi.org/10.65109/vfqt2008"}
     - {label: arXiv, url: "https://arxiv.org/abs/2412.15427"}
     - {label: Code, url: "https://github.com/kumawathemant/AdaptiveFeatureCrediting"}
   abstract: >-
@@ -177,7 +180,7 @@
     pertinent to the downstream task. Experimental results show that policies based on AdaCred require shorter
     trajectory sequences and consistently outperform traditional methods in both offline reinforcement learning
     and imitation learning settings.
-  bib: {booktitle: Proceedings of the 24th International Conference on Autonomous Agents and Multiagent Systems (AAMAS)}
+  bib: {booktitle: Proceedings of the 24th International Conference on Autonomous Agents and Multiagent Systems (AAMAS), pages: 1244--1252, doi: 10.65109/vfqt2008}
 
 - id: robokoop
   viz: robokoop
