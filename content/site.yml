@@ -5,7 +5,7 @@
 
 name: Hemant Kumawat
 # Which design is live at the site root (see themes/). Every theme is previewable at /drafts/<name>/.
-theme: aurora
+theme: notion
 url: https://www.hemantkumawat.com
 description: >-
   Hemant Kumawat — Applied Scientist, Gaming AI at Microsoft; Ph.D. in ECE from Georgia Tech.

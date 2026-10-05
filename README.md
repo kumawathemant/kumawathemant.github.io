@@ -73,15 +73,14 @@ sketches `koopman`, `agents`, `lidar`, `tokens`, `events`, `chirp`, `chirp-adapt
 pause in background tabs, follow the light/dark theme, and show a single still frame for visitors who
 prefer reduced motion.
 
-## Deploying (not done yet — the live site is unchanged)
+## Deploying
 
-GitHub Pages already serves `www.hemantkumawat.com` from the `gh-pages` branch. The workflow in
-`.github/workflows/deploy.yml` runs on pushes to `master`: it builds with `build.py` and publishes
-`_site/` to `gh-pages` (CNAME included). To go live:
+GitHub Pages serves `www.hemantkumawat.com` from the `gh-pages` branch. Every push to `master` runs
+`.github/workflows/deploy.yml`, which builds the site with `build.py` and publishes `_site/` to
+`gh-pages` (CNAME included); the site updates a minute or two later.
 
-```bash
-git push -u origin redesign-2026      # review on GitHub, then merge into master
-```
+Only the live theme is published — `theme:` in `content/site.yml`, currently `notion`. The other designs
+stay in `themes/` as drafts you can preview locally with `python build.py serve` (at `/drafts/`).
 
 Old URLs (`/publications/`, `/cv/`, `/research/`, `/news/…`) redirect. With the blog off, `/blog/…` URLs
 redirect to the homepage; with it on, posts keep their original `/blog/YYYY/slug/` addresses.
